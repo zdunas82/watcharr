@@ -145,7 +145,7 @@ func (r *Router) GetAvailableAuthProviders(c *gin.Context) {
 	resp := &AvailableAuthProvidersResponse{
 		AvailableAuthProviders: []string{},
 		SignupEnabled:          r.br.Cfg.SIGNUP_ENABLED,
-		IsInSetup:              setupglob.ServerInSetup,
+		IsInSetup:              setupglob.ServerInSetup && !r.br.Cfg.JellyfinAdminSetup(),
 		UseEmby:                r.br.Cfg.USE_EMBY,
 	}
 	if r.br.Cfg.JELLYFIN_HOST != "" {

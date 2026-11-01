@@ -7,6 +7,7 @@ import (
 	"log/slog"
 	"os"
 	"path"
+	"strings"
 	"time"
 	"uuid"
 
@@ -70,6 +71,21 @@ type ServerConfig struct {
 	// Set to `false` to disable registering an account.
 	SIGNUP_ENABLED bool
 
+	// Optional: Language for TMDB metadata (titles, overviews, posters),
+	// eg. "pl-PL". Missing translations fall back to en-US.
+	// Defaults to "en-US". Requires a restart to apply.
+	TMDB_LANG string `json:",omitempty"`
+
+	// Optional: Only these Jellyfin usernames (case-insensitive) may log in.
+	// Empty = every Jellyfin user may log in.
+	JELLYFIN_ALLOWED_USERS []string `json:",omitempty"`
+
+	// Optional: Jellyfin usernames (case-insensitive) that get admin
+	// permission when their Watcharr account is created.
+	// When set together with JELLYFIN_HOST, first-run setup is skipped
+	// (the first admin is created by logging in with Jellyfin).
+	JELLYFIN_ADMIN_USERS []string `json:",omitempty"`
+
 	// Optional: Provide your own TMDB API Key.
 	// If unprovided, the default Watcharr API key will be used.
 	TMDB_KEY string `json:",omitempty"`
@@ -116,6 +132,9 @@ func (c *ServerConfig) GetSafe() ServerConfig {
 		JELLYFIN_WEBHOOK_KEY:     c.JELLYFIN_WEBHOOK_KEY,
 		USE_EMBY:                 c.USE_EMBY,
 		TMDB_KEY:                 c.TMDB_KEY,
+		TMDB_LANG:                c.TMDB_LANG,
+		JELLYFIN_ALLOWED_USERS:   c.JELLYFIN_ALLOWED_USERS,
+		JELLYFIN_ADMIN_USERS:     c.JELLYFIN_ADMIN_USERS,
 		PLEX_HOST:                c.PLEX_HOST,
 		PLEX_MACHINE_ID:          c.PLEX_MACHINE_ID,
 		DEBUG:                    c.DEBUG,
@@ -149,6 +168,8 @@ func (c *ServerConfig) Get(s string) (ServerConfigGetByName, error) {
 		return ServerConfigGetByName{Value: c.SIGNUP_ENABLED}, nil
 	case "TMDB_KEY":
 		return ServerConfigGetByName{Value: c.TMDB_KEY}, nil
+	case "TMDB_LANG":
+		return ServerConfigGetByName{Value: c.TMDB_LANG}, nil
 	case "PLEX_HOST":
 		return ServerConfigGetByName{Value: c.PLEX_HOST}, nil
 	case "PLEX_MACHINE_ID":
@@ -314,6 +335,31 @@ func generateConfig() (*ServerConfig, error) {
 		return nil, err
 	}
 	return &cfg, os.WriteFile(path.Join(DataPath, "watcharr.json"), barej, 0755)
+}
+
+// Is the Jellyfin username in list (case-insensitive)?
+func usernameInList(list []string, username string) bool {
+	for _, u := range list {
+		if strings.EqualFold(strings.TrimSpace(u), username) {
+			return true
+		}
+	}
+	return false
+}
+
+// Is this Jellyfin user allowed to log in?
+func (c *ServerConfig) JellyfinUserAllowed(username string) bool {
+	return len(c.JELLYFIN_ALLOWED_USERS) == 0 || usernameInList(c.JELLYFIN_ALLOWED_USERS, username)
+}
+
+// Should this Jellyfin user be created as an admin?
+func (c *ServerConfig) JellyfinUserIsAdmin(username string) bool {
+	return usernameInList(c.JELLYFIN_ADMIN_USERS, username)
+}
+
+// Is the first admin created via Jellyfin login (instead of setup page)?
+func (c *ServerConfig) JellyfinAdminSetup() bool {
+	return c.JELLYFIN_HOST != "" && len(c.JELLYFIN_ADMIN_USERS) > 0
 }
 
 // Get server config.

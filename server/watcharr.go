@@ -228,6 +228,7 @@ func main() {
 	br := router.NewBaseRouter(db, api, cfg)
 
 	tmdbService := tmdb.NewTMDB(cfg.TMDB_KEY)
+	tmdbService.Lang = cfg.TMDB_LANG
 
 	contentService := content.NewService(db, tmdbService)
 	tmdbService.AddContentProvider(contentService)
@@ -327,7 +328,7 @@ func main() {
 	// Only add setup routes if there are no users found in db.
 	var userCount int64
 	if uresp := db.Model(&entity.User{}).Count(&userCount); uresp.Error == nil {
-		if userCount != 0 {
+		if userCount != 0 || cfg.JellyfinAdminSetup() {
 			slog.Debug("registered users found.. skipped creating setup routes.")
 		} else {
 			slog.Info("No users found.. creating setup routes.")

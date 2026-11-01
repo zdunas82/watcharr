@@ -240,6 +240,10 @@ func (s *Service) LoginJellyfin(userL *entity.User) (AuthResponse, error) {
 	if resp.User.ID == "" {
 		return AuthResponse{}, errors.New("jellyfin returned empty user id")
 	}
+	if !s.cfg.JellyfinUserAllowed(resp.User.Name) {
+		slog.Warn("LoginJellyfin: User not in JELLYFIN_ALLOWED_USERS.", "username", resp.User.Name)
+		return AuthResponse{}, errors.New("this account is not allowed to log in")
+	}
 
 	dbUser := new(entity.User)
 
@@ -317,6 +321,10 @@ func (s *Service) createJellyfinUser(
 	dbUser.Username = resp.User.Name
 	dbUser.Type = entity.JELLYFIN_USER
 	dbUser.Country = &s.cfg.DEFAULT_COUNTRY
+	if s.cfg.JellyfinUserIsAdmin(resp.User.Name) {
+		slog.Info("createJellyfinUser: User is in JELLYFIN_ADMIN_USERS, creating as admin.", "username", resp.User.Name)
+		dbUser.Permissions = entity.PERM_ADMIN
+	}
 
 	err := s.db.Create(&dbUser).Error
 	if err != nil {

@@ -38,6 +38,7 @@ func (t *TMDB) MovieDetails(o MovieDetailsOptions) (MovieDetails, error) {
 		slog.Error("MovieDetails: Request failed!", "error", err)
 		return MovieDetails{}, errors.New("request failed")
 	}
+	t.movieFallback(o.ID, resp)
 	resp.WatchProvidersTransformed = transformProviders(
 		&resp.WatchProviders,
 		o.Country)

@@ -22,6 +22,7 @@ type ContentProvider interface {
 
 type TMDB struct {
 	Key             string
+	Lang            string
 	contentProvider ContentProvider
 }
 
@@ -42,6 +43,20 @@ func (t *TMDB) GetKey() string {
 	return "d047fa61d926371f277e7a83c9c4ff2c"
 }
 
+// Configured metadata language, en-US when unset.
+func (t *TMDB) GetLang() string {
+	if t.Lang != "" {
+		return t.Lang
+	}
+	return "en-US"
+}
+
+// Is the configured language something other than english?
+// Used to decide if we should backfill missing translations from en-US.
+func (t *TMDB) needsFallback() bool {
+	return t.GetLang() != "en-US"
+}
+
 func (t *TMDB) apiRequest(ep string, p map[string]string) ([]byte, error) {
 	slog.Debug("tmdbAPIRequest", "endpoint", ep, "params", p)
 	base, err := url.Parse("https://api.themoviedb.org/3")
@@ -55,7 +70,15 @@ func (t *TMDB) apiRequest(ep string, p map[string]string) ([]byte, error) {
 	// Query params
 	params := url.Values{}
 	params.Add("api_key", t.GetKey())
-	params.Add("language", "en-US")
+	// Callers can override language per request (en-US fallback).
+	if _, ok := p["language"]; !ok {
+		params.Add("language", t.GetLang())
+	}
+	// Trailers (appended videos) are filtered by language too,
+	// so also allow english ones and those without a language.
+	if _, ok := p["include_video_language"]; !ok && t.needsFallback() {
+		params.Add("include_video_language", t.langCode()+",en,null")
+	}
 	for k, v := range p {
 		params.Add(k, v)
 	}
@@ -90,4 +113,10 @@ func (t *TMDB) req(ep string, p map[string]string, resp interface{}) error {
 		return err
 	}
 	return nil
+}
+
+// Request `ep` in en-US (without extra appended data) into `resp`.
+// Used to backfill fields that have no translation in the configured language.
+func (t *TMDB) reqEnglish(ep string, resp interface{}) error {
+	return t.req(ep, map[string]string{"language": "en-US"}, resp)
 }

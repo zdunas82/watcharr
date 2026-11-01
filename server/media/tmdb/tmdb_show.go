@@ -38,6 +38,7 @@ func (t *TMDB) ShowDetails(o ShowDetailsOptions) (ShowDetails, error) {
 		slog.Error("ShowDetails: Request failed!", "error", err)
 		return ShowDetails{}, errors.New("request failed")
 	}
+	t.showFallback(o.ID, resp)
 	resp.WatchProvidersTransformed = transformProviders(
 		&resp.WatchProviders,
 		o.Country)
@@ -79,6 +80,7 @@ func (t *TMDB) SeasonDetails(
 		slog.Error("SeasonDetails: Request failed!", "error", err)
 		return SeasonDetails{}, errors.New("request failed")
 	}
+	t.seasonFallback(showId, seasonNumber, resp)
 	ContentStore.Set(cacheKey, resp, time.Hour*24)
 	return *resp, nil
 }
