@@ -57,6 +57,10 @@ type ServerConfig struct {
 	// to enable it as an auth provider.
 	JELLYFIN_HOST string `json:",omitempty"`
 
+	// Optional: Public Jellyfin url used for links shown to users
+	// (eg. "Play On Jellyfin"), when JELLYFIN_HOST is an internal address.
+	JELLYFIN_PUBLIC_URL string `json:",omitempty"`
+
 	// Optional: Enable jellyfin webhook endpoint.
 	JELLYFIN_WEBHOOK_ENABLED bool `json:",omitempty"`
 
@@ -128,6 +132,7 @@ func (c *ServerConfig) GetSafe() ServerConfig {
 		SIGNUP_ENABLED:           c.SIGNUP_ENABLED,
 		DEFAULT_COUNTRY:          c.DEFAULT_COUNTRY,
 		JELLYFIN_HOST:            c.JELLYFIN_HOST,
+		JELLYFIN_PUBLIC_URL:      c.JELLYFIN_PUBLIC_URL,
 		JELLYFIN_WEBHOOK_ENABLED: c.JELLYFIN_WEBHOOK_ENABLED,
 		JELLYFIN_WEBHOOK_KEY:     c.JELLYFIN_WEBHOOK_KEY,
 		USE_EMBY:                 c.USE_EMBY,
@@ -335,6 +340,14 @@ func generateConfig() (*ServerConfig, error) {
 		return nil, err
 	}
 	return &cfg, os.WriteFile(path.Join(DataPath, "watcharr.json"), barej, 0755)
+}
+
+// Jellyfin url for links shown to users.
+func (c *ServerConfig) JellyfinLinkHost() string {
+	if c.JELLYFIN_PUBLIC_URL != "" {
+		return strings.TrimRight(c.JELLYFIN_PUBLIC_URL, "/")
+	}
+	return c.JELLYFIN_HOST
 }
 
 // Is the Jellyfin username in list (case-insensitive)?

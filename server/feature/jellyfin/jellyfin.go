@@ -184,7 +184,7 @@ func (s *Service) JellyfinContentFind(
 	for _, i := range resp.Items {
 		if i.ProviderIds.Tmdb == contentTmdbId {
 			ret.HasContent = true
-			ret.Url = s.cfg.JELLYFIN_HOST + "/web/index.html#!/details?id=" + i.Id + "&serverId=" + i.ServerID
+			ret.Url = s.cfg.JellyfinLinkHost() + "/web/index.html#!/details?id=" + i.Id + "&serverId=" + i.ServerID
 		}
 	}
 	return *ret, nil
