@@ -38,7 +38,7 @@
 	{#if embed}
 		<div class="wrapper">
 			<iframe
-				title="Video Embed"
+				title="Osadzony film"
 				src={embed}
 				frameborder="0"
 				width="100%"

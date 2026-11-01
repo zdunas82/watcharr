@@ -31,23 +31,23 @@
 </script>
 
 <svelte:head>
-	<title>Settings</title>
+	<title>Ustawienia</title>
 </svelte:head>
 
 <div class="content">
 	<div class="inner">
 		<h2 title={user?.username}>
 			<span style="font-weight: normal; font-variant: all-small-caps;">
-				Settings for
+				Ustawienia konta
 			</span>
 			{user?.username}
 		</h2>
 
 		<div class="settings">
-			<h3>General</h3>
+			<h3>Ogólne</h3>
 
 			<div class="theme">
-				<h4 class="norm">Theme</h4>
+				<h4 class="norm">Motyw</h4>
 				<div class="row">
 					<button
 						class={`plain${selectedTheme === "system" ? " selected" : ""}`}
@@ -61,21 +61,21 @@
 						id="light"
 						onclick={() => toggleTheme("light")}
 					>
-						light
+						jasny
 					</button>
 					<button
 						class={`plain${selectedTheme === "dark" ? " selected" : ""}`}
 						id="dark"
 						onclick={() => toggleTheme("dark")}
 					>
-						dark
+						ciemny
 					</button>
 				</div>
 			</div>
 
 			<Setting
-				title="Country"
-				desc="What country would you like to see available streaming providers for?"
+				title="Kraj"
+				desc="Dla którego kraju pokazywać, gdzie można obejrzeć dany tytuł?"
 			>
 				<RegionDropDown
 					selectedCountry={settings?.country}
@@ -89,7 +89,7 @@
 				/>
 			</Setting>
 
-			<Setting title="Private" desc="Hide your profile from others?" row>
+			<Setting title="Prywatny profil" desc="Ukryć twój profil przed innymi?" row>
 				<Checkbox
 					name="private"
 					disabled={privateDisabled}
@@ -105,8 +105,8 @@
 
 			{#if !settings?.private}
 				<Setting
-					title="Private Thoughts"
-					desc="Hide your watched list thoughts from followers?"
+					title="Prywatne przemyślenia"
+					desc="Ukryć przemyślenia z twojej listy przed obserwującymi?"
 					row
 				>
 					<Checkbox
@@ -124,8 +124,8 @@
 			{/if}
 
 			<Setting
-				title="Hide Spoilers"
-				desc="Do you want to hide episode info?"
+				title="Ukryj spoilery"
+				desc="Ukrywać informacje o odcinkach?"
 				row
 			>
 				<Checkbox
@@ -142,9 +142,9 @@
 			</Setting>
 
 			<Setting
-				title="Automate Show Statuses"
-				desc="Do you want to automate show statuses (show, season, episode)?"
-				tag="experimental"
+				title="Automatyczne statusy seriali"
+				desc="Ustawiać statusy seriali automatycznie (serial, sezon, odcinek)?"
+				tag="eksperymentalne"
 				row
 			>
 				<Checkbox
@@ -161,8 +161,8 @@
 			</Setting>
 
 			<Setting
-				title="Include Previously Watched"
-				desc="Should previously finished items be included in the 'Finished' status filter?"
+				title="Uwzględniaj wcześniej obejrzane"
+				desc="Czy pozycje obejrzane już wcześniej mają się pojawiać w filtrze statusu „Obejrzane”?"
 				row
 			>
 				<Checkbox
@@ -180,28 +180,28 @@
 
 			<RatingSetting />
 
-			<h3>Services</h3>
+			<h3>Usługi</h3>
 
 			<UserServices />
 
 			<div class="row btns">
-				<button onclick={() => goto(resolve("/import"))}>Import</button>
-				<button onclick={() => (exportModalOpen = true)}>Export</button>
+				<button onclick={() => goto(resolve("/import"))}>Importuj</button>
+				<button onclick={() => (exportModalOpen = true)}>Eksportuj</button>
 				{#if user?.type == UserType.Watcharr}
 					<button
 						onclick={() => {
 							pwChangeModalOpen = true;
-						}}>Change Password</button
+						}}>Zmień hasło</button
 					>
 				{/if}
 				{#if user?.type === UserType?.Jellyfin}
 					<button onclick={() => (jellyfinSyncModalOpen = true)}>
-						Sync With {localStorage.getItem("useEmby") ? "Emby" : "Jellyfin"}
+						Synchronizuj z {localStorage.getItem("useEmby") ? "Emby" : "Jellyfinem"}
 					</button>
 				{/if}
 				{#if user?.type === UserType?.Plex}
 					<button onclick={() => (plexSyncModalOpen = true)}>
-						Sync With Plex
+						Synchronizuj z Plexem
 					</button>
 				{/if}
 			</div>

@@ -10,7 +10,7 @@
 	let { onClose }: Props = $props();
 
 	async function downloadWatchedList() {
-		const nid = notify({ text: "Exporting", type: "loading" });
+		const nid = notify({ text: "Eksportowanie", type: "loading" });
 		try {
 			// We re-fetch, to ensure data we export is up to date.
 			const r = await req.get<unknown[]>("/watched");
@@ -18,7 +18,7 @@
 			if (!r || r?.length <= 0) {
 				notify({
 					id: nid,
-					text: "Can't export an empty watch list!",
+					text: "Nie można wyeksportować pustej listy!",
 					type: "error",
 					time: 10000,
 				});
@@ -31,33 +31,33 @@
 			a.href = URL.createObjectURL(file);
 			a.download = "watcharr-export.json";
 			a.click();
-			notify({ id: nid, text: "Successfully Exported", type: "success" });
+			notify({ id: nid, text: "Wyeksportowano", type: "success" });
 			onClose();
 		} catch (err) {
 			console.error("downloadWatchedList failed!", err);
-			notify({ id: nid, text: "Export Failed!", type: "error" });
+			notify({ id: nid, text: "Eksport nie powiódł się!", type: "error" });
 		}
 	}
 </script>
 
-<Modal title="Export Watched List" maxWidth="600px" {onClose}>
+<Modal title="Eksport twojej listy" maxWidth="600px" {onClose}>
 	<p>
-		Only use this feature if you are leaving Watcharr to use another platform OR
-		leaving to another Watcharr instance where you don't own this or the other
-		instance.
+		Używaj tej funkcji tylko wtedy, gdy przenosisz się z Watcharr na inną
+		platformę ALBO na inną instancję Watcharr, a nie jesteś właścicielem tej lub
+		tamtej instancji.
 	</p>
 	<p>
-		If you are migrating to another server that you own, it's best to take your
-		existing database with you.
+		Jeśli przenosisz się na inny serwer, który należy do ciebie, najlepiej zabierz
+		ze sobą obecną bazę danych.
 	</p>
 	<p>
-		<b>Warning</b>: This is not a backup feature. Backups should be done on the
-		server (see:
+		<b>Uwaga</b>: to nie jest funkcja kopii zapasowej. Kopie zapasowe należy
+		robić na serwerze (zobacz:
 		<a href="https://watcharr.app/docs/server_config/backup" target="_blank"
 			>https://watcharr.app/docs/server_config/backup</a
 		>).
 	</p>
-	<button onclick={() => downloadWatchedList()}>Export</button>
+	<button onclick={() => downloadWatchedList()}>Eksportuj</button>
 </Modal>
 
 <style lang="scss">

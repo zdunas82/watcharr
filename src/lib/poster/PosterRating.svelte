@@ -91,9 +91,9 @@
 			<!-- eslint-disable-next-line svelte/no-useless-mustaches -->
 			{""}
 		{:else if disableInteraction}
-			Unrated
+			Bez oceny
 		{:else}
-			Rate
+			Oceń
 		{/if}
 	</span>
 

@@ -24,9 +24,9 @@
 
 <div class="content">
 	<div class="inner">
-		<h2>User Management</h2>
+		<h2>Zarządzanie użytkownikami</h2>
 		<h5 class="norm">
-			Take control and manage all the users using your server.
+			Zarządzaj wszystkimi użytkownikami Twojego serwera.
 		</h5>
 
 		{#await getUsers()}
@@ -35,9 +35,9 @@
 			<table>
 				<thead>
 					<tr>
-						<th>Name</th>
-						<th>Private</th>
-						<th>Joined</th>
+						<th>Nazwa</th>
+						<th>Prywatny</th>
+						<th>Dołączył(a)</th>
 						<th></th>
 					</tr>
 				</thead>
@@ -50,11 +50,11 @@
 									<UserTypeIcon type={u.type} />
 									{u.username}
 									{#if userHasPermission(u.permissions, UserPermission.PERM_ADMIN)}
-										<span class="tag">Admin</span>
+										<span class="tag">Administrator</span>
 									{/if}
 								</div>
 							</td>
-							<td>{u.private === true ? "Yes" : "No"}</td>
+							<td>{u.private === true ? "Tak" : "Nie"}</td>
 							<td>
 								{joinDate.getDate()}{getOrdinalSuffix(joinDate.getDate())}
 								{monthsShort[joinDate.getMonth()]}
@@ -82,7 +82,7 @@
 				/>
 			{/if}
 		{:catch err}
-			<Error error={err} pretty="Failed to fetch users!" />
+			<Error error={err} pretty="Nie udało się pobrać listy użytkowników!" />
 		{/await}
 	</div>
 </div>

@@ -20,22 +20,22 @@
 	async function deleteTag() {
 		console.debug("deleteTag:", tag);
 		if (!tag || !tag.id) {
-			error = "Tag doesn't have an id!";
+			error = "Tag nie ma identyfikatora!";
 			return;
 		}
 		deleteDisabled = true;
-		const nid = notify({ text: "Deleting Tag", type: "loading" });
+		const nid = notify({ text: "Usuwanie tagu", type: "loading" });
 		try {
 			const resp = await req.delete(`/tag/${tag.id}`);
 			console.log("deleteTag: Tag was deleted", resp);
 			// Remove tag from store.
 			store.tags = store.tags.filter((t) => t.id !== tag.id);
-			notify({ id: nid, text: "Tag Deleted!", type: "success" });
+			notify({ id: nid, text: "Usunięto tag!", type: "success" });
 			onClose();
 		} catch (err) {
 			console.error("deleteTag: Failed!", err);
-			notify({ id: nid, text: "Failed!", type: "error", time: 1 });
-			error = "Failed To Delete!";
+			notify({ id: nid, text: "Nie udało się!", type: "error", time: 1 });
+			error = "Nie udało się usunąć!";
 		}
 		deleteDisabled = false;
 	}
@@ -51,8 +51,8 @@
 </script>
 
 <Modal
-	title="Permanently Delete Tag"
-	desc="Are you sure you want to delete this tag?"
+	title="Trwale usuń tag"
+	desc="Na pewno chcesz usunąć ten tag?"
 	maxWidth="500px"
 	{onClose}
 	{error}
@@ -64,7 +64,7 @@
 			onclick={() => deleteTag()}
 			disabled={deleteDisabled}
 		>
-			Yes, fully delete (unrecoverable)
+			Tak, usuń całkowicie (bez możliwości przywrócenia)
 		</button>
 	</div>
 </Modal>

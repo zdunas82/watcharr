@@ -20,6 +20,7 @@
 	import {
 		ImportResponseType,
 		getContentTypeFromMedia,
+		type DropDownItem,
 		type ImportResponse,
 		type ImportedList,
 		type Media,
@@ -56,6 +57,28 @@
 		return t;
 	})();
 
+	// Display labels for the type/status dropdowns (values stay unchanged).
+	const typeLabels: Record<string, string> = {
+		movie: "Film",
+		tv: "Serial",
+		game: "Gra",
+		tv_episode: "Odcinek",
+	};
+	const statusOptions: DropDownItem[] = [
+		{ id: "FINISHED", value: "Obejrzane" },
+		{ id: "PLANNED", value: "Planuję" },
+		{ id: "WATCHING", value: "Oglądam" },
+		{ id: "HOLD", value: "Wstrzymane" },
+		{ id: "DROPPED", value: "Porzucone" },
+	];
+	function typeOptions(current: string | undefined): DropDownItem[] {
+		const t =
+			current === "tv_episode"
+				? [...dropDownSupportedTypes, "tv_episode"]
+				: dropDownSupportedTypes;
+		return t.map((v) => ({ id: v, value: typeLabels[v] ?? v }));
+	}
+
 	// Set when current item being imported gets an IMPORT_MULTI
 	// response, which then shows the modal for user to pick correct item.
 	let importMultiItem: ImportedListItemMultiProblem | undefined = $state();
@@ -73,7 +96,7 @@
 		}
 		console.log("getList", list);
 		if (list?.type === "text-list") {
-			importText = "Text List";
+			importText = "Lista tekstowa";
 			// Regex to match a year in between brackets,
 			// which we assume is the release year of content.
 			const yearRegex = new RegExp(/\([0-9]{4}\)/);
@@ -145,7 +168,7 @@
 					console.error("Failed to process an item!", err);
 					notify({
 						type: "error",
-						text: "Failed to process an item!",
+						text: "Nie udało się przetworzyć pozycji!",
 					});
 				}
 			}
@@ -237,18 +260,18 @@
 					console.error("Failed to process an item!", err);
 					notify({
 						type: "error",
-						text: "Failed to process an item!",
+						text: "Nie udało się przetworzyć pozycji!",
 					});
 				}
 			}
 			notify({
-				text: "Any tv episodes will be added to the bottom of the table, don't change the Type on these!",
+				text: "Odcinki seriali zostaną dodane na końcu tabeli – nie zmieniaj ich typu!",
 				time: 20000,
 			});
 			if (anySkipped) {
 				notify({
 					type: "error",
-					text: "Some items with invalid data may have been skipped (check source data for missing ids/titles or look in console for more details).",
+					text: "Część pozycji z nieprawidłowymi danymi mogła zostać pominięta (sprawdź, czy w danych źródłowych nie brakuje identyfikatorów/tytułów, albo zajrzyj do konsoli).",
 				});
 			}
 		} else if (list?.type === "movary") {
@@ -261,7 +284,7 @@
 				console.error("Movary import processing failed!", err);
 				notify({
 					type: "error",
-					text: "Processing failed!. Please report this issue if it persists.",
+					text: "Przetwarzanie nie powiodło się! Zgłoś ten problem, jeśli będzie się powtarzał.",
 				});
 			}
 		} else if (list?.type === "watcharr") {
@@ -274,7 +297,7 @@
 				console.error("Watcharr import processing failed!", err);
 				notify({
 					type: "error",
-					text: "Processing failed!. Please report this issue if it persists.",
+					text: "Przetwarzanie nie powiodło się! Zgłoś ten problem, jeśli będzie się powtarzał.",
 				});
 			}
 		} else if (list?.type === "myanimelist") {
@@ -287,7 +310,7 @@
 					console.error("MyAnimeList parse error:", errorNode);
 					notify({
 						type: "error",
-						text: "An error occurred while parsing your MyAnimeList export!",
+						text: "Wystąpił błąd podczas odczytywania eksportu z MyAnimeList!",
 					});
 					return;
 				}
@@ -297,7 +320,7 @@
 					console.error("MyAnimeList: Found no anime nodes:", animeNodes);
 					notify({
 						type: "error",
-						text: "We found no Anime entries in your export file!",
+						text: "W pliku eksportu nie znaleziono żadnych pozycji anime!",
 					});
 					return;
 				}
@@ -309,7 +332,7 @@
 						console.error("No title found for an anime!", animeNode, titleNode);
 						notify({
 							type: "error",
-							text: "An anime failed to import, a title was not found! Check console for more details.",
+							text: "Nie udało się zaimportować anime – nie znaleziono tytułu! Szczegóły znajdziesz w konsoli.",
 						});
 						continue;
 					}
@@ -386,7 +409,7 @@
 						);
 						notify({
 							type: "error",
-							text: "Failed to process start/finish times for an anime! Check console for more details.",
+							text: "Nie udało się przetworzyć dat rozpoczęcia/zakończenia anime! Szczegóły znajdziesz w konsoli.",
 						});
 					}
 					rList.push(l);
@@ -395,7 +418,7 @@
 				console.error("MyAnimeList import failed!", err);
 				notify({
 					type: "error",
-					text: "Failed to process import data!",
+					text: "Nie udało się przetworzyć danych importu!",
 				});
 			}
 		} else if (list?.type === "ryot") {
@@ -408,7 +431,7 @@
 				console.error("Ryot import processing failed!", err);
 				notify({
 					type: "error",
-					text: "Processing failed!. Please report this issue if it persists.",
+					text: "Przetwarzanie nie powiodło się! Zgłoś ten problem, jeśli będzie się powtarzał.",
 				});
 			}
 		} else if (list?.type === "todomovies") {
@@ -421,7 +444,7 @@
 				console.error("TodoMovies import processing failed!", err);
 				notify({
 					type: "error",
-					text: "Processing failed!. Please report this issue if it persists.",
+					text: "Przetwarzanie nie powiodło się! Zgłoś ten problem, jeśli będzie się powtarzał.",
 				});
 			}
 		}
@@ -485,7 +508,7 @@
 			);
 			notify({
 				type: "error",
-				text: "An error was found in one of the inputs, please fix it and try starting the import again.",
+				text: "W jednym z pól jest błąd – popraw go i spróbuj ponownie rozpocząć import.",
 			});
 			return;
 		}
@@ -494,7 +517,7 @@
 		window.scrollTo(0, 0);
 		for (let i = 0; i < rList.length; i++) {
 			if (cancelled) {
-				notify({ type: "error", text: "Importing Cancelled" });
+				notify({ type: "error", text: "Import anulowany" });
 				return;
 			}
 			const li = rList[i];
@@ -506,7 +529,7 @@
 				console.error("Failed to import item:", li, "reason:", err);
 				notify({
 					type: "error",
-					text: "Failed to import an item! Check console for more info.",
+					text: "Nie udało się zaimportować pozycji! Szczegóły znajdziesz w konsoli.",
 					time: Infinity,
 				});
 			}
@@ -526,7 +549,7 @@
 		} else {
 			notify({
 				type: "success",
-				text: "All content successfully imported!",
+				text: "Wszystko zaimportowano pomyślnie!",
 				time: 15000,
 			});
 			goto(resolve("/"));
@@ -627,7 +650,7 @@
 				console.error("changeAllStatusesModalCb: Failed!", err);
 				notify({
 					type: "error",
-					text: "Failed when updating all statuses. Please try again!",
+					text: "Nie udało się zmienić wszystkich statusów. Spróbuj ponownie!",
 				});
 			}
 			changeAllStatusesModalCb = undefined;
@@ -645,12 +668,12 @@
 	<div class="content">
 		<div class="inner">
 			{#if rList}
-				<h2>Importing {importText ? `From ${importText}` : ""}</h2>
+				<h2>Import{importText ? ` – ${importText}` : ""}</h2>
 				<h5 class="norm">
 					{#if !isImporting}
-						Review your imported list and fix any problems.
+						Przejrzyj importowaną listę i popraw ewentualne problemy.
 					{:else}
-						You can fix any failed imports when the process completes.
+						Nieudane pozycje możesz poprawić po zakończeniu importu.
 					{/if}
 				</h5>
 				<div class="table-wrap">
@@ -663,11 +686,11 @@
 								{#if isImporting}
 									<th class="loading-col"></th>
 								{/if}
-								<th>Name</th>
-								<th>Year</th>
-								<th>Type</th>
+								<th>Tytuł</th>
+								<th>Rok</th>
+								<th>Typ</th>
 								<th>Status</th>
-								<th>Rating</th>
+								<th>Ocena</th>
 								{#if !isImporting}
 									<th></th>
 								{/if}
@@ -706,29 +729,25 @@
 										<input
 											class="plain"
 											bind:value={l.year}
-											placeholder="YYYY"
+											placeholder="RRRR"
 											type="number"
 											disabled={isImporting}
 										/>
 									</td>
 									<td class="type">
 										<DropDown
-											options={dropDownSupportedTypes}
+											options={typeOptions(l.type)}
+											isDropDownItem={true}
 											bind:active={l.type}
-											placeholder="Type"
+											placeholder="Typ"
 											blendIn={true}
 											disabled={isImporting}
 										/>
 									</td>
 									<td class="status">
 										<DropDown
-											options={[
-												"FINISHED",
-												"PLANNED",
-												"WATCHING",
-												"HOLD",
-												"DROPPED",
-											]}
+											options={statusOptions}
+											isDropDownItem={true}
 											bind:active={l.status}
 											placeholder="Status"
 											blendIn={true}
@@ -767,7 +786,7 @@
 									<td
 										><input
 											class="plain"
-											placeholder="Name"
+											placeholder="Tytuł"
 											onblur={addRow}
 										/></td
 									>
@@ -775,7 +794,7 @@
 										<input
 											class="plain"
 											id="addYear"
-											placeholder="YYYY"
+											placeholder="RRRR"
 											type="number"
 										/>
 									</td>
@@ -790,19 +809,19 @@
 				</div>
 				<div class="btns">
 					<button onclick={() => goto(resolve("/import"))}>
-						<Icon i="arrow" />Back
+						<Icon i="arrow" />Wstecz
 					</button>
 					<button onclick={() => changeAllStatuses()} disabled={isImporting}>
-						Change All Statuses
+						Zmień wszystkie statusy
 					</button>
 					<button onclick={startImport} disabled={isImporting}>
-						Start Importing
+						Rozpocznij import
 					</button>
 				</div>
 				{#if typeof changeAllStatusesModalCb === "function"}
 					<Modal
-						title="Select a New Status"
-						desc="Override the status for all content in the table"
+						title="Wybierz nowy status"
+						desc="Nadpisz status wszystkich pozycji w tabeli"
 						maxWidth="600px"
 						onClose={() =>
 							typeof changeAllStatusesModalCb === "function"
@@ -813,7 +832,7 @@
 					</Modal>
 				{/if}
 			{:else}
-				<h2>No list</h2>
+				<h2>Brak listy</h2>
 			{/if}
 		</div>
 	</div>
@@ -821,8 +840,8 @@
 	<!-- Multiple results found modal -->
 	{#if importMultiItem}
 		<Modal
-			title="Multiple Results Found"
-			desc="Select the correct item for {importMultiItem.original
+			title="Znaleziono kilka wyników"
+			desc="Wybierz właściwą pozycję dla: {importMultiItem.original
 				.name} {importMultiItem.original.year &&
 				'(' + importMultiItem.original.year + ')'}"
 			onClose={() => {
@@ -857,7 +876,7 @@
 									item.state = ImportResponseType.IMPORT_FAILED;
 									notify({
 										type: "error",
-										text: "Can't import selected result because it has an unsupported type associated with it!",
+										text: "Nie można zaimportować wybranego wyniku, bo ma nieobsługiwany typ!",
 										time: 10000,
 									});
 									return;
@@ -880,7 +899,7 @@
 		</Modal>
 	{/if}
 {:catch err}
-	<Error error={err} pretty="Failed to process list!" />
+	<Error error={err} pretty="Nie udało się przetworzyć listy!" />
 {/await}
 
 <style lang="scss">

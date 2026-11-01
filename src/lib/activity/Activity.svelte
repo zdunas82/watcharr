@@ -1,10 +1,6 @@
 <script lang="ts">
 	import { type Activity, ActivityCreatedBy } from "@/types";
-	import {
-		getOrdinalSuffix,
-		months,
-		seasonAndEpToReadable,
-	} from "../util/helpers";
+	import { seasonAndEpToReadable } from "../util/helpers";
 	import ActivityEditor from "./ActivityEditor.svelte";
 	import ActivityIcon from "./ActivityIcon.svelte";
 
@@ -26,18 +22,18 @@
 			case "ADDED_WATCHED":
 				if (a.data) {
 					const data = JSON.parse(a.data);
-					return `Added to Watched List${data?.status ? ` as ${toFullTitleCase(data.status)}` : ""}${
-						data?.rating ? ` with ${data.rating} Stars` : ""
+					return `Dodano do Twojej listy${data?.status ? ` jako „${toFullTitleCase(data.status)}”` : ""}${
+						data?.rating ? ` z oceną ${data.rating}` : ""
 					}`;
 				}
-				return "Added to Watched List";
+				return "Dodano do Twojej listy";
 			case "REMOVED_WATCHED":
-				return "Removed from Watched List";
+				return "Usunięto z Twojej listy";
 			case "RATING_CHANGED":
 				if (a.data) {
-					return `Rating Changed to ${a.data}`;
+					return `Zmieniono ocenę na ${a.data}`;
 				}
-				return "Rating Changed";
+				return "Zmieniono ocenę";
 			case "STATUS_CHANGED":
 				if (a.data) {
 					let status = a.data;
@@ -45,90 +41,102 @@
 						const data = JSON.parse(a.data);
 						status = data.status;
 					}
-					return `Status Changed to ${toFullTitleCase(status)}`;
+					return `Zmieniono status na „${toFullTitleCase(status)}”`;
 				}
-				return "Status Changed";
+				return "Zmieniono status";
 			case "THOUGHTS_CHANGED":
-				return "Thoughts Changed";
+				return "Zmieniono przemyślenia";
 			case "THOUGHTS_REMOVED":
-				return "Thoughts Removed";
+				return "Usunięto przemyślenia";
 			case "IMPORTED_RATING":
 				if (a.data) {
 					const data = JSON.parse(a.data);
 					if (data.rating) {
-						return `Rating Changed to ${data.rating}`;
+						return `Zmieniono ocenę na ${data.rating}`;
 					} else {
-						return "Added to Watchlist with No Rating";
+						return "Dodano do Twojej listy bez oceny";
 					}
 				}
-				return "Imported Rating";
+				return "Zaimportowano ocenę";
 			case "IMPORTED_ADDED_WATCHED":
-				return "Imported Watch Date";
+				return "Zaimportowano datę obejrzenia";
 			case "SEASON_ADDED":
 				if (a.data) {
 					const data = JSON.parse(a.data);
-					return `Season ${data.season} Added as ${toFullTitleCase(data.status)}`;
+					return `Dodano sezon ${data.season} jako „${toFullTitleCase(data.status)}”`;
 				}
-				return "Season Added";
+				return "Dodano sezon";
 			case "SEASON_RATING_CHANGED":
 				if (a.data) {
 					const data = JSON.parse(a.data);
-					return `Changed Season ${data.season} Rating to ${data.rating}`;
+					return `Zmieniono ocenę sezonu ${data.season} na ${data.rating}`;
 				}
-				return "Season Rating Changed";
+				return "Zmieniono ocenę sezonu";
 			case "SEASON_STATUS_CHANGED":
 				if (a.data) {
 					const data = JSON.parse(a.data);
-					return `Changed Season ${data.season} Status to ${toFullTitleCase(data.status)}`;
+					return `Zmieniono status sezonu ${data.season} na „${toFullTitleCase(data.status)}”`;
 				}
-				return "Season Status Changed";
+				return "Zmieniono status sezonu";
 			case "SEASON_REMOVED":
 				if (a.data) {
 					const data = JSON.parse(a.data);
-					return `Season ${data.season} Status Removed`;
+					return `Usunięto status sezonu ${data.season}`;
 				}
-				return "Season Removed";
+				return "Usunięto sezon";
 			case "EPISODE_ADDED":
 				if (a.data) {
 					const data = JSON.parse(a.data);
-					return `${seasonAndEpToReadable(data.season, data.episode)} Added ${data.status ? `as ${toFullTitleCase(data.status)}` : data.rating ? `with Rating ${data.rating}` : ""}`;
+					return `Dodano ${seasonAndEpToReadable(data.season, data.episode)}${data.status ? ` jako „${toFullTitleCase(data.status)}”` : data.rating ? ` z oceną ${data.rating}` : ""}`;
 				}
-				return "Episode Added";
+				return "Dodano odcinek";
 			case "EPISODE_RATING_CHANGED":
 				if (a.data) {
 					const data = JSON.parse(a.data);
-					return `${seasonAndEpToReadable(data.season, data.episode)} Rating Changed to ${data.rating}`;
+					return `${seasonAndEpToReadable(data.season, data.episode)}: zmieniono ocenę na ${data.rating}`;
 				}
-				return "Episode Rating Changed";
+				return "Zmieniono ocenę odcinka";
 			case "EPISODE_STATUS_CHANGED":
 				if (a.data) {
 					const data = JSON.parse(a.data);
-					return `${seasonAndEpToReadable(data.season, data.episode)} Status Changed to ${toFullTitleCase(data.status)}`;
+					return `${seasonAndEpToReadable(data.season, data.episode)}: zmieniono status na „${toFullTitleCase(data.status)}”`;
 				}
-				return "Episode Status Changed";
+				return "Zmieniono status odcinka";
 			case "EPISODE_REMOVED":
 				if (a.data) {
 					const data = JSON.parse(a.data);
-					return `${seasonAndEpToReadable(data.season, data.episode)} Removed`;
+					return `Usunięto ${seasonAndEpToReadable(data.season, data.episode)}`;
 				}
-				return "Episode Removed";
+				return "Usunięto odcinek";
 			default:
 				return a.type;
 		}
 	}
 
+	// Polish display labels for watched status values (values stay unchanged).
+	const statusLabels: Record<string, string> = {
+		PLANNED: "Planuję",
+		WATCHING: "Oglądam",
+		FINISHED: "Obejrzane",
+		HOLD: "Wstrzymane",
+		DROPPED: "Porzucone",
+	};
+
 	function toFullTitleCase(text: string | undefined) {
+		if (text && statusLabels[text.toUpperCase()]) {
+			return statusLabels[text.toUpperCase()];
+		}
 		if (text) {
 			return text
 				.split(" ")
 				.map((l) => l[0].toUpperCase() + l.substring(1).toLowerCase())
 				.join(" ");
 		}
-		return "Unknown";
+		return "Nieznany";
 	}
 
 	function toDayTime(d: Date) {
-		return `${d.getDate()}${getOrdinalSuffix(d.getDate())} at ${d.toLocaleTimeString()}`;
+		return `${d.toLocaleDateString("pl-PL")} o ${d.toLocaleTimeString("pl-PL")}`;
 	}
 
 	/**
@@ -149,7 +157,11 @@
 			for (let i = 0; i < a.length; i++) {
 				const activity = a[i];
 				const date = new Date(getCreatedAtVis(activity));
-				const key = `${months[date.getMonth()]} ${date.getFullYear()}`;
+				const monthYear = date.toLocaleDateString("pl-PL", {
+					month: "long",
+					year: "numeric",
+				});
+				const key = monthYear.charAt(0).toUpperCase() + monthYear.slice(1);
 				if (grouped[key]) {
 					grouped[key].push(activity);
 				} else {
@@ -195,7 +207,7 @@
 
 <div class="activity">
 	<div class="title">
-		<h2>Activity</h2>
+		<h2>Aktywność</h2>
 		<div class="act-count">{count}</div>
 	</div>
 	{#if groupedActivities && Object.keys(groupedActivities).length > 0}
@@ -207,34 +219,41 @@
 					{@const d = new Date(getCreatedAtVis(a))}
 					<li>
 						<button class="plain" onclick={() => openEditor(a)}>
-							<span title={d.toDateString()}>{toDayTime(d)}</span>
+							<span
+								title={d.toLocaleDateString("pl-PL", {
+									weekday: "long",
+									day: "numeric",
+									month: "long",
+									year: "numeric",
+								})}
+							>{toDayTime(d)}</span>
 							<span>{getMsg(a)}</span>
 						</button>
 						{#if a.createdBy == ActivityCreatedBy.Watcharr}
 							<ActivityIcon
 								icon="sparkles"
 								tooltipText={a.reason
-									? `(Automated) ${a.reason}`
-									: "Completed by an automation."}
+									? `(Automatycznie) ${a.reason}`
+									: "Wykonane przez automatyzację."}
 							/>
 						{:else if a.createdBy == ActivityCreatedBy.GenericImport}
-							<ActivityIcon icon="calendar" tooltipText="Imported" />
+							<ActivityIcon icon="calendar" tooltipText="Zaimportowane" />
 						{:else if a.createdBy == ActivityCreatedBy.JellyfinImport}
-							<ActivityIcon icon="jellyfin" tooltipText="Jellyfin Import" />
+							<ActivityIcon icon="jellyfin" tooltipText="Import z Jellyfina" />
 						{:else if a.createdBy == ActivityCreatedBy.JellyfinWebhook}
-							<ActivityIcon icon="jellyfin" tooltipText="Jellyfin Webhook" />
+							<ActivityIcon icon="jellyfin" tooltipText="Webhook Jellyfina" />
 						{:else if a.createdBy == ActivityCreatedBy.PlexImport}
-							<ActivityIcon icon="plex" tooltipText="Plex Import" />
+							<ActivityIcon icon="plex" tooltipText="Import z Plexa" />
 						{/if}
 						{#if a.countAsPlay}
-							<ActivityIcon icon="play" tooltipText="Counts as a Play." />
+							<ActivityIcon icon="play" tooltipText="Liczy się jako obejrzenie." />
 						{/if}
 					</li>
 				{/each}
 			{/each}
 		</ul>
 	{:else}
-		<span>You Have No Activity!</span>
+		<span>Nie masz jeszcze żadnej aktywności!</span>
 	{/if}
 </div>
 

@@ -156,8 +156,8 @@
 
 <svelte:head>
 	<title
-		>Search Results{store.searchQuery
-			? ` for '${store.searchQuery}'`
+		>Wyniki wyszukiwania{store.searchQuery
+			? ` dla „${store.searchQuery}”`
 			: ""}</title
 	>
 </svelte:head>
@@ -173,10 +173,10 @@
 					<UsersList users={results} />
 				{/if}
 			{:catch err}
-				<Error pretty="Failed to load users!" error={err} />
+				<Error pretty="Nie udało się wczytać użytkowników!" error={err} />
 			{/await}
 
-			<PageTitle title="Results">
+			<PageTitle title="Wyniki">
 				<MediaTypeFilter
 					active={searchType}
 					disabled={dataLoader.state.reqLoading || showingResultsFromMyList}
@@ -192,8 +192,8 @@
 					class="from-my-list-msg plain"
 					onclick={dontPreferMyListClicked}
 				>
-					<b>Showing results from your list.</b>
-					<span>Do a full search instead?</span>
+					<b>Wyniki z Twojej listy.</b>
+					<span>Wyszukać wszędzie?</span>
 				</button>
 			{/if}
 
@@ -216,8 +216,8 @@
 					{/each}
 				{:else if !dataLoader.state.reqLoading && !dataLoader.state.reqLoadError}
 					<!-- If search is running or we have an error, no point in showing 'no results' message. -->
-					<h2 class="norm" title="Hovering over me doesn't change the facts ;(">
-						No Results!
+					<h2 class="norm" title="Najechanie na mnie nic nie zmieni ;(">
+						Brak wyników!
 					</h2>
 				{/if}
 			</PosterList>
@@ -231,7 +231,7 @@
 			{#if dataLoader.state.reqLoadError}
 				<div style="margin-bottom: 60px;">
 					<Error
-						pretty="Failed to load results!"
+						pretty="Nie udało się wczytać wyników!"
 						error={dataLoader.state.reqLoadError}
 						onRetry={() => {
 							dataLoader.state.reqLoadError = undefined;
@@ -243,7 +243,7 @@
 				</div>
 			{/if}
 		{:else}
-			<h2>No Search Query!</h2>
+			<h2>Brak zapytania!</h2>
 		{/if}
 	</div>
 </div>

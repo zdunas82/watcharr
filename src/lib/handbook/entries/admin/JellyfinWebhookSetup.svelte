@@ -3,82 +3,81 @@
 </script>
 
 <p>
-	The Jellyfin Webhook support in Watcharr allows for automatic tracking of new
-	media as soon as it is started or completed in Jellyfin.
+	Obsługa webhooka Jellyfina w Watcharrze pozwala automatycznie śledzić tytuły
+	od razu, gdy zaczniesz lub skończysz je oglądać w Jellyfinie.
 </p>
 
 <p>
-	Configuration changes must be made to both Jellyfin and Watcharr to enable
-	this feature. Each step in this guide will be prefaced with either <code>
+	Żeby włączyć tę funkcję, trzeba zmienić konfigurację zarówno w Jellyfinie, jak
+	i w Watcharrze. Każdy krok tego poradnika zaczyna się od <code>
 		(WATCHARR)</code
 	>
-	or <code>(JELLYFIN)</code> to indicate in which application you are making the change.
+	albo <code>(JELLYFIN)</code>, co wskazuje, w której aplikacji wprowadzasz zmianę.
 </p>
 
 <ol>
 	<li>
-		<p><b>(JELLYFIN)</b> Install the Official Webhook plugin in Jellyfin.</p>
+		<p><b>(JELLYFIN)</b> Zainstaluj w Jellyfinie oficjalną wtyczkę Webhook.</p>
 		<p>
-			Simply go to your server dashboard, find the plugins store and look for
-			one called <code>Webhook</code> and install it.
+			Przejdź do panelu serwera, otwórz katalog wtyczek, znajdź wtyczkę o nazwie
+			<code>Webhook</code> i zainstaluj ją.
 		</p>
 		<p>
-			If you see more than one Webhook plugin and don't know which to pick: Get
-			the one from the <code>Jellyfin Stable</code> repository by the developer
+			Jeśli widzisz więcej niż jedną wtyczkę Webhook i nie wiesz, którą wybrać:
+			weź tę z repozytorium <code>Jellyfin Stable</code> od autora
 			<code>jellyfin</code>.
 		</p>
 	</li>
 	<li>
 		<p>
-			<b>(JELLYFIN)</b> Once the Webhook plugin is installed, you should see a
-			<code>settings</code> button. Click it to enter the Webhook plugin settings.
+			<b>(JELLYFIN)</b> Po zainstalowaniu wtyczki Webhook powinien pojawić się przycisk
+			<code>settings</code> (ustawienia). Kliknij go, żeby otworzyć ustawienia wtyczki.
 		</p>
 		<p>
-			If you were prompted to restart the Jellyfin server, you should do that.
-			Then you'll see the Settings button in the Webhook plugin page.
-		</p>
-	</li>
-	<li>
-		<p>
-			<b>(WATCHARR)</b> Go to
-			<a href={resolve("/server")}>your server configuration page</a>, find the
-			Jellyfin Webhook setting and toggle it ON.
+			Jeśli Jellyfin poprosi o ponowne uruchomienie serwera, zrób to. Potem
+			przycisk ustawień pojawi się na stronie wtyczki Webhook.
 		</p>
 	</li>
 	<li>
 		<p>
-			<b>(WATCHARR)</b> You will now see a new setting popup below the one you just
-			toggled ON called Jellyfin Webhook Endpoint. Copy the address to your clipboard
-			for the next step.
+			<b>(WATCHARR)</b> Przejdź do
+			<a href={resolve("/server")}>strony konfiguracji serwera</a>, znajdź
+			ustawienie „Webhook Jellyfina” i je WŁĄCZ.
 		</p>
 	</li>
 	<li>
 		<p>
-			<b>(JELLYFIN)</b> Click <code>Add Generic Destination</code>, then scroll
-			down to the settings for the destination.
+			<b>(WATCHARR)</b> Pod właśnie włączonym ustawieniem pojawi się nowe: „Adres
+			webhooka Jellyfina”. Skopiuj ten adres do schowka, przyda się w następnym
+			kroku.
 		</p>
 	</li>
 	<li>
 		<p>
-			<b>(JELLYFIN)</b> Set the <code>Webhook Name</code> to
-			<code>Watcharr</code> (or anything you please).
+			<b>(JELLYFIN)</b> Kliknij <code>Add Generic Destination</code>, a potem przewiń
+			w dół do ustawień tego miejsca docelowego.
 		</p>
 	</li>
 	<li>
 		<p>
-			<b>(JELLYFIN)</b> Paste the address we copied from Watcharr into the
-			<code>Webhook Url</code> field.
-		</p>
-		<p>
-			Note: The full address copied from Watcharr <i>may</i> be wrong! Depending on
-			how your server is configured, you may need to replace the hostname part of
-			the address to one that your Jellyfin service can use to talk to your Watcharr
-			instance.
+			<b>(JELLYFIN)</b> W polu <code>Webhook Name</code> wpisz
+			<code>Watcharr</code> (albo dowolną inną nazwę).
 		</p>
 	</li>
 	<li>
 		<p>
-			<b>(JELLYFIN)</b> Enable the following Notification Types:
+			<b>(JELLYFIN)</b> Wklej adres skopiowany z Watcharra w pole
+			<code>Webhook Url</code>.
+		</p>
+		<p>
+			Uwaga: pełny adres skopiowany z Watcharra <i>może</i> być błędny! W zależności
+			od konfiguracji serwera może być potrzebna zamiana nazwy hosta w adresie na
+			taką, przez którą Jellyfin może połączyć się z Twoją instancją Watcharra.
+		</p>
+	</li>
+	<li>
+		<p>
+			<b>(JELLYFIN)</b> Włącz następujące typy powiadomień (Notification Types):
 		</p>
 		<ul>
 			<li>
@@ -96,36 +95,37 @@
 	</li>
 	<li>
 		<p>
-			<b>(JELLYFIN)</b> Enable the users you want webhook events to be sent for.
+			<b>(JELLYFIN)</b> Zaznacz użytkowników, dla których mają być wysyłane zdarzenia
+			webhooka.
 		</p>
 	</li>
 	<li>
 		<p>
-			<b>(JELLYFIN)</b> Enable <code>Send All Properties</code>.
+			<b>(JELLYFIN)</b> Włącz <code>Send All Properties</code>.
 		</p>
 	</li>
 	<li>
 		<p>
-			<b>(JELLYFIN)</b> Scroll to the bottom and click <code>Save</code>.
+			<b>(JELLYFIN)</b> Przewiń na sam dół i kliknij <code>Save</code>.
 		</p>
 	</li>
 	<li>
 		<p>
-			Done! All you have to do now is go watch something on Jellyfin and see if
-			it shows up in Watcharr automatically.
+			Gotowe! Teraz wystarczy obejrzeć coś w Jellyfinie i sprawdzić, czy pojawi
+			się automatycznie w Watcharrze.
 		</p>
 	</li>
 </ol>
 
-<h2>Problems?</h2>
+<h2>Problemy?</h2>
 
 <p>
-	If you have any problems, the best place to start is by checking your server
-	logs (Watcharr and Jellyfin).
+	Jeśli coś nie działa, najlepiej zacząć od sprawdzenia logów serwerów (Watcharra
+	i Jellyfina).
 </p>
 
 <p>
-	For example, if Jellyfin server logs show 404 errors whenever it tries sending
-	the webhook, it's likely you need to double check the Webhook Url in Jellyfin
-	and ensure it is correct.
+	Na przykład jeśli logi serwera Jellyfin pokazują błędy 404 przy każdej próbie
+	wysłania webhooka, prawdopodobnie trzeba jeszcze raz sprawdzić, czy pole
+	Webhook Url w Jellyfinie jest poprawne.
 </p>

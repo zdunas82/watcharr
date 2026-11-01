@@ -26,7 +26,7 @@
 			errs.push("Client Secret");
 		}
 		if (errs.length > 0) {
-			error = `Missing required params: ${errs.join(", ")}`;
+			error = `Brak wymaganych pól: ${errs.join(", ")}`;
 		} else {
 			error = "";
 		}
@@ -40,20 +40,20 @@
 				await req.post(`/game/config`, cfg);
 				notify({
 					type: "success",
-					text: "Changes saved!",
+					text: "Zapisano zmiany!",
 				});
 				onClose();
 			} catch (err) {
 				console.error("Failed to save twitch cfg!", err);
-				error = ReqerError.getMsg(err, "Failed to save");
+				error = ReqerError.getMsg(err, "Nie udało się zapisać");
 			}
 		}
 	}
 </script>
 
 <Modal
-	title="Twitch Config"
-	desc="Setup your twitch application to enable game support."
+	title="Konfiguracja Twitch"
+	desc="Skonfiguruj aplikację Twitch, żeby włączyć obsługę gier."
 	{onClose}
 >
 	{#if error}
@@ -65,10 +65,10 @@
 			href="https://watcharr.app/docs/server_config/game-support-igdb"
 			target="_blank"
 		>
-			Learn how to configure this option at Watcharr Docs.
+			Dowiedz się, jak skonfigurować tę opcję, w dokumentacji Watcharra.
 		</a>
 
-		<Setting title="Client ID" desc="Twitch application Client ID.">
+		<Setting title="Client ID" desc="Client ID aplikacji Twitch.">
 			<input
 				type="text"
 				placeholder="yrbrrakvgbce99fzjsidkfoalsk9eee"
@@ -77,7 +77,7 @@
 				disabled={formDisabled}
 			/>
 		</Setting>
-		<Setting title="Client Secret" desc="Twitch application Client Secret.">
+		<Setting title="Client Secret" desc="Client Secret aplikacji Twitch.">
 			<input
 				type="text"
 				placeholder="yrbralsodkfishfzpajdkflqoefeee"
@@ -87,7 +87,7 @@
 			/>
 		</Setting>
 		<div class="btns">
-			<button onclick={() => save()}>Save</button>
+			<button onclick={() => save()}>Zapisz</button>
 		</div>
 	</SettingsList>
 </Modal>
@@ -126,7 +126,7 @@
 		width: 100%;
 		padding: 10px;
 		background-color: rgb(221, 48, 48);
-		text-transform: capitalize;
+		text-transform: none; /* PoterX: polskie teksty maja wlasna wielkosc liter */
 		color: white;
 		margin-bottom: 15px;
 	}

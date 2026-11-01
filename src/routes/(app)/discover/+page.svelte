@@ -99,12 +99,12 @@
 </script>
 
 <svelte:head>
-	<title>Discover Content</title>
+	<title>Odkrywaj</title>
 </svelte:head>
 
 <div class="content">
 	<div class="inner">
-		<PageTitle title="Discover">
+		<PageTitle title="Odkrywaj">
 			<div class="pagetitle-mediatypefilter">
 				<MediaTypeFilter
 					active={discoverType}
@@ -149,8 +149,8 @@
 				{/each}
 			{:else if !dataLoader.state.reqLoading && !dataLoader.state.reqLoadError}
 				<!-- If request is running or we have an error, no point in showing 'no results' message. -->
-				<h2 class="norm" title="Hovering over me doesn't change the facts ;(">
-					No Results!
+				<h2 class="norm" title="Najechanie na mnie nic nie zmieni ;(">
+					Brak wyników!
 				</h2>
 			{/if}
 		</PosterList>
@@ -164,7 +164,7 @@
 		{#if dataLoader.state.reqLoadError}
 			<div style="margin-bottom: 60px;">
 				<Error
-					pretty="Failed to load results!"
+					pretty="Nie udało się wczytać wyników!"
 					error={dataLoader.state.reqLoadError}
 					onRetry={() => {
 						dataLoader.state.reqLoadError = undefined;

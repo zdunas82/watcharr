@@ -143,7 +143,7 @@
 
 		button {
 			gap: 3px;
-			text-transform: capitalize;
+			text-transform: none; /* PoterX: polskie teksty maja wlasna wielkosc liter */
 
 			:global(svg) {
 				margin-left: auto;
@@ -173,7 +173,7 @@
 					padding: 5px 10px;
 					width: 100%;
 					text-align: start;
-					text-transform: capitalize;
+					text-transform: none; /* PoterX: polskie teksty maja wlasna wielkosc liter */
 					transition: background-color 100ms ease;
 
 					&:hover:not(:disabled),

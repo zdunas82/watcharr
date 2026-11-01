@@ -81,11 +81,11 @@
 </script>
 
 <svelte:head>
-	<title>{game?.name ? `${game.name} - ` : ""}Game</title>
+	<title>{game?.name ? `${game.name} - ` : ""}Gra</title>
 </svelte:head>
 
 {#if pageError}
-	<Error pretty="Failed to load game!" error={pageError} />
+	<Error pretty="Nie udało się wczytać gry!" error={pageError} />
 {:else if !game}
 	<Spinner />
 {:else if Object.keys(game).length > 0}
@@ -137,7 +137,7 @@
 											}
 										}}
 										use:tooltip={{
-											text: `${game.watched?.pinned ? "Unpin from" : "Pin to"} top of list`,
+											text: `${game.watched?.pinned ? "Odepnij z góry listy" : "Przypnij na górze listy"}`,
 											pos: "bot",
 										}}
 									>
@@ -192,7 +192,7 @@
 		</div>
 	</div>
 {:else}
-	<Error error="Game not found" pretty="Game not found" />
+	<Error error="Nie znaleziono gry" pretty="Nie znaleziono gry" />
 {/if}
 
 <style lang="scss">

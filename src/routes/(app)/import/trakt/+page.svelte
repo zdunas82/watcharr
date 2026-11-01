@@ -24,7 +24,7 @@
 		if (!r?.jobId) {
 			notify({
 				type: "error",
-				text: "No job id was returned! Cannot watch job, if it even started.",
+				text: "Nie zwrócono identyfikatora zadania! Nie da się śledzić zadania (o ile w ogóle wystartowało).",
 			});
 			return;
 		}
@@ -34,24 +34,24 @@
 
 <div class="content">
 	<div class="inner">
-		<h2>Trakt Import</h2>
+		<h2>Import z Trakt</h2>
 		<h5 class="norm">
-			Provide the username to your <b>public</b> Trakt profile to start the import
-			job.
+			Podaj nazwę użytkownika swojego <b>publicznego</b> profilu Trakt, aby
+			rozpocząć import.
 		</h5>
 
 		<input
 			class="username"
 			type="text"
-			placeholder={store.userInfo?.username ?? "Trakt Username"}
+			placeholder={store.userInfo?.username ?? "Nazwa użytkownika Trakt"}
 			bind:value={traktUsername}
 		/>
-		<button onclick={() => (modalOpen = true)}>Start Import</button>
+		<button onclick={() => (modalOpen = true)}>Rozpocznij import</button>
 
 		<div class="settings-ctr">
 			<Setting
-				title="(Optional) API Key"
-				desc="Provide your own Trakt App Client ID if you are having trouble using our default key."
+				title="Klucz API (opcjonalnie)"
+				desc="Podaj własny Client ID aplikacji Trakt, jeśli nasz domyślny klucz sprawia problemy."
 			>
 				<input placeholder="Trakt Client ID" bind:value={traktApiKey} />
 			</Setting>
@@ -62,14 +62,14 @@
 			href="https://watcharr.app/docs/importing/trakt"
 			target="_blank"
 		>
-			Need help? See: https://watcharr.app/docs/importing/trakt
+			Potrzebujesz pomocy? Zobacz: https://watcharr.app/docs/importing/trakt
 		</a>
 	</div>
 
 	{#if modalOpen}
 		<JobWatcherModal
-			modalTitle="Trakt Import"
-			messages={{ starting: "Trakt import job is starting" }}
+			modalTitle="Import z Trakt"
+			messages={{ starting: "Uruchamianie importu z Trakt" }}
 			getJobId={startJob}
 			onClose={() => (modalOpen = false)}
 		/>

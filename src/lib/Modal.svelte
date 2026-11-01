@@ -102,7 +102,7 @@
 				width: 100%;
 				padding: 10px;
 				background-color: rgb(221, 48, 48);
-				text-transform: capitalize;
+				text-transform: none; /* PoterX: polskie teksty maja wlasna wielkosc liter */
 				color: white;
 				margin-bottom: 15px;
 			}

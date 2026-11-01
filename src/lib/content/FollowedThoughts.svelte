@@ -36,7 +36,7 @@
 	<Spinner />
 {:then fts}
 	{#if fts?.length > 0}
-		<HorizontalList title="Followed Thoughts">
+		<HorizontalList title="Przemyślenia obserwowanych">
 			{#each fts as ft (ft.followedUser.id)}
 				<button
 					class={["thoughts-card plain", ft.thoughts ? "" : "no-thoughts"].join(
@@ -59,19 +59,19 @@
 						{/if}
 					</div>
 					<div class="thought">
-						{ft.thoughts || "No thoughts yet."}
+						{ft.thoughts || "Brak przemyśleń."}
 					</div>
 				</button>
 			{/each}
 		</HorizontalList>
 	{/if}
 {:catch err}
-	<Error error={err} pretty="Failed to load followed thoughts!" />
+	<Error error={err} pretty="Nie udało się wczytać przemyśleń obserwowanych!" />
 {/await}
 
 {#if modalShownFor}
 	<Modal
-		title={`${modalShownFor.followedUser.username}'s Thoughts`}
+		title={`Przemyślenia: ${modalShownFor.followedUser.username}`}
 		onClose={() => (modalShownFor = undefined)}
 	>
 		<span>{modalShownFor.thoughts}</span>

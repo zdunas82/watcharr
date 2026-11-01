@@ -285,7 +285,7 @@
 			<input
 				bind:this={mainSearchEl}
 				type="text"
-				placeholder="Search"
+				placeholder="Szukaj"
 				bind:value={store.searchQuery}
 				onkeydown={searchBarKeyDown}
 			/>
@@ -301,7 +301,7 @@
 						detailedMenuShown = !detailedMenuShown;
 					}}
 					use:tooltip={{
-						text: "Detailed View",
+						text: "Widok szczegółowy",
 						pos: "bot",
 						condition: !detailedMenuShown,
 					}}
@@ -323,7 +323,7 @@
 						closeAllSubMenus("sort");
 						sortMenuShown = !sortMenuShown;
 					}}
-					use:tooltip={{ text: "Sort", pos: "bot", condition: !sortMenuShown }}
+					use:tooltip={{ text: "Sortuj", pos: "bot", condition: !sortMenuShown }}
 				>
 					<Icon i="sort" />
 					<!-- Show indicator if not equal to default and second item in array is not falsy -->
@@ -338,7 +338,7 @@
 						filterMenuShown = !filterMenuShown;
 					}}
 					use:tooltip={{
-						text: "Filter",
+						text: "Filtry",
 						pos: "bot",
 						condition: !filterMenuShown,
 					}}
@@ -361,7 +361,7 @@
 					closeAllSubMenus("tag");
 					tagMenuShown = !tagMenuShown;
 				}}
-				use:tooltip={{ text: "Tags", pos: "bot", condition: !tagMenuShown }}
+				use:tooltip={{ text: "Tagi", pos: "bot", condition: !tagMenuShown }}
 			>
 				<Icon i="tag" />
 			</button>
@@ -377,7 +377,7 @@
 			<button
 				class="plain other discover"
 				onclick={() => goto(resolve("/discover"))}
-				use:tooltip={{ text: "Discover", pos: "bot" }}
+				use:tooltip={{ text: "Odkrywaj", pos: "bot" }}
 			>
 				<Icon i="compass" wh={26} />
 			</button>
@@ -388,7 +388,7 @@
 					followingMenuShown = !followingMenuShown;
 				}}
 				use:tooltip={{
-					text: "Following",
+					text: "Obserwowani",
 					pos: "bot",
 					condition: !followingMenuShown,
 				}}
@@ -407,7 +407,7 @@
 	<input
 		class="small"
 		type="text"
-		placeholder="Search"
+		placeholder="Szukaj"
 		bind:value={store.searchQuery}
 		onkeydown={searchBarKeyDown}
 	/>
@@ -419,7 +419,7 @@
 	{@render children?.()}
 {:catch err}
 	<Error
-		pretty="Couldn't fetch app data!"
+		pretty="Nie udało się pobrać danych aplikacji!"
 		error={err}
 		onRetry={() => {
 			location.reload();

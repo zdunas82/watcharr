@@ -86,7 +86,7 @@ export class ReqerError extends Error {
 		// a random html error page or whatever (its better to show a pretty
 		// error whenever possible, debugging errors are always in console),
 		// if there is no `error`, we try the `err.message`.
-		let msg = "You've encountered an extremely unguarded error!";
+		let msg = "Wystąpił nieoczekiwany błąd!";
 		if (ReqerError.withBody(err) && err.hasErrorInBody()) {
 			msg = err.body.error;
 		} else if (err instanceof Error && err.message) {
@@ -173,7 +173,7 @@ export class Reqer {
 			return url;
 		} catch (err) {
 			console.error("reqer->buildUrl: Failed!", err);
-			throw new ReqerError("building request url failed");
+			throw new ReqerError("nie udało się zbudować adresu żądania");
 		}
 	}
 
@@ -220,7 +220,7 @@ export class Reqer {
 		} else if (contentType.includes("text/plain")) {
 			return await res.text();
 		}
-		throw new ReqerError("response includes an unsupported content-type", res);
+		throw new ReqerError("odpowiedź ma nieobsługiwany typ treści", res);
 	}
 
 	private getAbortSignal(signal?: AbortSignal): AbortSignal {
@@ -239,7 +239,7 @@ export class Reqer {
 				if (!token) {
 					console.error("No token, going to login.");
 					goto(resolve("/login?again=1"));
-					throw new ReqerError("No auth token found");
+					throw new ReqerError("Brak tokenu logowania");
 				}
 				headers.append("Authorization", token);
 			}
@@ -257,7 +257,7 @@ export class Reqer {
 
 			if (!res.ok) {
 				throw new ReqerError(
-					`request failed with ${res.status} ${res.statusText}`,
+					`żądanie nie powiodło się (${res.status} ${res.statusText})`,
 					resBody,
 					res,
 				);
@@ -273,7 +273,7 @@ export class Reqer {
 			if (err instanceof ReqerError) {
 				if (this.watcharrAuthed && err.response?.status === 401) {
 					console.error("Recieved 401 response, going to login.");
-					notify({ text: "Request Authorization Failed!", type: "error" });
+					notify({ text: "Autoryzacja żądania nie powiodła się!", type: "error" });
 					clearWatcharrData();
 					goto(resolve("/login?again=1"));
 				}
@@ -281,7 +281,7 @@ export class Reqer {
 			} else if (err instanceof Error) {
 				throw new ReqerError(err.message);
 			}
-			throw new ReqerError("request failed");
+			throw new ReqerError("żądanie nie powiodło się");
 		}
 	}
 

@@ -25,7 +25,7 @@
 		</div>
 		<div>
 			{#if onRetry}
-				<button onclick={onRetry}>Try Again</button>
+				<button onclick={onRetry}>Spróbuj ponownie</button>
 			{/if}
 		</div>
 	</div>

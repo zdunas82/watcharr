@@ -8,17 +8,17 @@
 	<div>
 		<h1>{page.status}</h1>
 		{#if page.status === 404}
-			<h4 class="norm">This page could not be found</h4>
+			<h4 class="norm">Nie znaleziono tej strony</h4>
 		{:else if page.status === 500}
-			<h4 class="norm">The server broke, try refreshing</h4>
+			<h4 class="norm">Wystąpił błąd serwera, spróbuj odświeżyć</h4>
 		{:else if page?.error?.message}
 			<h4 class="norm">{page.error.message}</h4>
 		{:else}
-			<h4 class="norm">We couldn't load this page</h4>
+			<h4 class="norm">Nie udało się wczytać tej strony</h4>
 		{/if}
 		<div class="btns">
-			<button onclick={() => goto(resolve("/"))}>Home</button>
-			<button onclick={() => location.reload()}>Refresh</button>
+			<button onclick={() => goto(resolve("/"))}>Strona główna</button>
+			<button onclick={() => location.reload()}>Odśwież</button>
 		</div>
 	</div>
 </div>

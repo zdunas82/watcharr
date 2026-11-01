@@ -41,7 +41,7 @@
 			console.error("getHeaderCfg failed!", err);
 			notify({
 				type: "error",
-				text: "Failed to get configuration from server.",
+				text: "Nie udało się pobrać konfiguracji z serwera.",
 				time: 6000,
 			});
 		}
@@ -50,7 +50,7 @@
 	async function save() {
 		const nid = notify({
 			type: "loading",
-			text: "Saving..",
+			text: "Zapisywanie…",
 		});
 		try {
 			await req.post("/server/config", headerCfg, {
@@ -59,7 +59,7 @@
 			notify({
 				id: nid,
 				type: "success",
-				text: "Changes saved!",
+				text: "Zapisano zmiany!",
 			});
 			onClose();
 		} catch (err) {
@@ -67,7 +67,7 @@
 			notify({
 				id: nid,
 				type: "error",
-				text: "Failed to save config. Please try again!",
+				text: "Nie udało się zapisać konfiguracji. Spróbuj ponownie!",
 				time: 6000,
 			});
 		}
@@ -79,8 +79,8 @@
 </script>
 
 <Modal
-	title="Trusted Header Authentication"
-	desc="Configure trusted header single sign-on."
+	title="Uwierzytelnianie zaufanym nagłówkiem"
+	desc="Skonfiguruj logowanie jednokrotne (SSO) przez zaufany nagłówek."
 	{onClose}
 >
 	{#if error}
@@ -91,13 +91,13 @@
 	{:else}
 		<SettingsList>
 			<Notice
-				title="This is dangerous!"
-				desc="If setup incorrectly, the authorization module for your server could be easily comprimised. If configured, please ensure your Watcharr instance is only available through your proxy and not available directly."
+				title="To jest niebezpieczne!"
+				desc="Przy błędnej konfiguracji moduł autoryzacji serwera można łatwo przejąć. Jeśli to włączasz, upewnij się, że Twoja instancja Watcharra jest dostępna wyłącznie przez proxy, a nie bezpośrednio."
 				type="warn"
 			/>
 			<Setting
-				title="Header Name"
-				desc="Name of the header used for authentication."
+				title="Nazwa nagłówka"
+				desc="Nazwa nagłówka używanego do uwierzytelniania."
 			>
 				<input
 					type="text"
@@ -108,8 +108,8 @@
 				/>
 			</Setting>
 			<Setting
-				title="Logout URL"
-				desc="Where can we redirect so that the user can logout?"
+				title="Adres wylogowania"
+				desc="Dokąd przekierować użytkownika, żeby mógł się wylogować?"
 			>
 				<input
 					type="text"
@@ -120,8 +120,8 @@
 				/>
 			</Setting>
 			<Setting
-				title="Auto Login"
-				desc="Should we auto login users as soon as they reach our login page?"
+				title="Automatyczne logowanie"
+				desc="Czy logować użytkowników automatycznie od razu po wejściu na stronę logowania?"
 				row
 			>
 				<Checkbox
@@ -131,8 +131,8 @@
 				/>
 			</Setting>
 			<Setting
-				title="Enabled"
-				desc="Enable Trusted Header Single Sign-On? Toggle on to activate above configuration."
+				title="Włączone"
+				desc="Włączyć logowanie jednokrotne przez zaufany nagłówek? Włącz, żeby aktywować powyższą konfigurację."
 				row
 			>
 				<Checkbox
@@ -142,7 +142,7 @@
 				/>
 			</Setting>
 			<div class="btns">
-				<button onclick={() => save()}>Save</button>
+				<button onclick={() => save()}>Zapisz</button>
 			</div>
 		</SettingsList>
 	{/if}
@@ -173,7 +173,7 @@
 		width: 100%;
 		padding: 10px;
 		background-color: rgb(221, 48, 48);
-		text-transform: capitalize;
+		text-transform: none; /* PoterX: polskie teksty maja wlasna wielkosc liter */
 		color: white;
 		margin-bottom: 15px;
 	}

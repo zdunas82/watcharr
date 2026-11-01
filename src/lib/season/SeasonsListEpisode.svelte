@@ -11,7 +11,7 @@
 	import { store } from "@/store.svelte";
 	import { removeWatchedEpisode, updateWatchedEpisode } from "./api";
 	import { onMount } from "svelte";
-	import { toRelativeDate } from "../util/helpers";
+	import { plPlural, toRelativeDate } from "../util/helpers";
 
 	interface Props {
 		ep: TMDBSeasonDetailsEpisode;
@@ -70,7 +70,7 @@
 		if (type === "DELETE") {
 			if (!we || !we.id) {
 				notify({
-					text: "Failed to find watched episode id. Please try refreshing.",
+					text: "Nie znaleziono identyfikatora odcinka. Spróbuj odświeżyć stronę.",
 					type: "error",
 				});
 				console.error(
@@ -127,7 +127,7 @@
 				{#if ep.runtime}
 					<span
 						class="episode-runtime"
-						title="This episode has a runtime of {ep.runtime} minutes."
+						title="Czas trwania odcinka: {ep.runtime} min."
 						>{ep.runtime} min</span
 					>
 				{/if}
@@ -144,7 +144,7 @@
 			{:else}
 				<span
 					class="rating"
-					title={`TMDB Rating: ${ep.vote_average} out of 10 (based on ${ep.vote_count} votes)`}
+					title={`Ocena TMDB: ${ep.vote_average} na 10 (na podstawie ${ep.vote_count} ${plPlural(ep.vote_count, "głosu", "głosów", "głosów")})`}
 				>
 					<span>*</span>
 					{Math.round(ep.vote_average * 10) / 10}
@@ -154,7 +154,7 @@
 		{#if isUnaired && airDate}
 			<!-- Air date for unaired episodes. -->
 			<span class="episode-air-date">
-				Airs on {toRelativeDate(airDate)}
+				Premiera: {toRelativeDate(airDate)}
 			</span>
 		{/if}
 		<span class="overview">{ep.overview}</span>
@@ -164,7 +164,7 @@
 			<div class="rating" style="width: 45px">
 				<PosterRating
 					rating={we?.rating}
-					btnTooltip={`Episode ${ep.episode_number} Rating`}
+					btnTooltip={`Ocena odcinka ${ep.episode_number}`}
 					handleStarClick={(r) => handleStarClick(r)}
 					minimal={true}
 					direction="bot"
@@ -174,7 +174,7 @@
 			<div class="status">
 				<PosterStatus
 					status={we?.status}
-					btnTooltip={`Episode ${ep.episode_number} Status`}
+					btnTooltip={`Status odcinka ${ep.episode_number}`}
 					handleStatusClick={(t) => handleStatusClick(t)}
 					minimal={true}
 					direction="bot"
@@ -185,7 +185,7 @@
 	{#if isHidden}
 		<button class="plain spoiler-text" onclick={() => (isHidden = false)}>
 			<Icon i="eye-closed" wh={34} />
-			<span>Click To Reveal</span>
+			<span>Kliknij, aby odsłonić</span>
 		</button>
 	{/if}
 </li>

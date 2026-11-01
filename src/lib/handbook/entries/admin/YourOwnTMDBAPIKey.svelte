@@ -1,9 +1,8 @@
 <p>
-	This is <b>not</b> necessary, because Watcharr comes with its own api key baked
-	in.
+	To <b>nie</b> jest konieczne, bo Watcharr ma wbudowany własny klucz API.
 </p>
 
 <p>
-	However, if you ever have issues with our key for any reason, or simply want
-	to provide your own, simply place it in your server settings.
+	Jeśli jednak z jakiegoś powodu nasz klucz sprawia problemy albo po prostu
+	chcesz użyć własnego, wpisz go w ustawieniach serwera.
 </p>

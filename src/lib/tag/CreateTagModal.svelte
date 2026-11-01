@@ -41,17 +41,17 @@
 	let tagName = $state("");
 	let error = $state("");
 	let submitDisabled = $state(false);
-	let modalTitle = $state("Create A Tag");
-	let modalDesc = $state("Create a new tag");
-	let submitBtnText = $state("Create Tag");
+	let modalTitle = $state("Utwórz tag");
+	let modalDesc = $state("Utwórz nowy tag");
+	let submitBtnText = $state("Utwórz tag");
 
 	async function addTag() {
 		console.debug("addTag:", tagName, textColor, bgColor);
 		if (!tagName) {
-			error = "Tag must have a name!";
+			error = "Tag musi mieć nazwę!";
 			return;
 		}
-		const nid = notify({ text: "Creating Tag", type: "loading" });
+		const nid = notify({ text: "Tworzenie tagu", type: "loading" });
 		try {
 			const resp = await req.post<Tag>("/tag", {
 				name: tagName,
@@ -60,22 +60,22 @@
 			} as TagAddRequest);
 			console.log("addTag: Tag was created", resp);
 			store.tags.push(resp);
-			notify({ id: nid, text: "Tag Created!", type: "success" });
+			notify({ id: nid, text: "Utworzono tag!", type: "success" });
 			onClose();
 		} catch (err) {
 			console.error("addTag: Failed!", err);
-			notify({ id: nid, text: "Failed!", type: "error", time: 1 });
-			error = "Failed!";
+			notify({ id: nid, text: "Nie udało się!", type: "error", time: 1 });
+			error = "Nie udało się!";
 		}
 	}
 
 	async function updateTag() {
 		console.debug("updateTag:", existingTag, tagName, textColor, bgColor);
 		if (!tagName) {
-			error = "Tag must have a name!";
+			error = "Tag musi mieć nazwę!";
 			return;
 		}
-		const nid = notify({ text: "Modifying Tag", type: "loading" });
+		const nid = notify({ text: "Zmienianie tagu", type: "loading" });
 		try {
 			const resp = await req.put<Tag>(`/tag/${existingTag!.id}`, {
 				name: tagName,
@@ -87,12 +87,12 @@
 			existingTag!.color = textColor;
 			existingTag!.bgColor = bgColor;
 			// Doesn't update `updatedAt`... may need to in the future if we need to sort by it, etc
-			notify({ id: nid, text: "Tag Modified!", type: "success" });
+			notify({ id: nid, text: "Zmieniono tag!", type: "success" });
 			onClose();
 		} catch (err) {
 			console.error("updateTag: Failed!", err);
-			notify({ id: nid, text: "Failed!", type: "error", time: 1 });
-			error = "Failed!";
+			notify({ id: nid, text: "Nie udało się!", type: "error", time: 1 });
+			error = "Nie udało się!";
 		}
 	}
 
@@ -113,9 +113,9 @@
 	onMount(() => {
 		if (existingTag) {
 			console.log("CreateTagModal: Entering edit mode for tag:", existingTag);
-			modalTitle = "Edit Tag";
-			modalDesc = "Edit an existing tag";
-			submitBtnText = "Edit Tag";
+			modalTitle = "Edytuj tag";
+			modalDesc = "Edytuj istniejący tag";
+			submitBtnText = "Zapisz tag";
 			tagName = existingTag.name;
 			textColor = existingTag.color;
 			bgColor = existingTag.bgColor;
@@ -126,20 +126,20 @@
 <div class="wrap">
 	<Modal title={modalTitle} desc={modalDesc} maxWidth="500px" {onClose} {error}>
 		<SettingsList>
-			<Setting title="Name" desc="What should we call this tag?">
+			<Setting title="Nazwa" desc="Jak nazwać ten tag?">
 				<input
 					type="text"
 					name="name"
-					placeholder="Name"
+					placeholder="Nazwa"
 					bind:value={tagName}
 				/>
 			</Setting>
-			<Setting title="Text Color" desc="Color for your tags text." row>
+			<Setting title="Kolor tekstu" desc="Kolor tekstu tagu." row>
 				<ColorSelector bind:value={textColor} style="max-width: 150px;" />
 			</Setting>
 			<Setting
-				title="Background Color"
-				desc="Color for your tags background."
+				title="Kolor tła"
+				desc="Kolor tła tagu."
 				row
 			>
 				<ColorSelector bind:value={bgColor} style="max-width: 150px;" />

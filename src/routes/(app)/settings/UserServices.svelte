@@ -39,7 +39,7 @@
 			return resp;
 		} catch (err) {
 			console.error("updating autoSync failed!", err);
-			notify({ type: "error", text: "Request failed!" });
+			notify({ type: "error", text: "Żądanie nie powiodło się!" });
 			return {};
 		}
 	}
@@ -50,7 +50,7 @@
 </script>
 
 {#if error}
-	<Error {error} pretty="Failed getting services!" />
+	<Error {error} pretty="Nie udało się pobrać usług!" />
 {:else if !data}
 	<Spinner />
 {:else if data.length > 0}
@@ -63,7 +63,7 @@
 				</span>
 			</div>
 
-			<Setting title="Auto Sync" desc="Allow automatic sync?" row>
+			<Setting title="Automatyczna synchronizacja" desc="Zezwolić na automatyczną synchronizację?" row>
 				<Checkbox
 					name="autoSync"
 					disabled={autoSyncDisabled}
@@ -81,7 +81,7 @@
 		</div>
 	{/each}
 {:else}
-	None
+	Brak
 {/if}
 
 <style lang="scss">

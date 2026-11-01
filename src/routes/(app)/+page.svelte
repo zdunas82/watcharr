@@ -70,7 +70,7 @@
 </script>
 
 <svelte:head>
-	<title>Watched List</title>
+	<title>Twoja lista</title>
 </svelte:head>
 
 <!-- <span
@@ -102,16 +102,16 @@
 	{:else if !dataLoader.state.reqLoading && !dataLoader.state.reqLoadError}
 		<div class="empty-list">
 			<Icon i={store.hasActiveFilters ? "filter-circle" : "reel"} wh={80} />
-			<h2 class="norm">Your list looks empty!</h2>
+			<h2 class="norm">Twoja lista jest pusta!</h2>
 			<h4 class="norm">
-				Try {`${store.hasActiveFilters ? "removing your active filters or" : ""}`}
-				searching for something you would like to add.
+				Spróbuj {`${store.hasActiveFilters ? "usunąć aktywne filtry lub" : ""}`}
+				wyszukać coś, co chcesz dodać.
 			</h4>
 			{#if !store.hasActiveFilters}
-				<button onclick={() => goto(resolve("/import"))}>Import</button>
+				<button onclick={() => goto(resolve("/import"))}>Importuj</button>
 			{/if}
 			{#if store.hasActiveFilters}
-				<button onclick={() => clearActiveFilters()}>Clear Filters</button>
+				<button onclick={() => clearActiveFilters()}>Wyczyść filtry</button>
 			{/if}
 		</div>
 	{/if}
@@ -126,7 +126,7 @@
 {#if dataLoader.state.reqLoadError}
 	<div style="margin-bottom: 60px;">
 		<Error
-			pretty="Failed to load results!"
+			pretty="Nie udało się wczytać wyników!"
 			error={dataLoader.state.reqLoadError}
 			onRetry={() => {
 				dataLoader.state.reqLoadError = undefined;

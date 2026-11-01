@@ -16,21 +16,21 @@
 
 <div class="thumbs-ctr">
 	<button
-		use:tooltip={{ text: "Disliked", pos: "top" }}
+		use:tooltip={{ text: "Nie podobało się", pos: "top" }}
 		onclick={() => onChange(1)}
 		class={r && r > 0 && r < 5 ? "active" : ""}
 	>
 		<Icon i="thumb-down" />
 	</button>
 	<button
-		use:tooltip={{ text: "Mediocre", pos: "top" }}
+		use:tooltip={{ text: "Przeciętne", pos: "top" }}
 		onclick={() => onChange(5)}
 		class={r && r > 4 && r < 8 ? "active" : ""}
 	>
 		<span>-</span>
 	</button>
 	<button
-		use:tooltip={{ text: "Liked", pos: "top" }}
+		use:tooltip={{ text: "Podobało się", pos: "top" }}
 		onclick={() => onChange(9)}
 		class={r && r > 7 ? "active" : ""}
 	>

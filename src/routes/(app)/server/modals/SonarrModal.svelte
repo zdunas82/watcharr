@@ -38,7 +38,7 @@
 			qualityProfiles = [];
 			languageProfiles = [];
 			rootFolders = [];
-			error = "host and key must be provided to test the connection";
+			error = "aby przetestować połączenie, podaj host i klucz";
 		}
 	}
 
@@ -62,7 +62,7 @@
 			error = "";
 		} catch (err) {
 			console.error("getSettingsData failed!", err);
-			error = `Request Failed, check your Host and Key`;
+			error = `Żądanie nie powiodło się, sprawdź host i klucz`;
 			formDisabled = false;
 		}
 	}
@@ -70,25 +70,25 @@
 	function checkForm() {
 		let errs: string[] = [];
 		if (!servarr.name) {
-			errs.push("name");
+			errs.push("nazwa");
 		}
 		if (!servarr.host) {
 			errs.push("host");
 		}
 		if (!servarr.key) {
-			errs.push("key");
+			errs.push("klucz");
 		}
 		if (!servarr.qualityProfile) {
-			errs.push("qualityProfile");
+			errs.push("profil jakości");
 		}
 		if (!servarr.rootFolder) {
-			errs.push("rootFolder");
+			errs.push("folder główny");
 		}
 		if (!servarr.languageProfile) {
-			errs.push("languageProfile");
+			errs.push("profil języka");
 		}
 		if (errs.length > 0) {
-			error = `Missing required params: ${errs.join(", ")}`;
+			error = `Brak wymaganych pól: ${errs.join(", ")}`;
 		} else {
 			error = "";
 		}
@@ -103,14 +103,14 @@
 				await req.post(`/arr/son/${isEditing ? "edit" : "add"}`, servarr);
 				notify({
 					type: "success",
-					text: isEditing ? "Changes saved!" : "Server added successfully!",
+					text: isEditing ? "Zapisano zmiany!" : "Dodano serwer!",
 				});
 				onClose();
 			} catch (err) {
 				console.error("Failed to save server!", err);
 				error = ReqerError.getMsg(
 					err,
-					`Failed to ${isEditing ? "edit" : "add"}`,
+					`Nie udało się ${isEditing ? "zapisać zmian" : "dodać serwera"}`,
 				);
 			}
 		}
@@ -121,12 +121,12 @@
 			await req.post(`/arr/son/rm/${servarr.name}`);
 			notify({
 				type: "success",
-				text: "Removed server",
+				text: "Usunięto serwer",
 			});
 			onClose();
 		} catch (err) {
 			console.error("Failed to remove server!", err);
-			error = ReqerError.getMsg(err, "Failed to remove");
+			error = ReqerError.getMsg(err, "Nie udało się usunąć");
 		}
 	}
 	run(() => {
@@ -137,8 +137,8 @@
 </script>
 
 <Modal
-	title={isEditing ? `Edit ${servarr.name}` : "Add Sonarr Server"}
-	desc="Setup a connection to your Sonarr server"
+	title={isEditing ? `Edytuj ${servarr.name}` : "Dodaj serwer Sonarr"}
+	desc="Skonfiguruj połączenie z serwerem Sonarr"
 	{onClose}
 >
 	{#if error}
@@ -146,7 +146,7 @@
 	{/if}
 	<SettingsList>
 		{#if !isEditing}
-			<Setting title="Name" desc="Give your server a memorable name.">
+			<Setting title="Nazwa" desc="Nadaj serwerowi łatwą do zapamiętania nazwę.">
 				<input
 					type="text"
 					placeholder="https://sonarr.example.com"
@@ -156,8 +156,8 @@
 			</Setting>
 		{/if}
 		<Setting
-			title="Sonarr Host"
-			desc="Point to your Sonarr server to enable tv show requesting."
+			title="Host Sonarr"
+			desc="Wskaż swój serwer Sonarr, żeby włączyć prośby o seriale."
 		>
 			<input
 				type="text"
@@ -166,7 +166,7 @@
 				disabled={formDisabled}
 			/>
 		</Setting>
-		<Setting title="Sonarr Key" desc="API key for your Sonarr instance.">
+		<Setting title="Klucz Sonarr" desc="Klucz API Twojej instancji Sonarr.">
 			<input
 				type="text"
 				placeholder="dGhhbmtzIGZvciB1c2luZyB3YXRjaGFyciA6KQ=="
@@ -175,44 +175,44 @@
 			/>
 		</Setting>
 		<Setting
-			title="Quality Profile"
-			desc="Default quality profile when adding shows."
+			title="Profil jakości"
+			desc="Domyślny profil jakości przy dodawaniu seriali."
 		>
 			<DropDown
 				placeholder={qualityProfiles?.length == 0
-					? "Add a Host and Key, then press test to view"
-					: "Select a quality profile"}
+					? "Podaj host i klucz, potem kliknij Testuj"
+					: "Wybierz profil jakości"}
 				options={qualityProfiles}
 				bind:active={servarr.qualityProfile}
 				disabled={formDisabled}
 			/>
 		</Setting>
-		<Setting title="Root Folder" desc="Default root folder when adding shows.">
+		<Setting title="Folder główny" desc="Domyślny folder główny przy dodawaniu seriali.">
 			<DropDown
 				placeholder={rootFolders?.length == 0
-					? "Add a Host and Key, then press test to view"
-					: "Select a root folder"}
+					? "Podaj host i klucz, potem kliknij Testuj"
+					: "Wybierz folder główny"}
 				options={rootFolders}
 				bind:active={servarr.rootFolder}
 				disabled={formDisabled}
 			/>
 		</Setting>
 		<Setting
-			title="Language Profile"
-			desc="Default language profile when adding shows."
+			title="Profil języka"
+			desc="Domyślny profil języka przy dodawaniu seriali."
 		>
 			<DropDown
 				placeholder={languageProfiles?.length == 0
-					? "Add a Host and Key, then press test to view"
-					: "Select a language profile"}
+					? "Podaj host i klucz, potem kliknij Testuj"
+					: "Wybierz profil języka"}
 				options={languageProfiles}
 				bind:active={servarr.languageProfile}
 				disabled={formDisabled}
 			/>
 		</Setting>
 		<Setting
-			title="Automatic Search"
-			desc="Start missing episode search automatically?"
+			title="Automatyczne wyszukiwanie"
+			desc="Automatycznie szukać brakujących odcinków?"
 			row
 		>
 			<Checkbox
@@ -223,12 +223,12 @@
 		</Setting>
 		<div class="btns">
 			{#if isEditing}
-				<button class="danger" onclick={() => remove()}>Delete</button>
+				<button class="danger" onclick={() => remove()}>Usuń</button>
 			{/if}
 			<button id="test" class="secondary" onclick={() => testIfHostAndKeySet()}
-				>Test</button
+				>Testuj</button
 			>
-			<button onclick={() => save()}>{isEditing ? "Save" : "Add Server"}</button
+			<button onclick={() => save()}>{isEditing ? "Zapisz" : "Dodaj serwer"}</button
 			>
 		</div>
 	</SettingsList>
@@ -259,7 +259,7 @@
 		width: 100%;
 		padding: 10px;
 		background-color: rgb(221, 48, 48);
-		text-transform: capitalize;
+		text-transform: none; /* PoterX: polskie teksty maja wlasna wielkosc liter */
 		color: white;
 		margin-bottom: 15px;
 	}

@@ -15,12 +15,30 @@
 	import PageBackdrop from "@/lib/generic/PageBackdrop.svelte";
 	import PosterImage from "@/lib/content/PosterImage.svelte";
 	import ExpandableText from "@/lib/content/ExpandableText.svelte";
+	import { plPlural } from "@/lib/util/helpers";
+
+	// Polish labels for TMDB department names (display only).
+	const departmentLabels: Record<string, string> = {
+		Acting: "Aktorstwo",
+		Directing: "Reżyseria",
+		Writing: "Scenariusz",
+		Production: "Produkcja",
+		Sound: "Dźwięk",
+		Camera: "Zdjęcia",
+		Editing: "Montaż",
+		Art: "Scenografia",
+		"Costume & Make-Up": "Kostiumy i charakteryzacja",
+		Crew: "Ekipa",
+		"Visual Effects": "Efekty wizualne",
+		Lighting: "Oświetlenie",
+		Creator: "Twórca",
+	};
 
 	let { data } = $props();
 
 	let person: PersonDetailsResponse | undefined = $state();
 	let pageError: unknown | undefined = $state();
-	let sortOption = $state("Vote count");
+	let sortOption = $state("Liczba głosów");
 	let credits: PersonCreditsResponse | undefined = $state();
 	let onMyListFilter = $state(false);
 
@@ -96,15 +114,15 @@
 	function sortCredits(sortOption: string) {
 		if (!credits || !credits.credits) return;
 		switch (sortOption) {
-			case "Vote count":
+			case "Liczba głosów":
 				credits.credits.sort(
 					(a, b) => (b.ratingCount ?? 0) - (a.ratingCount ?? 0),
 				);
 				break;
-			case "Newest":
+			case "Najnowsze":
 				credits.credits.sort((a, b) => newestOldestSort(a, b, 0));
 				break;
-			case "Oldest":
+			case "Najstarsze":
 				credits.credits.sort((a, b) => newestOldestSort(a, b, 1));
 				break;
 		}
@@ -113,12 +131,12 @@
 </script>
 
 <svelte:head>
-	<title>{person?.name ? `${person.name} - ` : ""}Person</title>
+	<title>{person?.name ? `${person.name} - ` : ""}Osoba</title>
 </svelte:head>
 
 <div>
 	{#if pageError}
-		<Error pretty="Failed to load person!" error={pageError} />
+		<Error pretty="Nie udało się wczytać osoby!" error={pageError} />
 	{:else if !person}
 		<Spinner />
 	{:else if Object.keys(person).length > 0}
@@ -146,45 +164,50 @@
 								<span></span>
 							</span>
 
-							<ExpandableText title="Biography" text={person.biography} />
+							<ExpandableText title="Biografia" text={person.biography} />
 
 							<div class="detail-info">
 								{#if person.knownForDepartment}
 									<div>
-										<span>Department</span>
-										<span>{person.knownForDepartment}</span>
+										<span>Dział</span>
+										<span
+											>{departmentLabels[person.knownForDepartment] ??
+												person.knownForDepartment}</span
+										>
 									</div>
 								{/if}
 								{#if person.placeOfBirth}
 									<div>
-										<span>Born In</span>
+										<span>Miejsce urodzenia</span>
 										<span>{person.placeOfBirth}</span>
 									</div>
 								{/if}
 								{#if person.birthday}
 									<div>
-										<span>Born On</span>
+										<span>Data urodzenia</span>
 										<span
 											>{new Date(
 												Date.parse(person.birthday),
-											).toLocaleDateString()}</span
+											).toLocaleDateString("pl-PL")}</span
 										>
 									</div>
 								{/if}
 								{#if person.deathday}
 									<div>
-										<span>Died On</span>
+										<span>Data śmierci</span>
 										<span>
 											{new Date(
 												Date.parse(person.deathday),
-											).toLocaleDateString()}
+											).toLocaleDateString("pl-PL")}
 										</span>
 									</div>
 								{/if}
 								{#if person.age}
 									<div>
-										<span>Age</span>
-										<span>{person.age} Years</span>
+										<span>Wiek</span>
+										<span
+											>{person.age} {plPlural(person.age, "rok", "lata", "lat")}</span
+										>
 									</div>
 								{/if}
 							</div>
@@ -196,13 +219,13 @@
 				{#if credits?.credits && credits?.credits?.length > 0}
 					<div class="filters">
 						<div class="listFilter">
-							<span>On my list</span>
-							<Checkbox name="On my list" bind:value={onMyListFilter} />
+							<span>Na mojej liście</span>
+							<Checkbox name="Na mojej liście" bind:value={onMyListFilter} />
 						</div>
 						<DropDown
 							bind:active={sortOption}
-							placeholder="Vote count"
-							options={["Vote count", "Newest", "Oldest"]}
+							placeholder="Liczba głosów"
+							options={["Liczba głosów", "Najnowsze", "Najstarsze"]}
 							isDropDownItem={false}
 							showActiveElementsInOptions={true}
 						/>
@@ -222,18 +245,18 @@
 				{:else}
 					<div class="no-credits-message">
 						<Icon i="star" wh={80} />
-						<h2 class="norm">We found no credits!</h2>
-						<h4 class="norm">It seems that this person has no credits.</h4>
+						<h2 class="norm">Nie znaleźliśmy żadnych ról!</h2>
+						<h4 class="norm">Wygląda na to, że ta osoba nie ma żadnych ról ani produkcji.</h4>
 					</div>
 				{/if}
 			{:else}
 				<Spinner />
 			{/if}
 		{:else}
-			person not found
+			Nie znaleziono osoby
 		{/if}
 	{:else}
-		<Error error="Person not found" pretty="Person not found" />
+		<Error error="Nie znaleziono osoby" pretty="Nie znaleziono osoby" />
 	{/if}
 </div>
 

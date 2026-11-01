@@ -14,6 +14,15 @@
 	let movieBeingApproved: Media | undefined = $state();
 	let beingApprovedOriginalRequest: ArrRequestResponse | undefined = $state();
 
+	// Display labels for request statuses (values themselves stay unchanged).
+	const requestStatusLabels: Record<string, string> = {
+		PENDING: "Oczekuje",
+		APPROVED: "Zatwierdzona",
+		AUTO_APPROVED: "Zatwierdzona automatycznie",
+		DENIED: "Odrzucona",
+		FOUND: "Dostępna",
+	};
+
 	async function getRequests() {
 		try {
 			allRequests = await req.get<ArrRequestResponse[]>(`/arr/request/`);
@@ -36,7 +45,7 @@
 			getRequests();
 		} catch (err) {
 			console.error("Failed to deny request!", err);
-			notify({ type: "error", text: "Failed when denying request!" });
+			notify({ type: "error", text: "Nie udało się odrzucić prośby!" });
 		}
 	}
 
@@ -53,7 +62,7 @@
 		} else {
 			notify({
 				type: "error",
-				text: "Unknown content type, can't continue approval!",
+				text: "Nieznany typ tytułu, nie można kontynuować zatwierdzania!",
 			});
 			return;
 		}
@@ -63,8 +72,8 @@
 
 <div class="content">
 	<div class="inner">
-		<h2>Media Requests</h2>
-		<h5 class="norm">Manage and view all of your media requests.</h5>
+		<h2>Prośby o dodanie</h2>
+		<h5 class="norm">Przeglądaj wszystkie prośby o dodanie tytułów i zarządzaj nimi.</h5>
 
 		{#await getRequests()}
 			<Spinner />
@@ -107,20 +116,22 @@
 									<span
 										style="font-size: 12px; margin-top: auto; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;"
 									>
-										By {r.username} &#160;&#8226;&#160; {toRelativeDate(
+										Od: {r.username} &#160;&#8226;&#160; {toRelativeDate(
 											new Date(r.createdAt),
 										)}
 									</span>
 								{/if}
 								{#if r.status === "PENDING"}
 									<button class="decline" onclick={() => deny(r)}
-										>Decline</button
+										>Odrzuć</button
 									>
 									<button class="approve" onclick={() => approve(r)}
-										>Approve</button
+										>Zatwierdź</button
 									>
 								{:else}
-									<button disabled>{r.status}</button>
+									<button disabled
+										>{requestStatusLabels[r.status] ?? r.status}</button
+									>
 								{/if}
 							</div>
 						</div>
@@ -128,7 +139,7 @@
 				{/each}
 			</div>
 		{:catch err}
-			<Error error={err} pretty="Failed to fetch media requests!" />
+			<Error error={err} pretty="Nie udało się pobrać próśb o dodanie!" />
 		{/await}
 
 		{#if showBeingApproved}

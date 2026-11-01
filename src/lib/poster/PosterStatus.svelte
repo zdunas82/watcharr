@@ -73,7 +73,7 @@
 			<button
 				class="plain not-active"
 				onclick={() => handleStatusClick("DELETE")}
-				use:tooltip={{ text: "Delete" }}
+				use:tooltip={{ text: "Usuń" }}
 			>
 				<Icon i="trash" />
 			</button>

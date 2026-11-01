@@ -48,7 +48,7 @@
 
 <Menu conf={Object.assign(defaultMenuConfig, menuConfig)}>
 	<div class="title">
-		<h4 class="norm sm-caps">{titleText ? titleText : "my tags"}</h4>
+		<h4 class="norm sm-caps">{titleText ? titleText : "moje tagi"}</h4>
 		{#if showManageBtn}
 			<button
 				class={["plain", inManageMode ? "manage-on" : ""].join(" ")}
@@ -64,7 +64,7 @@
 	{#if allTags && allTags.length > 0}
 		{#if inManageMode}
 			<strong style="font-size: 12px; margin-bottom: 10px;"
-				>Click a tag to delete it.</strong
+				>Kliknij tag, aby go usunąć.</strong
 			>
 		{/if}
 		<div class="list">
@@ -87,7 +87,7 @@
 			{/each}
 		</div>
 	{:else}
-		<span style="margin-top: 0;">You have no tags yet!</span>
+		<span style="margin-top: 0;">Nie masz jeszcze żadnych tagów!</span>
 	{/if}
 </Menu>
 

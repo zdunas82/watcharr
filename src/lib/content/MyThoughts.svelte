@@ -9,12 +9,12 @@
 		onChange: (newThoughts: string) => Promise<boolean>;
 	}
 
-	let { contentTitle = "this", thoughts, onChange }: Props = $props();
+	let { contentTitle = "tym tytule", thoughts, onChange }: Props = $props();
 
 	let modalOpen = $state(false);
 	let textarea: HTMLTextAreaElement | undefined = $state();
 	let thoughtsToDisplay = $derived(
-		thoughts ? thoughts : `Set thoughts on ${contentTitle}`,
+		thoughts ? thoughts : `Dodaj swoje przemyślenia o ${contentTitle}`,
 	);
 
 	function resizeTextarea() {
@@ -45,12 +45,12 @@
 
 {#if modalOpen}
 	<Modal
-		title="Your Thoughts"
-		desc="View or modify your thoughts on {contentTitle}"
+		title="Twoje przemyślenia"
+		desc="Zobacz lub zmień swoje przemyślenia o {contentTitle}"
 		onClose={async () => {
 			if (!textarea) {
 				notify({
-					text: "Failed to find the text box! Please copy your changes to avoid losing them and try again!",
+					text: "Nie udało się znaleźć pola tekstowego! Skopiuj swoje zmiany, żeby ich nie stracić, i spróbuj ponownie!",
 				});
 				return;
 			}
@@ -63,7 +63,7 @@
 		<textarea
 			name="Thoughts"
 			rows="3"
-			placeholder={`My thoughts on ${contentTitle}`}
+			placeholder={`Moje przemyślenia o ${contentTitle}`}
 			value={thoughts}
 			bind:this={textarea}
 			oninput={resizeTextarea}></textarea>

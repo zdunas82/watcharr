@@ -7,60 +7,60 @@
 	import HandbookImage from "@/lib/handbook/internal/HandbookImage.svelte";
 </script>
 
-<p>Adding media to your list is the core feature of Watcharr.</p>
+<p>Dodawanie tytułów do listy to podstawowa funkcja Watcharra.</p>
 
 <p>
-	The homepage is where your list will appear once you have added something.
+	Gdy coś dodasz, Twoja lista pojawi się na stronie głównej.
 </p>
 
 <p>
-	To get started, you can follow along with these steps to add your first movie
-	(or show, etc):
+	Na początek wykonaj te kroki, żeby dodać swój pierwszy film (albo serial
+	itp.):
 </p>
 
 <ol>
 	<li>
-		<p>Use the search bar at the top of the page to find content.</p>
+		<p>Wyszukaj tytuł za pomocą paska wyszukiwania u góry strony.</p>
 		<p>
-			<HandbookImage src={step1} alt="Step 1" />
+			<HandbookImage src={step1} alt="Krok 1" />
 		</p>
 	</li>
 	<li>
-		<p>Hover or click on the content you want to add.</p>
+		<p>Najedź kursorem albo kliknij tytuł, który chcesz dodać.</p>
 		<p>
-			<HandbookImage src={step2} alt="Step 2" />
+			<HandbookImage src={step2} alt="Krok 2" />
 		</p>
 	</li>
 	<li>
-		<p>Clicking the + (Plus) icon will let you give the content a status.</p>
+		<p>Kliknij ikonę + (plus), żeby nadać tytułowi status.</p>
 		<p>
-			Currently supported statuses include: Finished, Watching, Held, Planned,
-			Dropped.
+			Dostępne statusy: Obejrzane, Oglądam, Wstrzymane, Planuję,
+			Porzucone.
 		</p>
 		<p>
-			<HandbookImage src={step3} alt="Step 3" />
+			<HandbookImage src={step3} alt="Krok 3" />
 		</p>
 	</li>
 	<li>
-		<p>Rate the content.</p>
+		<p>Oceń tytuł.</p>
 		<p>
-			<HandbookImage src={step4} alt="Step 4" />
+			<HandbookImage src={step4} alt="Krok 4" />
 		</p>
 	</li>
 </ol>
 
 <p>
-	If you prefer, you can also do this by clicking/tapping on the active poster
-	again. This will take you to the contents full page. Here you can see all the
-	options, including adding Thoughts for the content.
+	Możesz też ponownie kliknąć lub dotknąć aktywnego plakatu. Przeniesie cię to
+	na pełną stronę tytułu, gdzie znajdziesz wszystkie opcje, w tym dodawanie
+	przemyśleń.
 </p>
 
 <p>
-	<HandbookImage src={fullPage} alt="Content Full Page" />
+	<HandbookImage src={fullPage} alt="Pełna strona tytułu" />
 </p>
 
 <p>
-	Thoughts can be anything you would like to write down or remember about the
-	specific movie/show. For example, sometimes I like to write something specific
-	that I really liked about the content.
+	Przemyślenia to wszystko, co chcesz zapisać lub zapamiętać o danym filmie czy
+	serialu. Ja na przykład lubię czasem zanotować, co konkretnie bardzo mi się w
+	nim podobało.
 </p>

@@ -33,12 +33,12 @@
 	href={resolve(`/handbook?entry=${handbook}`)}
 	onclick={linkClicked}
 	use:tooltip={{
-		text: "Open Handbook",
+		text: "Otwórz poradnik",
 		pos: "top",
 	}}
-	aria-label={`Open handbook for ${handbook}`}
+	aria-label={`Otwórz poradnik: ${handbook}`}
 >
-	help
+	pomoc
 </a>
 
 <style lang="scss">

@@ -225,7 +225,7 @@
 		color: white;
 		border: 1px solid white;
 		border-radius: 6px;
-		text-transform: capitalize;
+		text-transform: none; /* PoterX: polskie teksty maja wlasna wielkosc liter */
 		z-index: 99999;
 		transition:
 			top 100ms ease,

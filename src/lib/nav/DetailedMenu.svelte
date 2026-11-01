@@ -21,30 +21,30 @@
 		arrowLeft: page.url?.pathname.startsWith("/search") ? "84px" : "3px",
 	}}
 >
-	<h4 class="norm sm-caps">Shown Details</h4>
+	<h4 class="norm sm-caps">Widoczne szczegóły</h4>
 	<button
 		class={`plain ${store.wlDetailedView?.includes("statusRating") ? "on" : ""}`}
 		onclick={() => detailClicked("statusRating")}
 	>
-		Status & Rating
+		Status i ocena
 	</button>
 	<button
 		class={`plain ${store.wlDetailedView?.includes("lastWatched") ? "on" : ""}`}
 		onclick={() => detailClicked("lastWatched")}
 	>
-		Watching Season
+		Oglądany sezon
 	</button>
 	<button
 		class={`plain ${store.wlDetailedView?.includes("dateAdded") ? "on" : ""}`}
 		onclick={() => detailClicked("dateAdded")}
 	>
-		Date Added
+		Data dodania
 	</button>
 	<button
 		class={`plain ${store.wlDetailedView?.includes("dateModified") ? "on" : ""}`}
 		onclick={() => detailClicked("dateModified")}
 	>
-		Date Modified
+		Data zmiany
 	</button>
 </Menu>
 
@@ -58,7 +58,7 @@
 	}
 
 	button.plain {
-		text-transform: capitalize;
+		text-transform: none; /* PoterX: polskie teksty maja wlasna wielkosc liter */
 		position: relative;
 
 		&.on::before {

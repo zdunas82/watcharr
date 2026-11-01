@@ -44,7 +44,7 @@
 			{/if}
 			{#if splitText.rest}
 				<button class="plain" onclick={() => (bioExtended = !bioExtended)}>
-					{bioExtended ? "Less" : "More"}
+					{bioExtended ? "Mniej" : "Więcej"}
 				</button>
 			{/if}
 		</p>

@@ -17,33 +17,33 @@ export const watchedStatuses: {
 };
 
 export const months = [
-	"January",
-	"February",
-	"March",
-	"April",
-	"May",
-	"June",
-	"July",
-	"August",
-	"September",
-	"October",
-	"November",
-	"December",
+	"Styczeń",
+	"Luty",
+	"Marzec",
+	"Kwiecień",
+	"Maj",
+	"Czerwiec",
+	"Lipiec",
+	"Sierpień",
+	"Wrzesień",
+	"Październik",
+	"Listopad",
+	"Grudzień",
 ];
 
 export const monthsShort = [
-	"Jan",
-	"Feb",
-	"March",
-	"Apr",
-	"May",
-	"June",
-	"July",
-	"Aug",
-	"Sept",
-	"Oct",
-	"Nov",
-	"Dec",
+	"Sty",
+	"Lut",
+	"Mar",
+	"Kwi",
+	"Maj",
+	"Cze",
+	"Lip",
+	"Sie",
+	"Wrz",
+	"Paź",
+	"Lis",
+	"Gru",
 ];
 
 export function isTouch() {
@@ -67,15 +67,19 @@ export function isTouch() {
 export function toUnderstandableStatus(s: WatchedStatus, isForGame: boolean) {
 	if (isForGame) {
 		if (s === "FINISHED") {
-			return "played";
+			return "Zagrane";
 		} else if (s === "WATCHING") {
-			return "playing";
+			return "Gram";
 		}
 	}
-	if (s === "HOLD") {
-		return "on hold";
-	}
-	return s?.toLowerCase();
+	const labels: { [key in WatchedStatus]: string } = {
+		PLANNED: "Planuję",
+		WATCHING: "Oglądam",
+		FINISHED: "Obejrzane",
+		HOLD: "Wstrzymane",
+		DROPPED: "Porzucone",
+	};
+	return labels[s] ?? s?.toLowerCase();
 }
 
 /**
@@ -150,18 +154,9 @@ export function calculateTransformOrigin(
  * @param i Day number.
  */
 export function getOrdinalSuffix(i: number) {
-	const j = i % 10,
-		k = i % 100;
-	if (j == 1 && k != 11) {
-		return "st";
-	}
-	if (j == 2 && k != 12) {
-		return "nd";
-	}
-	if (j == 3 && k != 13) {
-		return "rd";
-	}
-	return "th";
+	// Polish dates have no ordinal suffix (ex: "1 Sty").
+	void i;
+	return "";
 }
 
 export function parseTokenPayload(): TokenClaims | undefined {
@@ -202,7 +197,7 @@ export function seasonAndEpToReadable(
 	season: number | undefined,
 	episode: number | undefined,
 ) {
-	return `S${typeof season === "number" ? String(season) : "(unknown)"}E${typeof episode === "number" ? String(episode) : "(unknown)"}`;
+	return `S${typeof season === "number" ? String(season) : "(?)"}E${typeof episode === "number" ? String(episode) : "(?)"}`;
 }
 
 export function msToAmountsOfTime(ms: number) {
@@ -216,13 +211,13 @@ export function msToAmountsOfTime(ms: number) {
 /** I'm no warden of time, this is as relative as it's getting. */
 export function toRelativeDate(d: Date): string {
 	if (!d) {
-		return "Unknown";
+		return "Nieznana";
 	}
 	const dn = new Date(Date.now());
 	if (d.getFullYear() === dn.getFullYear()) {
 		if (d.getMonth() === dn.getMonth()) {
 			if (d.getDate() === dn.getDate()) {
-				return "Today";
+				return "Dzisiaj";
 			}
 		}
 		return `${d.getDate()}${getOrdinalSuffix(d.getDate())} ${monthsShort[d.getMonth()]}`;
@@ -240,15 +235,15 @@ export function toRelativeTime(s: number) {
 	const mins = totalMinutes % 60;
 	const secs = Math.floor(s % 60);
 	if (hours > 0) {
-		return `${hours} hours`;
+		return `${hours} ${plPlural(hours, "godzinę", "godziny", "godzin")}`;
 	}
 	if (mins > 0) {
-		return `${mins} minutes`;
+		return `${mins} ${plPlural(mins, "minutę", "minuty", "minut")}`;
 	}
 	if (secs > 0) {
-		return `${secs} seconds`;
+		return `${secs} ${plPlural(secs, "sekundę", "sekundy", "sekund")}`;
 	}
-	return "now";
+	return "teraz";
 }
 
 /**
@@ -259,4 +254,18 @@ export function mouseOverEl(el?: HTMLElement) {
 		return false;
 	}
 	return el.matches(":hover");
+}
+
+/**
+ * Polish plural form for `n`.
+ * ex: plPlural(n, "odcinek", "odcinki", "odcinków")
+ *     1 -> odcinek, 2-4/22-24 -> odcinki, 0/5-21/25+ -> odcinków.
+ */
+export function plPlural(n: number, one: string, few: string, many: string) {
+	const abs = Math.abs(n);
+	if (abs === 1) return one;
+	const mod10 = abs % 10;
+	const mod100 = abs % 100;
+	if (mod10 >= 2 && mod10 <= 4 && (mod100 < 12 || mod100 > 14)) return few;
+	return many;
 }

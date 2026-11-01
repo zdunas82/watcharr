@@ -89,7 +89,7 @@ export function preparePlexAuth(): Plex {
 			clientId,
 		};
 	}
-	throw new Error("Failed to prepare popup!");
+	throw new Error("Nie udało się przygotować okna logowania!");
 }
 
 export async function doPlexLogin({
@@ -117,13 +117,13 @@ export async function plexPinPoll(
 				done(undefined, r.authToken);
 				win.close();
 			} else if (win?.closed) {
-				done(new Error("Plex popup closed before login completed"));
+				done(new Error("Okno Plex zostało zamknięte przed zakończeniem logowania"));
 			} else {
 				setTimeout(doPoll, 1000);
 			}
 		} catch (err) {
 			console.error("plexPinPoll: Failed!", err);
-			done(new Error("Pin poll failed"));
+			done(new Error("Nie udało się sprawdzić kodu PIN"));
 		}
 	};
 	setTimeout(doPoll, 1000);

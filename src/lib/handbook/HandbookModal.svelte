@@ -9,7 +9,7 @@
 	let { onClose }: Props = $props();
 </script>
 
-<Modal title="Handbook" {onClose} maxWidth="1200px">
+<Modal title="Poradnik" {onClose} maxWidth="1200px">
 	<div class="content">
 		<div class="inner">
 			<HandbookPage />

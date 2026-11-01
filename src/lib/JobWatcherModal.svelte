@@ -7,6 +7,7 @@
 	import { onDestroy, onMount } from "svelte";
 	import { req } from "./util/api";
 	import { ReqerError } from "./util/fetch";
+	import { plPlural } from "./util/helpers";
 
 	interface Props {
 		modalTitle: string;
@@ -42,7 +43,10 @@
 		} catch (err) {
 			console.error("startSync failed!", err);
 			step = "errored";
-			jobFailError = ReqerError.getMsg(err, "Starting sync failed");
+			jobFailError = ReqerError.getMsg(
+				err,
+				"Nie udało się rozpocząć synchronizacji",
+			);
 		}
 	}
 
@@ -50,7 +54,7 @@
 		if (!jobId) {
 			console.error("startJobWatcher: No Job Id");
 			notify({
-				text: "Unable to start job watcher, no job id.",
+				text: "Nie można śledzić zadania: brak identyfikatora zadania.",
 				type: "error",
 			});
 			return;
@@ -81,7 +85,7 @@
 			if (seqfailedJobReqs >= 10) {
 				console.error("jobWatcher: Failed 10 times in a row!");
 				notify({
-					text: "Status checker has failed 10 times in a row!",
+					text: "Sprawdzanie stanu zadania nie powiodło się 10 razy z rzędu!",
 					type: "error",
 					time: 30000,
 				});
@@ -95,7 +99,7 @@
 	function modalClose() {
 		if (step === "job-running") {
 			notify({
-				text: "Sync will continue in the background.. please refresh the page periodically to view your updated list or come back later.",
+				text: "Synchronizacja będzie kontynuowana w tle. Odświeżaj co jakiś czas stronę, żeby zobaczyć zaktualizowaną listę, albo wróć później.",
 				time: 10000,
 			});
 		}
@@ -126,25 +130,28 @@
 		{/if}
 		<div>
 			{#if step === "starting"}
-				<h4 class="norm">Starting</h4>
+				<h4 class="norm">Uruchamianie</h4>
 				<span>{messages.starting}</span>
 			{:else if step === "job-running"}
-				<h4 class="norm">Running</h4>
+				<h4 class="norm">W toku</h4>
 				{#if currentTask}
 					<span>{currentTask}</span>
 				{/if}
 			{:else if step === "done"}
 				{#if !latestJobStatus?.errors || latestJobStatus?.errors?.length <= 0}
-					<h4 class="norm">Finished</h4>
-					<span>We have finished. Looks like there were no errors!</span>
+					<h4 class="norm">Zakończono</h4>
+					<span>Gotowe. Wygląda na to, że obyło się bez błędów!</span>
 				{:else}
 					<h4 class="norm">
-						Finished With {latestJobStatus?.errors?.length} Error{latestJobStatus
-							?.errors?.length === 1
-							? ""
-							: "s"}
+						Zakończono z {latestJobStatus?.errors?.length}
+						{plPlural(
+							latestJobStatus?.errors?.length ?? 0,
+							"błędem",
+							"błędami",
+							"błędami",
+						)}
 					</h4>
-					<span>Job finished, but with errors:</span>
+					<span>Zadanie zakończyło się, ale wystąpiły błędy:</span>
 					<ul>
 						{#each latestJobStatus?.errors as e (e)}
 							<li>{e}</li>
@@ -152,12 +159,13 @@
 					</ul>
 				{/if}
 			{:else if step === "errored"}
-				<h4 class="norm">We Errored!</h4>
+				<h4 class="norm">Wystąpił błąd!</h4>
 				{#if jobFailError}
 					<span>{jobFailError}</span>
 				{:else}
 					<span
-						>We errored before starting the job or the job was cancelled.</span
+						>Wystąpił błąd przed rozpoczęciem zadania albo zadanie zostało
+						anulowane.</span
 					>
 				{/if}
 				{#if latestJobStatus?.errors && latestJobStatus?.errors?.length > 0}
@@ -168,8 +176,8 @@
 					</ul>
 				{/if}
 			{:else}
-				<h4 class="norm">Unknown State!</h4>
-				<span>We're not sure of the current job status.</span>
+				<h4 class="norm">Nieznany stan!</h4>
+				<span>Nie wiadomo, jaki jest obecny stan zadania.</span>
 			{/if}
 		</div>
 	</div>

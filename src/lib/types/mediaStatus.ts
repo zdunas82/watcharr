@@ -33,3 +33,34 @@ export enum MediaStatusGame {
 	Rumored = "Rumored",
 	Delisted = "Delisted",
 }
+
+/**
+ * Polish display labels for media statuses (TMDB/IGDB values).
+ * Display only, never use in logic.
+ */
+const mediaStatusLabels: { [key: string]: string } = {
+	"Returning Series": "Wciąż emitowany",
+	Planned: "Zapowiedź",
+	"In Production": "W produkcji",
+	"Post Production": "Postprodukcja",
+	Ended: "Zakończony",
+	Canceled: "Anulowany",
+	Cancelled: "Anulowana",
+	Pilot: "Odcinek pilotażowy",
+	Rumored: "Pogłoski",
+	Released: "Po premierze",
+	Alpha: "Alfa",
+	Beta: "Beta",
+	"Early Access": "Wczesny dostęp",
+	Offline: "Offline",
+	Delisted: "Wycofana ze sprzedaży",
+};
+
+/**
+ * Get readable (Polish) label for a media status.
+ * Falls back to the original value if unknown.
+ */
+export function mediaStatusLabel(status: string | undefined): string {
+	if (!status) return "";
+	return mediaStatusLabels[status] ?? status;
+}

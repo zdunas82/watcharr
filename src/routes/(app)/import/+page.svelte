@@ -39,7 +39,7 @@
 				console.error("processFiles", "No files to process!");
 				notify({
 					type: "error",
-					text: "File not found in dropped items. Please try again or refresh.",
+					text: "Nie znaleziono pliku wśród upuszczonych elementów. Spróbuj ponownie albo odśwież stronę.",
 					time: 6000,
 				});
 				return;
@@ -48,7 +48,7 @@
 			if (files.length > 1) {
 				notify({
 					type: "error",
-					text: "Only one file at a time is supported. Continuing with the first.",
+					text: "Obsługiwany jest tylko jeden plik naraz. Kontynuuję z pierwszym.",
 					time: 6000,
 				});
 			}
@@ -57,7 +57,7 @@
 			if (type === "text-list" && file.type !== "text/plain") {
 				notify({
 					type: "error",
-					text: "Text list export must be a .txt file!",
+					text: "Lista tekstowa musi być plikiem .txt!",
 				});
 				isLoading = false;
 				return;
@@ -65,7 +65,7 @@
 			if ((type === "tmdb" || type === "imdb") && file.type !== "text/csv") {
 				notify({
 					type: "error",
-					text: `${type} export must be a .csv file!`,
+					text: `Eksport ${type} musi być plikiem .csv!`,
 				});
 				isLoading = false;
 				return;
@@ -87,7 +87,7 @@
 			r.readAsText(file);
 		} catch (err) {
 			isLoading = false;
-			notify({ type: "error", text: "Failed to read file!" });
+			notify({ type: "error", text: "Nie udało się odczytać pliku!" });
 			console.error("import: Failed to read file!", err);
 		}
 	}
@@ -133,7 +133,7 @@
 				console.error("processFilesMovary", "No files to process!");
 				notify({
 					type: "error",
-					text: "File not found in dropped items. Please try again or refresh.",
+					text: "Nie znaleziono pliku wśród upuszczonych elementów. Spróbuj ponownie albo odśwież stronę.",
 					time: 6000,
 				});
 				return;
@@ -141,7 +141,7 @@
 			if (files.length !== 3) {
 				notify({
 					type: "error",
-					text: "You must select or drop 3 files: history.csv, ratings.csv and watchlist.csv.",
+					text: "Musisz wybrać lub upuścić 3 pliki: history.csv, ratings.csv i watchlist.csv.",
 					time: 6000,
 				});
 				return;
@@ -165,7 +165,7 @@
 			if (!history || !ratings || !watchlist) {
 				notify({
 					type: "error",
-					text: "Failed to read history, ratings or watchlist. Ensure you have attached 3 files: history.csv, ratings.csv and watchlist.csv.",
+					text: "Nie udało się odczytać historii, ocen albo listy do obejrzenia. Upewnij się, że dołączono 3 pliki: history.csv, ratings.csv i watchlist.csv.",
 					time: 6000,
 				});
 				isLoading = false;
@@ -251,7 +251,7 @@
 			goto(resolve("/import/process"));
 		} catch (err) {
 			isLoading = false;
-			notify({ type: "error", text: "Failed to read files!" });
+			notify({ type: "error", text: "Nie udało się odczytać plików!" });
 			console.error("import: Failed to read files!", err);
 		}
 	}
@@ -263,7 +263,7 @@
 				console.error("processWatcharrFile", "No files to process!");
 				notify({
 					type: "error",
-					text: "File not found in dropped items. Please try again or refresh.",
+					text: "Nie znaleziono pliku wśród upuszczonych elementów. Spróbuj ponownie albo odśwież stronę.",
 					time: 6000,
 				});
 				return;
@@ -272,7 +272,7 @@
 			if (files.length > 1) {
 				notify({
 					type: "error",
-					text: "Only one file at a time is supported. Continuing with the first.",
+					text: "Obsługiwany jest tylko jeden plik naraz. Kontynuuję z pierwszym.",
 					time: 6000,
 				});
 			}
@@ -281,7 +281,7 @@
 			if (file.type !== "application/json") {
 				notify({
 					type: "error",
-					text: "Must be a Watcharr JSON export file",
+					text: "To musi być plik eksportu Watcharr w formacie JSON",
 				});
 				isLoading = false;
 				return;
@@ -319,7 +319,7 @@
 					if (!invalidStructureErrorOccurred) {
 						notify({
 							type: "error",
-							text: "Item(s) in export has an invalid structure! Look in console for more details.",
+							text: "Co najmniej jedna pozycja w eksporcie ma nieprawidłową strukturę! Szczegóły znajdziesz w konsoli.",
 						});
 						// So we don't spam it...
 						invalidStructureErrorOccurred = true;
@@ -335,9 +335,9 @@
 				notify({
 					type: "error",
 					text:
-						"It looks like this server doesn't support 'Games'! " +
-						"The server should be configured properly before " +
-						"proceeding otherwise none of your games will be imported!",
+						"Wygląda na to, że ten serwer nie obsługuje gier! " +
+						"Serwer trzeba najpierw poprawnie skonfigurować, " +
+						"w przeciwnym razie żadna z twoich gier nie zostanie zaimportowana!",
 					time: Infinity,
 				});
 				// We still allow the user to continue (BECAUSE EIN CUSTOMER ISH ALWAYS REIGHT!!!!
@@ -352,7 +352,7 @@
 			goto(resolve("/import/process"));
 		} catch (err) {
 			isLoading = false;
-			notify({ type: "error", text: "Failed to read file!" });
+			notify({ type: "error", text: "Nie udało się odczytać pliku!" });
 			console.error("import: Failed to read file!", err);
 		}
 	}
@@ -364,7 +364,7 @@
 				console.error("processFilesMyAnimeList", "No files to process!");
 				notify({
 					type: "error",
-					text: "File not found in dropped items. Please try again or refresh.",
+					text: "Nie znaleziono pliku wśród upuszczonych elementów. Spróbuj ponownie albo odśwież stronę.",
 					time: 6000,
 				});
 				return;
@@ -373,7 +373,7 @@
 			if (files.length > 1) {
 				notify({
 					type: "error",
-					text: "Only one file at a time is supported. Continuing with the first.",
+					text: "Obsługiwany jest tylko jeden plik naraz. Kontynuuję z pierwszym.",
 					time: 6000,
 				});
 			}
@@ -382,7 +382,7 @@
 			if (file.type !== "text/xml") {
 				notify({
 					type: "error",
-					text: "Your MyAnimeList export should be a xml file.",
+					text: "Eksport z MyAnimeList powinien być plikiem XML.",
 				});
 				isLoading = false;
 				return;
@@ -404,7 +404,7 @@
 			r.readAsText(file);
 		} catch (err) {
 			isLoading = false;
-			notify({ type: "error", text: "Failed to read file!" });
+			notify({ type: "error", text: "Nie udało się odczytać pliku!" });
 			console.error("import: Failed to read file!", err);
 		}
 	}
@@ -416,7 +416,7 @@
 				console.error("processRyotFile", "No files to process!");
 				notify({
 					type: "error",
-					text: "File not found in dropped items. Please try again or refresh.",
+					text: "Nie znaleziono pliku wśród upuszczonych elementów. Spróbuj ponownie albo odśwież stronę.",
 					time: 6000,
 				});
 				return;
@@ -425,7 +425,7 @@
 			if (files.length > 1) {
 				notify({
 					type: "error",
-					text: "Only one file at a time is supported. Continuing with the first.",
+					text: "Obsługiwany jest tylko jeden plik naraz. Kontynuuję z pierwszym.",
 					time: 6000,
 				});
 			}
@@ -435,7 +435,7 @@
 			if (file.type !== "application/json") {
 				notify({
 					type: "error",
-					text: "Must be a Ryot JSON export file",
+					text: "To musi być plik eksportu Ryot w formacie JSON",
 				});
 				isLoading = false;
 				return;
@@ -454,7 +454,7 @@
 				) {
 					notify({
 						type: "error",
-						text: "Item in export either has no title, TMDB identifier or is not a movie/tv show! Look in console for more details.",
+						text: "Pozycja w eksporcie nie ma tytułu albo identyfikatora TMDB, lub nie jest filmem/serialem! Szczegóły znajdziesz w konsoli.",
 					});
 					console.error(
 						"Can't add export item to import table! It has title, TMDB identifier or is not a movie/tv show! Item:",
@@ -558,7 +558,7 @@
 			goto(resolve("/import/process"));
 		} catch (err) {
 			isLoading = false;
-			notify({ type: "error", text: "Failed to read file!" });
+			notify({ type: "error", text: "Nie udało się odczytać pliku!" });
 			console.error("import: Failed to read file!", err);
 		}
 	}
@@ -570,7 +570,7 @@
 				console.error("processFilesTodoMovies", "No files to process!");
 				notify({
 					type: "error",
-					text: "File not found in dropped items. Please try again or refresh.",
+					text: "Nie znaleziono pliku wśród upuszczonych elementów. Spróbuj ponownie albo odśwież stronę.",
 					time: 6000,
 				});
 				return;
@@ -579,7 +579,7 @@
 			if (files.length > 1) {
 				notify({
 					type: "error",
-					text: "Only one file at a time is supported. Continuing with the first.",
+					text: "Obsługiwany jest tylko jeden plik naraz. Kontynuuję z pierwszym.",
 					time: 6000,
 				});
 			}
@@ -589,7 +589,7 @@
 			if (file.type !== "" && !file.name.endsWith(".todomovieslist")) {
 				notify({
 					type: "error",
-					text: "Must be a TodoMovies backup file (.todomovieslist)",
+					text: "To musi być plik kopii zapasowej TodoMovies (.todomovieslist)",
 				});
 				isLoading = false;
 				return;
@@ -602,7 +602,7 @@
 			if (!exportTodoMoviesStr) {
 				notify({
 					type: "error",
-					text: "Failed to read export file. Ensure you have attached the correct file.",
+					text: "Nie udało się odczytać pliku eksportu. Upewnij się, że dołączono właściwy plik.",
 					time: 6000,
 				});
 				isLoading = false;
@@ -673,7 +673,7 @@
 			goto(resolve("/import/process"));
 		} catch (err) {
 			isLoading = false;
-			notify({ type: "error", text: "Failed to read files!" });
+			notify({ type: "error", text: "Nie udało się odczytać plików!" });
 			console.error("import: Failed to read files!", err);
 		}
 	}
@@ -689,7 +689,7 @@
 	<div class="inner">
 		<div>
 			<span class="header">
-				<h2>Import Your Watchlist</h2>
+				<h2>Zaimportuj swoją listę</h2>
 				<h5 class="norm">beta</h5>
 			</span>
 			<!-- <h4 class="norm">Currently txt and csv (TMDb export) files are supported.</h4> -->
@@ -699,13 +699,13 @@
 				<Spinner />
 			{:else}
 				<DropFileButton
-					text="Watcharr Export"
+					text="Eksport Watcharr"
 					filesSelected={(f) => processWatcharrFile(f)}
 				/>
 
 				<!-- TODO Add info... on what a '.txt list' means and supports -->
 				<DropFileButton
-					text=".txt list"
+					text="Lista .txt"
 					filesSelected={(f) => processFiles(f, "text-list")}
 				/>
 
@@ -717,7 +717,7 @@
 
 				<button class="plain" onclick={() => goto(resolve("/import/trakt"))}>
 					<Icon i="trakt" wh="100%" />
-					<h4 class="norm">Trakt Import</h4>
+					<h4 class="norm">Import z Trakt</h4>
 				</button>
 
 				<DropFileButton
@@ -728,20 +728,20 @@
 
 				<DropFileButton
 					icon="movary"
-					text="Movary Exports"
+					text="Eksporty Movary"
 					filesSelected={(f) => processFilesMovary(f)}
 					allowSelectMultipleFiles
 				/>
 
 				<DropFileButton
 					icon="myanimelist"
-					text="MyAnimeList Export"
+					text="Eksport MyAnimeList"
 					filesSelected={(f) => processFilesMyAnimeList(f)}
 				/>
 
 				<DropFileButton
 					icon="ryot"
-					text="Ryot Exports"
+					text="Eksporty Ryot"
 					filesSelected={(f) => processRyotFile(f)}
 				/>
 

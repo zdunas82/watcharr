@@ -67,7 +67,7 @@
 		<div>
 			<h4 class="norm">
 				{#if isDragOver}
-					Import {text}
+					Importuj: {text}
 				{:else}
 					{text}
 				{/if}

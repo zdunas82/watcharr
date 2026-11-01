@@ -36,16 +36,16 @@
 	let scrollLocAtStart = 0;
 
 	const ratingDesc = [
-		"Apalling",
-		"Horrible",
-		"Very Bad",
-		"Bad",
-		"Average",
-		"Fine",
-		"Good",
-		"Very Good",
-		"Great",
-		"Masterpiece",
+		"Tragedia",
+		"Okropny",
+		"Bardzo zły",
+		"Słaby",
+		"Przeciętny",
+		"Niezły",
+		"Dobry",
+		"Bardzo dobry",
+		"Świetny",
+		"Arcydzieło",
 	];
 
 	async function saveSelectedRating() {
@@ -322,7 +322,7 @@ shownPerc: {shownPerc}<br /> -->
 				{/if}
 			{/if}
 		{:else}
-			Select Your Rating
+			Wybierz ocenę
 		{/if}
 	</span>
 	<div
@@ -405,7 +405,7 @@ shownPerc: {shownPerc}<br /> -->
 		</div>
 	</div>
 	<span class="keyboard-tip"
-		>Left/Right Arrows to change rating, Enter to save.</span
+		>Strzałki w lewo/prawo zmieniają ocenę, Enter zapisuje.</span
 	>
 </div>
 

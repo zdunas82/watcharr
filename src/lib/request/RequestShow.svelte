@@ -40,7 +40,7 @@
 					return {
 						id: s.number,
 						value: false,
-						displayValue: s.name ?? `(${s.number}) Unknown`,
+						displayValue: s.name ?? `(${s.number}) Nieznany`,
 					};
 				})
 			: [],
@@ -54,12 +54,12 @@
 				servarrs = r;
 				selectedServarrIndex = 0;
 			} else {
-				notify({ text: "No servers found", type: "error" });
+				notify({ text: "Nie znaleziono serwerów", type: "error" });
 			}
 			processOriginalRequest();
 		} catch (err) {
 			console.error("Failed to get servers!", err);
-			notify({ text: "Failed to load servers", type: "error" });
+			notify({ text: "Nie udało się wczytać serwerów", type: "error" });
 		}
 	}
 
@@ -69,7 +69,7 @@
 			selectedServerCfg = r;
 		} catch (err) {
 			console.error("Failed to get config!", err);
-			notify({ text: "Failed to load config", type: "error" });
+			notify({ text: "Nie udało się wczytać konfiguracji", type: "error" });
 		}
 	}
 
@@ -77,15 +77,18 @@
 		let nid;
 		try {
 			if (!servarrs || !servarrs[selectedServarrIndex]) {
-				notify({ text: "Must select a server", type: "error" });
+				notify({ text: "Musisz wybrać serwer", type: "error" });
 				return;
 			}
 			if (!selectedServerCfg) {
-				notify({ text: "No selected server config found", type: "error" });
+				notify({
+					text: "Nie znaleziono konfiguracji wybranego serwera",
+					type: "error",
+				});
 				return;
 			}
 			addRequestRunning = true;
-			nid = notify({ text: "Requesting", type: "loading" });
+			nid = notify({ text: "Wysyłanie prośby", type: "loading" });
 			const server = servarrs[selectedServarrIndex];
 			const rootFolder = selectedServerCfg.rootFolders?.find(
 				(f) => f.id === server.rootFolder,
@@ -97,7 +100,11 @@
 					"rf:",
 					rootFolder,
 				);
-				notify({ id: nid, text: "No Root Folder Found", type: "error" });
+				notify({
+					id: nid,
+					text: "Nie znaleziono folderu głównego",
+					type: "error",
+				});
 				return;
 			}
 			const resp = await req.post<ArrRequestResponse>(
@@ -124,13 +131,13 @@
 			);
 			addRequestRunning = false;
 			if (resp) {
-				notify({ id: nid, text: "Request complete", type: "success" });
+				notify({ id: nid, text: "Prośba wysłana", type: "success" });
 				onClose(resp);
 			}
 		} catch (err) {
 			console.error("content request failed!", err);
 			addRequestRunning = false;
-			notify({ id: nid, text: "Request failed!", type: "error" });
+			notify({ id: nid, text: "Nie udało się wysłać prośby!", type: "error" });
 		}
 	}
 
@@ -172,14 +179,14 @@
 			} else {
 				notify({
 					type: "error",
-					text: "Full original request could not be restored. You may continue, but prefilled settings may not be true to the original request.",
+					text: "Nie udało się w pełni odtworzyć pierwotnej prośby. Możesz kontynuować, ale wstępnie wypełnione ustawienia mogą się różnić od pierwotnej prośby.",
 					time: 10000,
 				});
 			}
 		} catch (err) {
 			console.error("processOriginalRequest: Failed!", err);
 			notify({
-				text: "Failed when processing original request!",
+				text: "Nie udało się przetworzyć pierwotnej prośby!",
 				type: "error",
 			});
 		}
@@ -204,7 +211,7 @@
 </script>
 
 <Modal
-	title={approveMode ? "Approve Request" : "Request"}
+	title={approveMode ? "Zatwierdź prośbę" : "Poproś o dodanie"}
 	desc={content.name}
 	maxWidth="700px"
 	onClose={() => onClose(undefined)}
@@ -212,13 +219,13 @@
 	<div class="req-ctr">
 		{#if servarrs}
 			<div class="seasons-list">
-				<ListBox bind:options={seasonItems} allCheckBox="All Seasons" />
+				<ListBox bind:options={seasonItems} allCheckBox="Wszystkie sezony" />
 			</div>
 
 			{#if servarrs?.length > 1}
-				<Setting title="Select the server to use">
+				<Setting title="Wybierz serwer">
 					<DropDown
-						placeholder="Select a server"
+						placeholder="Wybierz serwer"
 						bind:active={selectedServarrIndex}
 						options={servarrs?.length > 0
 							? servarrs.map((s, i) => {
@@ -230,7 +237,7 @@
 			{/if}
 
 			<button onclick={request} disabled={addRequestRunning}>
-				{approveMode ? "Approve" : "Request"}
+				{approveMode ? "Zatwierdź" : "Poproś o dodanie"}
 			</button>
 		{:else}
 			<Spinner />

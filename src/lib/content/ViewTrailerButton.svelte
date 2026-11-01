@@ -25,7 +25,7 @@
 </script>
 
 {#if trailer}
-	<button onclick={() => (trailerShown = !trailerShown)}>View Trailer</button>
+	<button onclick={() => (trailerShown = !trailerShown)}>Obejrzyj zwiastun</button>
 	{#if trailerShown}
 		<VideoEmbedModal embed={trailer} closed={() => (trailerShown = false)} />
 	{/if}

@@ -10,15 +10,15 @@
 </script>
 
 <Modal
-	title="Count as Whole Play"
-	desc="Do you want to increment the Plays for this media by one?"
+	title="Policz jako pełne obejrzenie"
+	desc="Czy zwiększyć liczbę obejrzeń tej pozycji o jeden?"
 	maxWidth="450px"
 >
 	<div class="button-row">
 		<button class="danger" onclick={() => onDecision.fire(false)}>
-			No, Don't Count
+			Nie, nie licz
 		</button>
-		<button onclick={() => onDecision.fire(true)}>Yes, Count as Play</button>
+		<button onclick={() => onDecision.fire(true)}>Tak, policz jako obejrzenie</button>
 	</div>
 </Modal>
 

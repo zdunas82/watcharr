@@ -10,7 +10,7 @@
 </script>
 
 <button
-	aria-label="Open color picker"
+	aria-label="Otwórz wybór koloru"
 	class="plain"
 	style={`background-color: ${value};${style}`}
 >

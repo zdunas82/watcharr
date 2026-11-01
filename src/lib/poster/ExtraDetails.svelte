@@ -27,7 +27,7 @@
 
 	function formatDate(e: number) {
 		if (!e) {
-			return "Unknown";
+			return "Nieznana";
 		}
 		const d = new Date(e);
 		return `${d.getDate()}${getOrdinalSuffix(d.getDate())} ${monthsShort[d.getMonth()]} '${String(
@@ -47,26 +47,26 @@
     -->
 		<div>
 			{#if dateAdded && store.wlDetailedView.includes("dateAdded")}
-				<span title="Date added to watch list">
+				<span title="Data dodania do listy">
 					<i><Icon i="calendar" /></i>
 					<span>
 						{formatDate(Date.parse(dateAdded))}
 					</span>
 				</span>
 			{/if}{#if dateModified && store.wlDetailedView.includes("dateModified")}
-				<span title="Date last modified">
+				<span title="Data ostatniej zmiany">
 					<i><Icon i="pencil" wh={15} /></i>
 					<span>
 						{formatDate(Date.parse(dateModified))}
 					</span>
 				</span>
 			{/if}{#if lastWatched && store.wlDetailedView.includes("lastWatched")}
-				<span title="Latest season watched">
+				<span title="Ostatnio oglądany sezon">
 					<i><Icon i="play" wh={15} /></i>
 					<span>{lastWatched}</span>
 				</span>
 			{/if}{#if store.wlDetailedView.includes("statusRating")}
-				<span class="status-rating" title="Status and Rating">
+				<span class="status-rating" title="Status i ocena">
 					{#if !isUsingThumbs}
 						<i><Icon i="star" /></i>
 					{/if}

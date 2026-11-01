@@ -113,11 +113,11 @@
 </script>
 
 <svelte:head>
-	<title>{movie?.name ? `${movie.name} - ` : ""}Movie</title>
+	<title>{movie?.name ? `${movie.name} - ` : ""}Film</title>
 </svelte:head>
 
 {#if pageError}
-	<Error pretty="Failed to load movie!" error={pageError} />
+	<Error pretty="Nie udało się wczytać filmu!" error={pageError} />
 {:else if !movie}
 	<Spinner />
 {:else if Object.keys(movie).length > 0}
@@ -166,9 +166,9 @@
 									target="_blank"
 								>
 									{#if localStorage.getItem("useEmby")}
-										<Icon i="emby" wh={14} />Play On Emby
+										<Icon i="emby" wh={14} />Odtwórz w Emby
 									{:else}
-										<Icon i="jellyfin" wh={14} />Play On Jellyfin
+										<Icon i="jellyfin" wh={14} />Odtwórz w Jellyfinie
 									{/if}
 								</a>
 							{/if}
@@ -193,7 +193,7 @@
 											}
 										}}
 										use:tooltip={{
-											text: `${movie.watched?.pinned ? "Unpin from" : "Pin to"} top of list`,
+											text: `${movie.watched?.pinned ? "Odepnij z góry listy" : "Przypnij na górze listy"}`,
 											pos: "bot",
 										}}
 									>
@@ -260,7 +260,7 @@
 				{/if}
 
 				{#if credits.cast?.length > 0}
-					<HorizontalList title="Cast">
+					<HorizontalList title="Obsada">
 						{#each credits.cast?.slice(0, 50) as cast (cast.credit_id)}
 							<PersonPoster
 								id={cast.id}
@@ -273,7 +273,7 @@
 					</HorizontalList>
 				{/if}
 			{:catch err}
-				<Error error={err} pretty="Failed to load cast!" />
+				<Error error={err} pretty="Nie udało się wczytać obsady!" />
 			{/await}
 
 			{#if movie.similar}
@@ -289,7 +289,7 @@
 		</div>
 	</div>
 {:else}
-	Movie not found
+	Nie znaleziono filmu
 {/if}
 
 <style lang="scss">

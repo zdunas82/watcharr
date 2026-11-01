@@ -13,16 +13,16 @@
 </script>
 
 <Modal
-	title="Remove From Your List?"
+	title="Usunąć z Twojej listy?"
 	onClose={() => onClose(false)}
 	maxWidth="650px"
 >
 	<div class="remove-ctr">
 		<p>
-			This will delete <b>{mediaName}</b> from your main list. Data will be lost.
+			<b>{mediaName}</b> zostanie usunięte z Twojej głównej listy. Dane zostaną utracone.
 		</p>
 		<button class="confirm-delete-btn" onclick={() => onClose(true)}>
-			Remove from my main list.
+			Usuń z mojej głównej listy.
 		</button>
 	</div>
 </Modal>

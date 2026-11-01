@@ -72,7 +72,7 @@
 			onClose();
 			return;
 		}
-		notify({ text: "Unable to try updating!", type: "error" });
+		notify({ text: "Nie można zaktualizować!", type: "error" });
 		console.error(
 			"ActivityEditor: Can't try updating, data missing/invalid:",
 			dateObj,
@@ -91,9 +91,9 @@
 	}
 </script>
 
-<Modal title="Edit Activity" desc={activityMessage} maxWidth="400px" {onClose}>
+<Modal title="Edytuj aktywność" desc={activityMessage} maxWidth="400px" {onClose}>
 	<div class="centered">
-		<h3>Date</h3>
+		<h3>Data</h3>
 		<input
 			id="activity-date"
 			type="date"
@@ -101,7 +101,7 @@
 			onchange={validateNewDate}
 			class:invalid={!isDateTimeValid}
 		/>
-		<h3>Time</h3>
+		<h3>Godzina</h3>
 		<input
 			id="activity-time"
 			type="time"
@@ -112,11 +112,11 @@
 		<ActivityEditorRawView {activity} />
 
 		<div class="button-row">
-			<button class="danger" onclick={remove}>Delete</button>
+			<button class="danger" onclick={remove}>Usuń</button>
 			<div>
 				<button
 					onclick={update}
-					disabled={!(isDateTimeChanged && isDateTimeValid)}>Update</button
+					disabled={!(isDateTimeChanged && isDateTimeValid)}>Zaktualizuj</button
 				>
 			</div>
 		</div>

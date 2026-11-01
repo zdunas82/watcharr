@@ -6,11 +6,11 @@ export async function tagWatched(
 	watchedId: number,
 	tag: Tag,
 ): Promise<boolean> {
-	const nid = notify({ text: `Tagging`, type: "loading" });
+	const nid = notify({ text: `Dodawanie tagu`, type: "loading" });
 	if (typeof watchedId !== "number") {
 		notify({
 			id: nid,
-			text: "Failed To Tag! Watched entry not found.",
+			text: "Nie udało się dodać tagu! Nie znaleziono pozycji na liście.",
 			type: "error",
 		});
 		return false;
@@ -19,12 +19,12 @@ export async function tagWatched(
 		.post(`/watched/${watchedId}/tag/${tag.id}`)
 		.then((resp) => {
 			console.log("tagWatched: Success.", resp);
-			notify({ id: nid, text: `Tagged!`, type: "success" });
+			notify({ id: nid, text: `Dodano tag!`, type: "success" });
 			return true;
 		})
 		.catch((err) => {
 			console.error("tagWatched: Request failed!", err);
-			notify({ id: nid, text: "Failed To Tag!", type: "error" });
+			notify({ id: nid, text: "Nie udało się dodać tagu!", type: "error" });
 			return false;
 		});
 }
@@ -33,11 +33,11 @@ export async function untagWatched(
 	watchedId: number,
 	tag: Tag,
 ): Promise<boolean> {
-	const nid = notify({ text: `Untagging`, type: "loading" });
+	const nid = notify({ text: `Usuwanie tagu`, type: "loading" });
 	if (typeof watchedId !== "number") {
 		notify({
 			id: nid,
-			text: "Failed To Untag! Watched entry not found.",
+			text: "Nie udało się usunąć tagu! Nie znaleziono pozycji na liście.",
 			type: "error",
 		});
 		return false;
@@ -46,12 +46,12 @@ export async function untagWatched(
 		.delete(`/watched/${watchedId}/tag/${tag.id}`)
 		.then((resp) => {
 			console.log("untagWatched: Success.", resp);
-			notify({ id: nid, text: `Untagged!`, type: "success" });
+			notify({ id: nid, text: `Usunięto tag!`, type: "success" });
 			return true;
 		})
 		.catch((err) => {
 			console.error("untagWatched: Request failed!", err);
-			notify({ id: nid, text: "Failed To Untag!", type: "error" });
+			notify({ id: nid, text: "Nie udało się usunąć tagu!", type: "error" });
 			return false;
 		});
 }

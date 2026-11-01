@@ -9,12 +9,12 @@
 	let { onClose }: Props = $props();
 </script>
 
-<Modal title="About" {onClose} maxWidth="400px">
+<Modal title="O aplikacji" {onClose} maxWidth="400px">
 	<div class="content">
 		<div class="inner">
 			<p>
-				An open source project that helps you keep the content you are watching
-				or playing organized and places you in control.
+				Projekt open source, który pomaga utrzymać porządek w tym, co oglądasz
+				lub w co grasz, i daje Ci nad tym pełną kontrolę.
 			</p>
 			<div class="horizontal-icon-list">
 				<a
@@ -23,20 +23,20 @@
 					title="Github"
 				>
 					<Icon i="github" wh={60} />
-					Source<br />
-					Code
+					Kod<br />
+					źródłowy
 				</a>
 				<a
 					href="https://watcharr.app/"
 					target="_blank"
-					title="Watcharr Website & Documentation"
+					title="Strona i dokumentacja Watcharr"
 				>
 					<Icon i="website" wh={60} />
-					Website<br />
-					& Docs
+					Strona<br />
+					i dokumentacja
 				</a>
 			</div>
-			<h5 class="norm">Watcharr uses the following media databases:</h5>
+			<h5 class="norm">Watcharr korzysta z następujących baz danych:</h5>
 			<div class="horizontal-icon-list">
 				<a href="https://www.themoviedb.org/" target="_blank" title="TMDB">
 					<Icon i="tmdb" wh={60} />
@@ -54,7 +54,7 @@
 					href="https://github.com/sbondCo/Watcharr/blob/v{__WATCHARR_VERSION__}/ATTRIBUTION.md"
 					target="_blank"
 				>
-					See our attribution file.
+					Zobacz plik z podziękowaniami i atrybucjami.
 				</a>
 			</h5>
 		</div>

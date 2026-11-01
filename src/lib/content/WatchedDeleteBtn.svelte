@@ -31,7 +31,7 @@
 <button
 	class="delete-btn"
 	onclick={() => onDeleteClicked()}
-	use:tooltip={{ text: "Delete", pos: "bot" }}
+	use:tooltip={{ text: "Usuń", pos: "bot" }}
 >
 	<Icon i="trash" wh={19} />
 </button>
@@ -43,7 +43,7 @@
 			if (!showConfirmDeleteModalCallback) {
 				notify({
 					type: "error",
-					text: "Somehow the deletion callback doesn't exist anymore so we couldn't delete! Please try again",
+					text: "Nie udało się usunąć – utracono akcję usuwania. Spróbuj ponownie",
 					time: 5000,
 				});
 				return;

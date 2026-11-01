@@ -3,7 +3,7 @@
 	import Spinner from "@/lib/Spinner.svelte";
 	import Setting from "@/lib/settings/Setting.svelte";
 	import SettingsList from "@/lib/settings/SettingsList.svelte";
-	import { toRelativeTime } from "@/lib/util/helpers";
+	import { plPlural, toRelativeTime } from "@/lib/util/helpers";
 	import { notify } from "@/lib/util/notify";
 	import type { AllTasksResponse } from "@/types";
 	import { req } from "@/lib/util/api";
@@ -36,19 +36,19 @@
 			console.error("getAllTasks failed!", err);
 			notify({
 				type: "error",
-				text: "Failed to get all tasks from server.",
+				text: "Nie udało się pobrać listy zadań z serwera.",
 				time: 6000,
 			});
 		}
 	}
 
 	async function rescheduleTask(name: string, seconds: number) {
-		const nid = notify({ type: "loading", text: "Updating.." });
+		const nid = notify({ type: "loading", text: "Aktualizowanie…" });
 		try {
 			formDisabled = true;
 			const res = await req.putWhole(`/task/${name}`, { seconds });
 			if (res.status === 200) {
-				notify({ id: nid, type: "success", text: "Schedule updated." });
+				notify({ id: nid, type: "success", text: "Zaktualizowano harmonogram." });
 				getAllTasks();
 			} else {
 				console.error(
@@ -58,7 +58,7 @@
 				notify({
 					id: nid,
 					type: "error",
-					text: "Unexpected response from reschedule request.",
+					text: "Nieoczekiwana odpowiedź na żądanie zmiany harmonogramu.",
 					time: 6000,
 				});
 			}
@@ -68,7 +68,7 @@
 			notify({
 				id: nid,
 				type: "error",
-				text: "Failed to update schedule.",
+				text: "Nie udało się zaktualizować harmonogramu.",
 				time: 6000,
 			});
 			formDisabled = false;
@@ -76,16 +76,16 @@
 	}
 
 	async function runTask(name: string) {
-		const nid = notify({ type: "loading", text: "Executing.." });
+		const nid = notify({ type: "loading", text: "Uruchamianie…" });
 		try {
 			await req.post(`/task/${name}/run`);
-			notify({ id: nid, type: "success", text: "Executed!" });
+			notify({ id: nid, type: "success", text: "Uruchomiono!" });
 		} catch (err) {
 			console.error("runTask failed!", err);
 			notify({
 				id: nid,
 				type: "error",
-				text: "Manual run failed!",
+				text: "Ręczne uruchomienie nie powiodło się!",
 			});
 		}
 	}
@@ -106,8 +106,8 @@
 </script>
 
 <Modal
-	title="Tasks Schedule"
-	desc="Want a routine task to occur more or less frequently? Configure it below."
+	title="Harmonogram zadań"
+	desc="Chcesz, żeby cykliczne zadanie uruchamiało się częściej lub rzadziej? Ustaw to poniżej."
 	maxWidth="700px"
 	{onClose}
 >
@@ -121,7 +121,7 @@
 				)}
 				<Setting title={task.name}>
 					<div class="entry">
-						<span>Runs every</span>
+						<span>Uruchamiane co</span>
 						<input
 							type="number"
 							placeholder="60"
@@ -132,10 +132,14 @@
 							}}
 						/>
 						<span>
-							seconds. Next{nextRun === "now" ? "" : " in"}
+							{plPlural(task.seconds, "sekundę", "sekundy", "sekund")}.
+							Następne{nextRun === "teraz" ? ":" : " za"}
 							{nextRun}.
 						</span>
-						<button onclick={() => runTask(task.name)}>
+						<button
+							onclick={() => runTask(task.name)}
+							aria-label="Uruchom teraz"
+						>
 							<Icon i="play" />
 						</button>
 					</div>

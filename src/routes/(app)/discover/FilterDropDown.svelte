@@ -19,23 +19,23 @@
 	const dropDownOptions: { [x in DiscoverFilterOption]: DropDownItem } = {
 		trending: {
 			id: DiscoverFilter.trending,
-			value: "Trending",
+			value: "Na czasie",
 		},
 		popular: {
 			id: DiscoverFilter.popular,
-			value: "Popular",
+			value: "Popularne",
 		},
 		upcoming: {
 			id: DiscoverFilter.upcoming,
-			value: "Upcoming",
+			value: "Nadchodzące",
 		},
 		intheatres: {
 			id: DiscoverFilter.inTheatres,
-			value: "In Theatres",
+			value: "W kinach",
 		},
 		streaming: {
 			id: DiscoverFilter.streaming,
-			value: "Streaming",
+			value: "W streamingu",
 		},
 		// advanced: {
 		// 	id: "advanced",
@@ -71,13 +71,13 @@
 
 <div
 	use:tooltip={{
-		text: "Must select a type first.",
+		text: "Najpierw wybierz typ.",
 		pos: "left",
 		condition: onMultiDiscover,
 	}}
 >
 	<DropDown
-		placeholder="Trending"
+		placeholder="Na czasie"
 		{options}
 		isDropDownItem={true}
 		bind:active

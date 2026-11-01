@@ -25,7 +25,7 @@
 	}
 </script>
 
-<Setting title="Rating System" desc="How would you like to rate content?">
+<Setting title="System ocen" desc="Jak chcesz oceniać tytuły?">
 	<div class="rat-wrap">
 		<button
 			class={[
@@ -70,15 +70,15 @@
 			].join(" ")}
 			onclick={() => update(RatingSystem.Thumbs)}
 		>
-			Thumbs
+			Kciuki
 		</button>
 	</div>
 </Setting>
 
 {#if store.userSettings?.ratingSystem === RatingSystem.OutOf10 || store.userSettings?.ratingSystem === RatingSystem.OutOf5 || !store.userSettings?.ratingSystem}
 	<Setting
-		title="Rating Step"
-		desc="How would you like to increment through the stars?"
+		title="Krok oceny"
+		desc="O ile ma się zmieniać ocena w gwiazdkach?"
 	>
 		<div class="rat-wrap">
 			<button

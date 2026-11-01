@@ -38,37 +38,37 @@
 		class={`plain ${getDirectionClass("DATEADDED")}`}
 		onclick={() => sortClicked("DATEADDED")}
 	>
-		Date Added
+		Data dodania
 	</button>
 	<button
 		class={`plain ${getDirectionClass("LASTCHANGED")}`}
 		onclick={() => sortClicked("LASTCHANGED")}
 	>
-		Last Changed
+		Ostatnia zmiana
 	</button>
 	<button
 		class={`plain ${getDirectionClass("LASTFIN")}`}
 		onclick={() => sortClicked("LASTFIN")}
 	>
-		Last Finished
+		Ostatnio obejrzane
 	</button>
 	<button
 		class={`plain ${getDirectionClass("RATING")}`}
 		onclick={() => sortClicked("RATING")}
 	>
-		Rating
+		Ocena
 	</button>
 	<button
 		class={`plain ${getDirectionClass("ALPHA")}`}
 		onclick={() => sortClicked("ALPHA")}
 	>
-		Alphabetical
+		Alfabetycznie
 	</button>
 	<button
 		class={`plain ${getDirectionClass("DATERELEASED")}`}
 		onclick={() => sortClicked("DATERELEASED")}
 	>
-		Release Date
+		Data premiery
 	</button>
 </Menu>
 

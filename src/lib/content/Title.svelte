@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { dateValid } from "../util/date";
+	import { plPlural } from "@/lib/util/helpers";
 
 	interface Props {
 		homepage?: string;
@@ -19,7 +20,7 @@
 			? Math.round(voteAverage > 10 ? voteAverage : voteAverage * 10) / 10
 			: 0,
 	);
-	const titleSafe = $derived(title ? title : "Unknown Title");
+	const titleSafe = $derived(title ? title : "Nieznany tytuł");
 	const releaseYear = $derived(
 		dateValid(releaseDate) ? releaseDate.getFullYear() : undefined,
 	);
@@ -38,16 +39,16 @@
 		{#if releaseYear}
 			<span class="year">
 				<!--First span ends on the line with the #if so there's no whitespace-->
-				<span title={releaseDate?.toLocaleDateString()}>{releaseYear}</span
+				<span title={releaseDate?.toLocaleDateString("pl-PL")}>{releaseYear}</span
 				>{#if endYear && endYear != releaseYear}
-					<span title={endDate?.toLocaleDateString()}>-{endYear}</span>
+					<span title={endDate?.toLocaleDateString("pl-PL")}>-{endYear}</span>
 				{/if}
 			</span>
 		{/if}
 	</span>
 	<span
 		class="rating"
-		title={`Rating: ${vote} out of 10 (based on ${voteCount ?? 0} votes)`}
+		title={`Ocena: ${vote} na 10 (na podstawie ${voteCount ?? 0} ${plPlural(voteCount ?? 0, "głosu", "głosów", "głosów")})`}
 	>
 		<span>*</span>
 		{vote}

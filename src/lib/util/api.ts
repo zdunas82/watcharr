@@ -42,7 +42,7 @@ export const baseURL: string = ((): string => {
 		if (browser) {
 			notify({
 				type: "error",
-				text: "Failed to create your API baseURL. Please look in console for more details.",
+				text: "Nie udało się utworzyć adresu API. Szczegóły znajdziesz w konsoli.",
 			});
 		}
 		// This return value won't work, but just returning something anyways.
@@ -139,7 +139,7 @@ export async function updateWatched(
 	wEntry: Watched | undefined,
 	opts: UpdateWatchedOptions,
 ): Promise<Watched | undefined> {
-	const nid = notify({ text: `Saving`, type: "loading" });
+	const nid = notify({ text: `Zapisywanie`, type: "loading" });
 	try {
 		// If exists, run update request instead
 		if (wEntry?.id) {
@@ -152,7 +152,7 @@ export async function updateWatched(
 					opts.pinned,
 					opts.letCountAsPlay,
 				);
-				notify({ id: nid, text: `Saved!`, type: "success" });
+				notify({ id: nid, text: `Zapisano!`, type: "success" });
 			} catch (err) {
 				console.error("updateWatched: Failed to update!", err);
 				throw err;
@@ -163,7 +163,7 @@ export async function updateWatched(
 		}
 
 		// Add new watched item
-		notify({ id: nid, text: `Adding`, type: "loading" });
+		notify({ id: nid, text: `Dodawanie`, type: "loading" });
 		const reqBody: WatchedAddRequest = {
 			contentType: opts.contentType,
 			status: opts.status,
@@ -178,11 +178,11 @@ export async function updateWatched(
 		}
 		const resp = await req.post<Watched>("/watched", reqBody);
 		console.log("Added watched:", resp);
-		notify({ id: nid, text: `Added!`, type: "success" });
+		notify({ id: nid, text: `Dodano!`, type: "success" });
 		return resp;
 	} catch (err) {
 		console.error("updateWatched: Failed!", err);
-		notify({ id: nid, text: `Failed!`, type: "error" });
+		notify({ id: nid, text: `Nie udało się!`, type: "error" });
 		throw err;
 	}
 }
@@ -194,15 +194,15 @@ export async function updateWatched(
  */
 export async function removeWatched(id: number): Promise<boolean> {
 	console.log("removeWatched: Removing:", id);
-	const nid = notify({ text: "Removing", type: "loading" });
+	const nid = notify({ text: "Usuwanie", type: "loading" });
 	try {
 		const resp = await req.delete(`/watched/${id}`);
 		console.log("removeWatched: Removed resp:", resp);
-		notify({ id: nid, text: "Removed!", type: "success" });
+		notify({ id: nid, text: "Usunięto!", type: "success" });
 		return true;
 	} catch (err) {
 		console.error("removeWatched: Failed!", err);
-		notify({ id: nid, text: "Failed To Remove!", type: "error" });
+		notify({ id: nid, text: "Nie udało się usunąć!", type: "error" });
 	}
 	return false;
 }
@@ -211,7 +211,7 @@ export async function updateActivity(
 	activity: Activity,
 	date: Date,
 ): Promise<Activity | undefined> {
-	const nid = notify({ text: "Updating", type: "loading" });
+	const nid = notify({ text: "Aktualizowanie", type: "loading" });
 	console.debug("updateActivity:", activity, date);
 	try {
 		const resp = await req.putWhole(`/activity/${activity.id}`, {
@@ -221,24 +221,24 @@ export async function updateActivity(
 		if (activity) {
 			activity.customDate = date.toISOString();
 		}
-		notify({ id: nid, text: "Updated!", type: "success" });
+		notify({ id: nid, text: "Zaktualizowano!", type: "success" });
 		return activity;
 	} catch (err) {
 		console.error("updateActivity failed!", err);
-		notify({ id: nid, text: "Failed to Update!", type: "error" });
+		notify({ id: nid, text: "Nie udało się zaktualizować!", type: "error" });
 	}
 }
 
 export async function removeActivity(activityId: number): Promise<boolean> {
-	const nid = notify({ text: "Deleting", type: "loading" });
+	const nid = notify({ text: "Usuwanie", type: "loading" });
 	try {
 		await req.delete("/activity/" + activityId);
 		console.log("removeActivity: Removed:", activityId);
-		notify({ id: nid, text: "Deleted!", type: "success" });
+		notify({ id: nid, text: "Usunięto!", type: "success" });
 		return true;
 	} catch (err) {
 		console.error("removeActivity: Failed!", err);
-		notify({ id: nid, text: "Failed to Delete!", type: "error" });
+		notify({ id: nid, text: "Nie udało się usunąć!", type: "error" });
 	}
 	return false;
 }
@@ -273,17 +273,17 @@ export function updateUserSetting<K extends keyof UserSettings>(
 		return;
 	}
 	const originalValue = store.userSettings[name];
-	const nid = notify({ type: "loading", text: "Updating" });
+	const nid = notify({ type: "loading", text: "Aktualizowanie" });
 	req
 		.post("/user/update", { [name]: value })
 		.then(() => {
 			if (store.userSettings) store.userSettings[name] = value;
-			notify({ id: nid, type: "success", text: "Updated" });
+			notify({ id: nid, type: "success", text: "Zaktualizowano" });
 			if (typeof done !== "undefined") done();
 		})
 		.catch((err) => {
 			console.error("Failed to update user setting", err);
-			notify({ id: nid, type: "error", text: "Couldn't Update" });
+			notify({ id: nid, type: "error", text: "Nie udało się zaktualizować" });
 			if (store.userSettings) store.userSettings[name] = originalValue;
 			if (typeof done !== "undefined") done();
 		});
@@ -294,15 +294,15 @@ export function changeUserPassword(
 	newPassword: string,
 	done?: (errMsg?: string) => void,
 ) {
-	const nid = notify({ type: "loading", text: "Changing Password" });
+	const nid = notify({ type: "loading", text: "Zmienianie hasła" });
 	req
 		.post("/auth/change_password", { oldPassword, newPassword })
 		.then(() => {
-			notify({ id: nid, type: "success", text: "Password Changed" });
+			notify({ id: nid, type: "success", text: "Hasło zmienione" });
 			if (typeof done !== "undefined") done();
 		})
 		.catch((err) => {
-			const errMsg = ReqerError.getMsg(err, "Couldn't Change Password");
+			const errMsg = ReqerError.getMsg(err, "Nie udało się zmienić hasła");
 			console.error(
 				"Change Password Form - Failed to change password on the server",
 				err,
@@ -327,31 +327,31 @@ export async function getServerFeatures() {
 }
 
 export async function followUser(id: number) {
-	const nid = notify({ text: `Following`, type: "loading" });
+	const nid = notify({ text: `Obserwowanie`, type: "loading" });
 	req
 		.post<Follow>(`/follow/${id}`)
 		.then((resp) => {
 			console.log("Followed:", resp);
 			store.follows.push(resp);
-			notify({ id: nid, text: `Followed!`, type: "success" });
+			notify({ id: nid, text: `Obserwujesz!`, type: "success" });
 		})
 		.catch((err) => {
 			console.error(err);
-			notify({ id: nid, text: "Failed To Follow!", type: "error" });
+			notify({ id: nid, text: "Nie udało się zaobserwować!", type: "error" });
 		});
 }
 
 export async function unfollowUser(id: number) {
-	const nid = notify({ text: `Unfollowing`, type: "loading" });
+	const nid = notify({ text: `Przestawanie obserwowania`, type: "loading" });
 	req
 		.delete(`/follow/${id}`)
 		.then((resp) => {
 			console.log("Unfollowed:", resp);
 			store.follows = store.follows.filter((fo) => fo.followedUser.id != id);
-			notify({ id: nid, text: `Unfollowed!`, type: "success" });
+			notify({ id: nid, text: `Już nie obserwujesz!`, type: "success" });
 		})
 		.catch((err) => {
 			console.error(err);
-			notify({ id: nid, text: "Failed To Unfollow!", type: "error" });
+			notify({ id: nid, text: "Nie udało się przestać obserwować!", type: "error" });
 		});
 }

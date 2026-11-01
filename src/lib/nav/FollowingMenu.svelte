@@ -12,7 +12,7 @@
 
 <Menu conf={{ width: "180px", arrowRight: "53px" }}>
 	{#if store.follows?.length > 0}
-		<h4 class="norm sm-caps">following</h4>
+		<h4 class="norm sm-caps">obserwowani</h4>
 		<div class="list">
 			{#each store.follows as f (f.followedUser.id)}
 				<a
@@ -26,7 +26,7 @@
 			{/each}
 		</div>
 	{:else}
-		<span style="margin-top: 0;">You are not following anyone.</span>
+		<span style="margin-top: 0;">Nikogo nie obserwujesz.</span>
 	{/if}
 </Menu>
 

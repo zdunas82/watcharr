@@ -20,11 +20,11 @@
 
 <Menu conf={{ width: "200px", right: "47px", arrowLeft: "38px" }}>
 	<div class="title">
-		<h4 class="norm sm-caps">type</h4>
+		<h4 class="norm sm-caps">typ</h4>
 		{#if store.activeFilters?.type?.length > 0 || store.activeFilters?.status?.length > 0}
 			<button
 				class="plain"
-				use:tooltip={{ text: "Clear", pos: "left" }}
+				use:tooltip={{ text: "Wyczyść", pos: "left" }}
 				onclick={() => {
 					clearActiveFilters();
 					window.scrollTo({ top: 0 });
@@ -39,20 +39,20 @@
 			class:active={store.activeFilters.type.includes("tv")}
 			onclick={() => filterClicked("type", "tv")}
 		>
-			SHOW
+			SERIAL
 		</button>
 		<button
 			class:active={store.activeFilters.type.includes("movie")}
 			onclick={() => filterClicked("type", "movie")}
 		>
-			MOVIE
+			FILM
 		</button>
 		{#if store.serverFeatures?.games}
 			<button
 				class:active={store.activeFilters.type.includes("game")}
 				onclick={() => filterClicked("type", "game")}
 			>
-				GAME
+				GRA
 			</button>
 		{/if}
 	</div>
@@ -61,37 +61,37 @@
 		class={`plain ${store.activeFilters.status.includes("planned") ? "on" : ""}`}
 		onclick={() => filterClicked("status", "planned")}
 	>
-		planned
+		planuję
 	</button>
 	<button
 		class={`plain ${store.activeFilters.status.includes("watching") ? "on" : ""}`}
 		onclick={() => filterClicked("status", "watching")}
 	>
-		watching
+		oglądam
 		{#if store.serverFeatures?.games}
-			(playing)
+			(gram)
 		{/if}
 	</button>
 	<button
 		class={`plain ${store.activeFilters.status.includes("finished") ? "on" : ""}`}
 		onclick={() => filterClicked("status", "finished")}
 	>
-		finished
+		obejrzane
 		{#if store.serverFeatures?.games}
-			(played)
+			(zagrane)
 		{/if}
 	</button>
 	<button
 		class={`plain ${store.activeFilters.status.includes("hold") ? "on" : ""}`}
 		onclick={() => filterClicked("status", "hold")}
 	>
-		on hold
+		wstrzymane
 	</button>
 	<button
 		class={`plain ${store.activeFilters.status.includes("dropped") ? "on" : ""}`}
 		onclick={() => filterClicked("status", "dropped")}
 	>
-		dropped
+		porzucone
 	</button>
 </Menu>
 
@@ -126,7 +126,7 @@
 	}
 
 	button.plain {
-		text-transform: capitalize;
+		text-transform: none; /* PoterX: polskie teksty maja wlasna wielkosc liter */
 		position: relative;
 
 		&.on::before {

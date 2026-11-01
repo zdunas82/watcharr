@@ -36,7 +36,7 @@
 		} else {
 			qualityProfiles = [];
 			rootFolders = [];
-			error = "host and key must be provided to test the connection";
+			error = "aby przetestować połączenie, podaj host i klucz";
 		}
 	}
 
@@ -57,7 +57,7 @@
 			error = "";
 		} catch (err) {
 			console.error("getSettingsData failed!", err);
-			error = `Request Failed, check your Host and Key`;
+			error = `Żądanie nie powiodło się, sprawdź host i klucz`;
 			formDisabled = false;
 		}
 	}
@@ -65,22 +65,22 @@
 	function checkForm() {
 		let errs: string[] = [];
 		if (!servarr.name) {
-			errs.push("name");
+			errs.push("nazwa");
 		}
 		if (!servarr.host) {
 			errs.push("host");
 		}
 		if (!servarr.key) {
-			errs.push("key");
+			errs.push("klucz");
 		}
 		if (!servarr.qualityProfile) {
-			errs.push("qualityProfile");
+			errs.push("profil jakości");
 		}
 		if (!servarr.rootFolder) {
-			errs.push("rootFolder");
+			errs.push("folder główny");
 		}
 		if (errs.length > 0) {
-			error = `Missing required params: ${errs.join(", ")}`;
+			error = `Brak wymaganych pól: ${errs.join(", ")}`;
 		} else {
 			error = "";
 		}
@@ -95,14 +95,14 @@
 				await req.post(`/arr/rad/${isEditing ? "edit" : "add"}`, servarr);
 				notify({
 					type: "success",
-					text: isEditing ? "Changes saved!" : "Server added successfully!",
+					text: isEditing ? "Zapisano zmiany!" : "Dodano serwer!",
 				});
 				onClose();
 			} catch (err) {
 				console.error("Failed to save server!", err);
 				error = ReqerError.getMsg(
 					err,
-					`Failed to ${isEditing ? "edit" : "add"}`,
+					`Nie udało się ${isEditing ? "zapisać zmian" : "dodać serwera"}`,
 				);
 			}
 		}
@@ -113,12 +113,12 @@
 			await req.post(`/arr/rad/rm/${servarr.name}`);
 			notify({
 				type: "success",
-				text: "Removed server",
+				text: "Usunięto serwer",
 			});
 			onClose();
 		} catch (err) {
 			console.error("Failed to remove server!", err);
-			error = ReqerError.getMsg(err, "Failed to remove");
+			error = ReqerError.getMsg(err, "Nie udało się usunąć");
 		}
 	}
 	run(() => {
@@ -129,8 +129,8 @@
 </script>
 
 <Modal
-	title={isEditing ? `Edit ${servarr.name}` : "Add Radarr Server"}
-	desc="Setup a connection to your Radarr server"
+	title={isEditing ? `Edytuj ${servarr.name}` : "Dodaj serwer Radarr"}
+	desc="Skonfiguruj połączenie z serwerem Radarr"
 	{onClose}
 >
 	{#if error}
@@ -138,7 +138,7 @@
 	{/if}
 	<SettingsList>
 		{#if !isEditing}
-			<Setting title="Name" desc="Give your server a memorable name.">
+			<Setting title="Nazwa" desc="Nadaj serwerowi łatwą do zapamiętania nazwę.">
 				<input
 					type="text"
 					placeholder="https://radarr.example.com"
@@ -148,8 +148,8 @@
 			</Setting>
 		{/if}
 		<Setting
-			title="Radarr Host"
-			desc="Point to your Radarr server to enable movie requesting."
+			title="Host Radarr"
+			desc="Wskaż swój serwer Radarr, żeby włączyć prośby o filmy."
 		>
 			<input
 				type="text"
@@ -158,7 +158,7 @@
 				disabled={formDisabled}
 			/>
 		</Setting>
-		<Setting title="Radarr Key" desc="API key for your Radarr instance.">
+		<Setting title="Klucz Radarr" desc="Klucz API Twojej instancji Radarr.">
 			<input
 				type="text"
 				placeholder="dGhhbmtzIGZvciB1c2luZyB3YXRjaGFyciA6KQ=="
@@ -167,31 +167,31 @@
 			/>
 		</Setting>
 		<Setting
-			title="Quality Profile"
-			desc="Default quality profile when adding movies."
+			title="Profil jakości"
+			desc="Domyślny profil jakości przy dodawaniu filmów."
 		>
 			<DropDown
 				placeholder={qualityProfiles?.length == 0
-					? "Add a Host and Key, then press test to view"
-					: "Select a quality profile"}
+					? "Podaj host i klucz, potem kliknij Testuj"
+					: "Wybierz profil jakości"}
 				options={qualityProfiles}
 				bind:active={servarr.qualityProfile}
 				disabled={formDisabled}
 			/>
 		</Setting>
-		<Setting title="Root Folder" desc="Default root folder when adding movies.">
+		<Setting title="Folder główny" desc="Domyślny folder główny przy dodawaniu filmów.">
 			<DropDown
 				placeholder={rootFolders?.length == 0
-					? "Add a Host and Key, then press test to view"
-					: "Select a root folder"}
+					? "Podaj host i klucz, potem kliknij Testuj"
+					: "Wybierz folder główny"}
 				options={rootFolders}
 				bind:active={servarr.rootFolder}
 				disabled={formDisabled}
 			/>
 		</Setting>
 		<Setting
-			title="Automatic Search"
-			desc="Start movie search automatically?"
+			title="Automatyczne wyszukiwanie"
+			desc="Automatycznie rozpocząć wyszukiwanie filmu?"
 			row
 		>
 			<Checkbox
@@ -202,12 +202,12 @@
 		</Setting>
 		<div class="btns">
 			{#if isEditing}
-				<button class="danger" onclick={() => remove()}>Delete</button>
+				<button class="danger" onclick={() => remove()}>Usuń</button>
 			{/if}
 			<button id="test" class="secondary" onclick={() => testIfHostAndKeySet()}
-				>Test</button
+				>Testuj</button
 			>
-			<button onclick={() => save()}>{isEditing ? "Save" : "Add Server"}</button
+			<button onclick={() => save()}>{isEditing ? "Zapisz" : "Dodaj serwer"}</button
 			>
 		</div>
 	</SettingsList>
@@ -238,7 +238,7 @@
 		width: 100%;
 		padding: 10px;
 		background-color: rgb(221, 48, 48);
-		text-transform: capitalize;
+		text-transform: none; /* PoterX: polskie teksty maja wlasna wielkosc liter */
 		color: white;
 		margin-bottom: 15px;
 	}

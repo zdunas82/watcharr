@@ -20,20 +20,32 @@
 
 	async function getCountries() {
 		const c = await req.get<TMDBRegions>(`/content/regions`);
+		let regionNames: Intl.DisplayNames | undefined;
+		try {
+			regionNames = new Intl.DisplayNames(["pl"], { type: "region" });
+		} catch {
+			regionNames = undefined;
+		}
 		mappedCountries = c.results
 			.map((cc) => {
+				let name = cc.english_name;
+				try {
+					name = regionNames?.of(cc.iso_3166_1) ?? cc.english_name;
+				} catch {
+					name = cc.english_name;
+				}
 				return {
 					id: cc.iso_3166_1,
-					value: cc.english_name,
+					value: name,
 				} as DropDownItem;
 			})
-			.sort((a, b) => a.value.localeCompare(b.value));
+			.sort((a, b) => a.value.localeCompare(b.value, "pl"));
 	}
 </script>
 
 {#await getCountries() then}
 	<DropDown
-		placeholder="Select a country"
+		placeholder="Wybierz kraj"
 		bind:active={selectedCountry}
 		options={mappedCountries}
 		onChange={() => onChange(selectedCountry)}
@@ -41,5 +53,5 @@
 		{disabled}
 	/>
 {:catch err}
-	<Error error={err} pretty="Failed to load countries!" />
+	<Error error={err} pretty="Nie udało się wczytać listy krajów!" />
 {/await}

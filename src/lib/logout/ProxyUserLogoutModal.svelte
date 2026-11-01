@@ -51,8 +51,8 @@
 </script>
 
 <Modal
-	title="Logout"
-	desc="You logged in via single sign-on. Did you click log out by mistake?"
+	title="Wylogowanie"
+	desc="Zalogowano Cię przez logowanie jednokrotne (SSO). Czy kliknięcie „Wyloguj” było pomyłką?"
 	{onClose}
 >
 	{#if loadingBtns}
@@ -61,24 +61,24 @@
 		<div>
 			<p>
 				{#if logoutUrl}
-					This is likely what you want: <b
-						>Fully logout of your single sign-on service and Watcharr</b
+					Prawdopodobnie chodzi Ci o to: <b
+						>wyloguj się całkowicie z usługi logowania jednokrotnego i z Watcharr</b
 					>.
 				{:else}
-					Single sign-on logout has not been configured on this server. If you
-					are not the server operator, let them know!
+					Wylogowanie z logowania jednokrotnego nie zostało skonfigurowane na tym
+					serwerze. Jeśli nie zarządzasz serwerem, daj znać administratorowi!
 				{/if}
 			</p>
 			<button disabled={!logoutUrl} onclick={proxyLogout}
-				>Log out of Single Sign-On Service</button
+				>Wyloguj z usługi logowania jednokrotnego</button
 			>
 			<p>
-				Logging out of Watcharr will clear your local credentials and data, but <b
-					>you will still be logged in to your single sign-on service</b
-				>! Do <b>not</b> do this on a public machine and assume you are logged out,
-				this account could still be accessible.
+				Wylogowanie z Watcharr usunie lokalne dane logowania i dane aplikacji, ale <b
+					>nadal będziesz zalogowany w usłudze logowania jednokrotnego</b
+				>! <b>Nie</b> rób tego na publicznym komputerze, zakładając, że się
+				wylogowałeś — konto może być nadal dostępne.
 			</p>
-			<button onclick={logout}>Log out of Watcharr</button>
+			<button onclick={logout}>Wyloguj z Watcharr</button>
 		</div>
 	{/if}
 </Modal>

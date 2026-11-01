@@ -52,7 +52,7 @@
 	<button
 		onclick={() => (menuOpen = !menuOpen)}
 		use:tooltip={{
-			text: `Add to a Tag`,
+			text: `Dodaj do tagu`,
 			pos: "bot",
 		}}
 	>
@@ -61,7 +61,7 @@
 
 	{#if menuOpen}
 		<TagMenu
-			titleText="Add To Tag"
+			titleText="Dodaj do tagu"
 			selectedTags={watchedItem.tags}
 			{onTagClick}
 			menuConfig={{

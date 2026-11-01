@@ -18,7 +18,7 @@
 	{:else}
 		<!-- Generic "unknown" text, since this component
 		 	 is also used for displaying Game Modes. -->
-		<span>Unknown</span>
+		<span>Nieznane</span>
 	{/if}
 </div>
 

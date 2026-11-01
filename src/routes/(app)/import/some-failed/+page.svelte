@@ -44,11 +44,13 @@
 
 <div class="content">
 	<div class="inner">
-		<h2>Some Content Failed To Import</h2>
+		<h2>Części pozycji nie udało się zaimportować</h2>
 		<h5 class="norm">
-			You can search for the failed imports and manually add them.
+			Możesz wyszukać pozycje, których nie udało się zaimportować, i dodać je ręcznie.
 		</h5>
-		<h4 class="norm">{successCount} succeeded and {failed.length} failed.</h4>
+		<h4 class="norm">
+			Zaimportowano: {successCount}, nie udało się: {failed.length}.
+		</h4>
 
 		{#if failed}
 			<ul>
@@ -61,7 +63,7 @@
 				{/each}
 			</ul>
 		{:else}
-			No List
+			Brak listy
 		{/if}
 	</div>
 </div>

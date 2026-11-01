@@ -140,7 +140,7 @@
 </script>
 
 <svelte:head>
-	<title>{meta.username}'s Watched List</title>
+	<title>Lista użytkownika {meta.username}</title>
 </svelte:head>
 
 <div class="content">
@@ -155,7 +155,7 @@
 					class="plain"
 					disabled={followBtnDisabled}
 					onclick={follow}
-					use:tooltip={{ text: isFollowing ? "Unfollow" : "Follow" }}
+					use:tooltip={{ text: isFollowing ? "Przestań obserwować" : "Obserwuj" }}
 				>
 					<Icon i={isFollowing ? "person-minus" : "person-add"} />
 				</button>
@@ -182,10 +182,10 @@
 	{:else if !dataLoader.state.reqLoading && !dataLoader.state.reqLoadError}
 		<div class="empty-list">
 			<Icon i={store.hasActiveFilters ? "filter-circle" : "reel"} wh={80} />
-			<h2 class="norm">This list is empty!</h2>
-			<h4 class="norm">Come back later to see if they have added anything.</h4>
+			<h2 class="norm">Ta lista jest pusta!</h2>
+			<h4 class="norm">Zajrzyj później – może coś tu dodadzą.</h4>
 			{#if store.hasActiveFilters}
-				<button onclick={() => clearActiveFilters()}>Clear Filters</button>
+				<button onclick={() => clearActiveFilters()}>Wyczyść filtry</button>
 			{/if}
 		</div>
 	{/if}
@@ -200,7 +200,7 @@
 {#if dataLoader.state.reqLoadError}
 	<div style="margin-bottom: 60px;">
 		<Error
-			pretty="Failed to load results!"
+			pretty="Nie udało się wczytać wyników!"
 			error={dataLoader.state.reqLoadError}
 			onRetry={() => {
 				dataLoader.state.reqLoadError = undefined;

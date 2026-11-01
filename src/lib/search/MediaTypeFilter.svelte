@@ -19,14 +19,14 @@
 		data-active={active === "movie"}
 		onclick={() => onChange("movie")}
 	>
-		<Icon i="film" wh={20} /> Movies
+		<Icon i="film" wh={20} /> Filmy
 	</button>
 	<button
 		class="plain"
 		data-active={active === "show"}
 		onclick={() => onChange("show")}
 	>
-		<Icon i="tv" wh={20} /> TV Shows
+		<Icon i="tv" wh={20} /> Seriale
 	</button>
 	{#if store.serverFeatures?.games}
 		<button
@@ -34,7 +34,7 @@
 			data-active={active === "game"}
 			onclick={() => onChange("game")}
 		>
-			<Icon i="gamepad" wh={20} /> Games
+			<Icon i="gamepad" wh={20} /> Gry
 		</button>
 	{/if}
 	<button
@@ -42,7 +42,7 @@
 		data-active={active === "person"}
 		onclick={() => onChange("person")}
 	>
-		<Icon i="people-nocircle" wh={20} /> People
+		<Icon i="people-nocircle" wh={20} /> Osoby
 	</button>
 </div>
 

@@ -24,7 +24,7 @@
 		}
 
 		if (!error && page.url.searchParams.get("again")) {
-			error = "Please Login Again";
+			error = "Zaloguj się ponownie";
 		}
 		if (page.url.searchParams.get("noAuto") == "1") {
 			console.info(
@@ -47,7 +47,7 @@
 			notify({
 				type: "error",
 				time: 10000,
-				text: "Failed to get available login methods",
+				text: "Nie udało się pobrać dostępnych metod logowania",
 			});
 			return;
 		}
@@ -80,7 +80,7 @@
 		const pass = fd.get("password");
 
 		if (!user || !pass) {
-			error = "Username and Password fields are required";
+			error = "Nazwa użytkownika i hasło są wymagane";
 			return;
 		}
 
@@ -89,7 +89,7 @@
 			customAuthEP = "jellyfin";
 		}
 
-		const nid = notify({ text: "Logging in", type: "loading" });
+		const nid = notify({ text: "Logowanie", type: "loading" });
 		noAuthReq
 			.post<AuthResponse>(`/auth${login ? `/${customAuthEP}` : "/register"}`, {
 				username: user,
@@ -105,11 +105,11 @@
 						localStorage.removeItem("useEmby");
 					}
 					goto(resolve("/"));
-					notify({ id: nid, text: `Welcome ${user}!`, type: "success" });
+					notify({ id: nid, text: `Witaj, ${user}!`, type: "success" });
 				}
 			})
 			.catch((err) => {
-				error = ReqerError.getMsg(err, "Login failed");
+				error = ReqerError.getMsg(err, "Logowanie nie powiodło się");
 				unNotify(nid);
 			});
 	}
@@ -122,11 +122,11 @@
 			const pin = await doPlexLogin(p);
 			plexPinPoll(pin, p, (err, token) => {
 				if (err) {
-					error = "Plex Auth Failed";
+					error = "Autoryzacja Plex nie powiodła się";
 					console.error("Plex auth failed!", err);
 					return;
 				}
-				const nid = notify({ text: "Logging in", type: "loading" });
+				const nid = notify({ text: "Logowanie", type: "loading" });
 				noAuthReq
 					.post<AuthResponse>("/auth/plex", {
 						token,
@@ -137,23 +137,23 @@
 							console.log("Received token... logging in.");
 							localStorage.setItem("token", resp.token);
 							goto(resolve("/"));
-							notify({ id: nid, text: `Welcome!`, type: "success" });
+							notify({ id: nid, text: `Witaj!`, type: "success" });
 						}
 					})
 					.catch((err) => {
 						console.error("plexLogin: Fail", err);
-						error = ReqerError.getMsg(err, "Login failed");
-						notify({ id: nid, text: `Failed!`, type: "error" });
+						error = ReqerError.getMsg(err, "Logowanie nie powiodło się");
+						notify({ id: nid, text: `Nie udało się!`, type: "error" });
 					});
 			});
 		} catch (err) {
 			console.error("plexLogin: failed!", err);
-			error = "Plex login failed";
+			error = "Logowanie przez Plex nie powiodło się";
 		}
 	}
 
 	function proxyLogin(auto = false) {
-		const nid = notify({ text: "Logging in", type: "loading" });
+		const nid = notify({ text: "Logowanie", type: "loading" });
 		noAuthReq
 			.post<AuthResponse>(`/auth/proxy`)
 			.then((resp) => {
@@ -161,15 +161,15 @@
 					console.log("Received token... logging in.");
 					localStorage.setItem("token", resp.token);
 					goto(resolve("/"));
-					notify({ id: nid, text: `Welcome!`, type: "success" });
+					notify({ id: nid, text: `Witaj!`, type: "success" });
 				}
 			})
 			.catch((err) => {
-				error = ReqerError.getMsg(err, "Login failed");
+				error = ReqerError.getMsg(err, "Logowanie nie powiodło się");
 				if (auto) {
 					notify({
 						id: nid,
-						text: `Automatic SSO Login Failed!`,
+						text: `Automatyczne logowanie SSO nie powiodło się!`,
 						type: "error",
 					});
 				} else {
@@ -183,9 +183,9 @@
 	<div class="inner">
 		<h2>
 			{#if login}
-				Get Back In!
+				Witaj ponownie!
 			{:else}
-				Lucky You Found Us!
+				Dobrze, że nas znalazłeś!
 			{/if}
 		</h2>
 
@@ -194,14 +194,14 @@
 		{/if}
 
 		<form onsubmit={handleLogin}>
-			<label for="username">Username</label>
-			<input type="text" name="username" placeholder="Username" />
+			<label for="username">Nazwa użytkownika</label>
+			<input type="text" name="username" placeholder="Nazwa użytkownika" />
 
-			<label for="password">Password</label>
-			<input type="password" name="password" placeholder="Password" />
+			<label for="password">Hasło</label>
+			<input type="password" name="password" placeholder="Hasło" />
 
 			{#if login}
-				<span class="login-with" style="font-weight: bold">Login With</span>
+				<span class="login-with" style="font-weight: bold">Zaloguj się przez</span>
 				<div class="login-btns">
 					<button type="submit"><span class="watcharr">W</span>Watcharr</button>
 					{#if availableProviders?.length > 0}
@@ -209,19 +209,19 @@
 							{#if useEmby}
 								<button type="submit" name="jellyfin" class="other">
 									<Icon i="emby" wh={18} />
-									emby
+									Emby
 								</button>
 							{:else}
 								<button type="submit" name="jellyfin" class="other">
 									<Icon i="jellyfin" wh={18} />
-									jellyfin
+									Jellyfin
 								</button>
 							{/if}
 						{/if}
 					{/if}
 				</div>
 				{#if apHeader || apPlex}
-					<p style="font-weight: bold; font-size: 14px;">or</p>
+					<p style="font-weight: bold; font-size: 14px;">lub</p>
 					{#if apHeader}
 						<div class="login-btns">
 							<button
@@ -232,7 +232,7 @@
 									proxyLogin();
 								}}
 							>
-								<Icon i="lock-closed" wh={18} />Continue with Single Sign-On
+								<Icon i="lock-closed" wh={18} />Kontynuuj przez logowanie jednokrotne (SSO)
 							</button>
 						</div>
 					{/if}
@@ -246,14 +246,14 @@
 								name="plex"
 								class="plex other"
 							>
-								<Icon i="plex" wh={18} />Continue with Plex
+								<Icon i="plex" wh={18} />Kontynuuj przez Plex
 							</button>
 						</div>
 					{/if}
 				{/if}
 			{:else}
 				<div class="login-btns">
-					<button type="submit">Sign Up</button>
+					<button type="submit">Zarejestruj się</button>
 				</div>
 			{/if}
 		</form>
@@ -266,9 +266,9 @@
 				}}
 			>
 				{#if login}
-					Not a user?
+					Nie masz konta?
 				{:else}
-					Already a user?
+					Masz już konto?
 				{/if}
 			</button>
 		{/if}
@@ -319,7 +319,7 @@
 			display: flex;
 			flex-flow: row;
 			gap: 10px;
-			text-transform: capitalize;
+			text-transform: none; /* PoterX: polskie teksty maja wlasna wielkosc liter */
 
 			.watcharr {
 				font-family: "Rampart One";
@@ -349,7 +349,7 @@
 		width: 100%;
 		padding: 10px;
 		background-color: rgb(221, 48, 48);
-		text-transform: capitalize;
+		text-transform: none; /* PoterX: polskie teksty maja wlasna wielkosc liter */
 		color: white;
 	}
 </style>

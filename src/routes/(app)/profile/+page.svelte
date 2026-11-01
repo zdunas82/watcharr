@@ -4,7 +4,7 @@
 	import Stat from "@/lib/stats/Stat.svelte";
 	import Stats from "@/lib/stats/Stats.svelte";
 	import { req } from "@/lib/util/api";
-	import { getOrdinalSuffix, monthsShort } from "@/lib/util/helpers";
+	import { plPlural } from "@/lib/util/helpers";
 	import { store } from "@/store.svelte";
 	import { type Image, type Profile } from "@/types";
 	import { notify } from "@/lib/util/notify";
@@ -20,9 +20,11 @@
 	}
 
 	function formatDate(d: Date) {
-		return `${d.getDate()}${getOrdinalSuffix(d.getDate())} ${
-			monthsShort[d.getMonth()]
-		} ${d.getFullYear()}`;
+		return d.toLocaleDateString("pl-PL", {
+			day: "numeric",
+			month: "short",
+			year: "numeric",
+		});
 	}
 
 	function updateBio(
@@ -33,19 +35,19 @@
 			console.warn("updateBio called without any value", newBio);
 			return;
 		}
-		const nid = notify({ text: "Updating Bio", type: "loading" });
+		const nid = notify({ text: "Aktualizowanie opisu", type: "loading" });
 		req
 			.post("/user/bio", { newBio: newBio })
 			.then(() => {
 				if (user) {
 					user.bio = newBio;
-					notify({ id: nid, text: "Updated Bio", type: "success" });
+					notify({ id: nid, text: "Zaktualizowano opis", type: "success" });
 				}
 			})
 			.catch((err) => {
 				notify({
 					id: nid,
-					text: ReqerError.getMsg(err, "Failed to update bio"),
+					text: ReqerError.getMsg(err, "Nie udało się zaktualizować opisu"),
 					type: "error",
 				});
 			});
@@ -57,7 +59,7 @@
 			console.error("avatarDropped: no file found");
 			return;
 		}
-		const nid = notify({ text: "Uploading avatar", type: "loading" });
+		const nid = notify({ text: "Przesyłanie awatara", type: "loading" });
 		const fd = new FormData();
 		fd.append("avatar", files[0]);
 		req
@@ -65,14 +67,14 @@
 			.then((r) => {
 				if (user) {
 					user.avatar = r;
-					notify({ id: nid, text: "Avatar Uploaded", type: "success" });
+					notify({ id: nid, text: "Przesłano awatar", type: "success" });
 				}
 			})
 			.catch((err) => {
 				console.error("uploading avatar failed", err);
 				notify({
 					id: nid,
-					text: ReqerError.getMsg(err, "Failed to upload avatar"),
+					text: ReqerError.getMsg(err, "Nie udało się przesłać awatara"),
 					type: "error",
 				});
 			});
@@ -85,10 +87,10 @@
 	function toFormattedTimeLong(m: number) {
 		// Considers a 30 days long month
 		const countInMinutes = [
-			["month", 43200],
-			["week", 10080],
-			["day", 1440],
-			["hour", 60],
+			[["miesiąc", "miesiące", "miesięcy"], 43200],
+			[["tydzień", "tygodnie", "tygodni"], 10080],
+			[["dzień", "dni", "dni"], 1440],
+			[["godzina", "godziny", "godzin"], 60],
 		];
 		let ansString = "";
 		let tmp;
@@ -96,18 +98,21 @@
 			tmp = Math.floor(m / (c[1] as number));
 
 			// Ignore fields with fewer than 1 unit
-			if (tmp) ansString += `${tmp} ${c[0]}${tmp >= 2 ? "s, " : ", "}`;
+			if (tmp) {
+				const f = c[0] as string[];
+				ansString += `${tmp} ${plPlural(tmp, f[0], f[1], f[2])}, `;
+			}
 			m -= tmp * (c[1] as number);
 		}
 		if (!ansString) {
-			return "0 hours";
+			return "0 godzin";
 		}
 		return ansString.slice(0, -2);
 	}
 </script>
 
 <svelte:head>
-	<title>My Profile</title>
+	<title>Mój profil</title>
 </svelte:head>
 
 <div class="content">
@@ -117,13 +122,13 @@
 			<div>
 				<h2 title={user?.username}>
 					<span style="font-weight: normal; font-variant: all-small-caps;"
-						>Hey</span
+						>Cześć</span
 					>
 					{user?.username}
 				</h2>
 				<textarea
 					rows="1"
-					placeholder="my bio"
+					placeholder="mój opis"
 					onblur={updateBio}
 					value={user?.bio}></textarea>
 			</div>
@@ -133,27 +138,27 @@
 			{#await getProfilePromise}
 				<Spinner />
 			{:then profile}
-				<Stat name="Joined" value={formatDate(new Date(profile.joined))} />
-				<Stat name="Movies Watched" value={profile.moviesWatched} large />
-				<Stat name="Shows Watched" value={profile.showsWatched} large />
+				<Stat name="Data dołączenia" value={formatDate(new Date(profile.joined))} />
+				<Stat name="Obejrzane filmy" value={profile.moviesWatched} large />
+				<Stat name="Obejrzane seriale" value={profile.showsWatched} large />
 				<Stat
-					name="Watching Movies"
+					name="Czas oglądania filmów"
 					value={toFormattedTimeLong(profile.moviesWatchedRuntime)}
 				/>
 				<Stat
-					name="Watching Shows"
+					name="Czas oglądania seriali"
 					value={toFormattedTimeLong(profile.showsWatchedRuntime)}
-					disc="This is very inaccurate 🚀"
+					disc="To bardzo przybliżona wartość 🚀"
 				/>
 			{:catch err}
-				<Error error={err} pretty="Failed to get stats!" />
+				<Error error={err} pretty="Nie udało się pobrać statystyk!" />
 			{/await}
 		</Stats>
 
 		<div style="margin-top: 10px;">
 			<!-- Temporary link to settings, since we just moved them to
 			 another page, can remove this later. -->
-			<a href={resolve("/settings")}>Looking for settings?</a>
+			<a href={resolve("/settings")}>Szukasz ustawień?</a>
 		</div>
 	</div>
 </div>

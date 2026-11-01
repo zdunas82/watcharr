@@ -173,7 +173,7 @@
 		if (type === "DELETE") {
 			if (!watched) {
 				notify({
-					text: "Content has no watched list entry, can't delete.",
+					text: "Tej pozycji nie ma na Twojej liście, nie można jej usunąć.",
 					type: "error",
 				});
 				return;
@@ -412,7 +412,7 @@
 			if (!showConfirmDeleteModalCallback) {
 				notify({
 					type: "error",
-					text: "Somehow the deletion callback doesn't exist anymore so we couldn't delete! Please try again",
+					text: "Coś poszło nie tak i nie udało się usunąć! Spróbuj ponownie",
 					time: 5000,
 				});
 				return;

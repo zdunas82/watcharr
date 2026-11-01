@@ -32,7 +32,7 @@
 		const changedType = user.type !== originalUser.type;
 		// If nothing changed.. error
 		if (!changedPerms && !changedType) {
-			error = "Nothing has been changed";
+			error = "Niczego nie zmieniono";
 			return;
 		}
 		if (!error) {
@@ -47,12 +47,12 @@
 				await req.post(`/server/users/${user.id}`, toUpdate);
 				notify({
 					type: "success",
-					text: "Changes saved!",
+					text: "Zapisano zmiany!",
 				});
 				onClose();
 			} catch (err) {
 				console.error("Failed to save user!", err);
-				error = ReqerError.getMsg(err, "Failed to save");
+				error = ReqerError.getMsg(err, "Nie udało się zapisać");
 			}
 		}
 	}
@@ -64,8 +64,8 @@
 </script>
 
 <Modal
-	title="Edit User"
-	desc={`Configuring ${user.username}`}
+	title="Edytuj użytkownika"
+	desc={`Konfiguracja: ${user.username}`}
 	maxWidth="500px"
 	{onClose}
 >
@@ -74,11 +74,11 @@
 	{/if}
 
 	<SettingsList>
-		<h3 class="norm">Permissions</h3>
+		<h3 class="norm">Uprawnienia</h3>
 
 		<Setting
-			title="Admin"
-			desc="Give user admin, overrides all other permissions."
+			title="Administrator"
+			desc="Nadaj uprawnienia administratora; zastępują wszystkie inne uprawnienia."
 			row
 		>
 			<Checkbox
@@ -91,8 +91,8 @@
 		</Setting>
 
 		<Setting
-			title="Request Content"
-			desc="Give user permission to request content."
+			title="Prośby o dodanie"
+			desc="Pozwól użytkownikowi prosić o dodanie tytułów."
 			row
 		>
 			<Checkbox
@@ -108,8 +108,8 @@
 		</Setting>
 
 		<Setting
-			title="Auto Approve Content Request"
-			desc="Auto approve user's content requests."
+			title="Automatyczne zatwierdzanie próśb"
+			desc="Automatycznie zatwierdzaj prośby tego użytkownika o dodanie tytułów."
 			row
 		>
 			<Checkbox
@@ -126,15 +126,15 @@
 			/>
 		</Setting>
 
-		<h3 class="norm">Other</h3>
+		<h3 class="norm">Inne</h3>
 
 		<Setting
-			title="User Type"
-			desc="The type of this user, affects how they login and certain features. Currently only possible to swap between Watcharr/Proxy types."
+			title="Typ użytkownika"
+			desc="Typ tego użytkownika; wpływa na sposób logowania i niektóre funkcje. Obecnie można przełączać tylko między typami Watcharr i Proxy."
 		>
 			{#if !user.type || user.type === UserType.Proxy}
 				<DropDown
-					placeholder="Unknown"
+					placeholder="Nieznany"
 					bind:active={user.type}
 					options={[
 						{
@@ -157,12 +157,12 @@
 					isDropDownItem={true}
 				/>
 			{:else}
-				<p>This option is not supported for this user type yet.</p>
+				<p>Ta opcja nie jest jeszcze dostępna dla tego typu użytkownika.</p>
 			{/if}
 		</Setting>
 
 		<div class="btns">
-			<button onclick={() => save()}>Save</button>
+			<button onclick={() => save()}>Zapisz</button>
 		</div>
 	</SettingsList>
 </Modal>
@@ -192,7 +192,7 @@
 		width: 100%;
 		padding: 10px;
 		background-color: rgb(221, 48, 48);
-		text-transform: capitalize;
+		text-transform: none; /* PoterX: polskie teksty maja wlasna wielkosc liter */
 		color: white;
 		margin-bottom: 15px;
 	}

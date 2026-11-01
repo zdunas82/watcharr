@@ -9,7 +9,7 @@
 	import { onMount } from "svelte";
 	import Icon from "../Icon.svelte";
 	import tooltip from "../actions/tooltip";
-	import { msToAmountsOfTime } from "../util/helpers";
+	import { msToAmountsOfTime, plPlural } from "../util/helpers";
 	import { notify } from "../util/notify";
 	import { req } from "../util/api";
 	import { ReqerError } from "../util/fetch";
@@ -32,6 +32,19 @@
 		| ArrRequestStatus
 		| undefined = $state();
 	let estimatedCompletionIn: string | undefined = $state();
+
+	// Display labels for queue statuses reported by Sonarr/Radarr.
+	const arrStatusLabels: Record<string, string> = {
+		queued: "w kolejce",
+		paused: "wstrzymane",
+		downloading: "pobieranie",
+		completed: "pobrano",
+		delay: "opóźnione",
+		failed: "błąd",
+		warning: "ostrzeżenie",
+		downloadClientUnavailable: "klient pobierania niedostępny",
+		unknown: "nieznany",
+	};
 
 	async function getInfo() {
 		try {
@@ -71,7 +84,7 @@
 			}
 			console.error("ArrRequestButton: getInfo failed!", err);
 			notify({
-				text: `Failed when getting info from ${type === "movie" ? "Radarr" : "Sonarr"}`,
+				text: `Nie udało się pobrać informacji z ${type === "movie" ? "Radarra" : "Sonarra"}`,
 				type: "error",
 			});
 		}
@@ -95,13 +108,13 @@
 					new Date(Date.now()).getTime();
 				const est = msToAmountsOfTime(estMs);
 				if (est.days > 0) {
-					estimatedCompletionIn = `${est.days} Day${est.days > 1 ? "s" : ""}`;
+					estimatedCompletionIn = `${est.days} ${plPlural(est.days, "dzień", "dni", "dni")}`;
 				} else if (est.hours > 0) {
-					estimatedCompletionIn = `${est.hours} Hour${est.hours > 1 ? "s" : ""}`;
+					estimatedCompletionIn = `${est.hours} ${plPlural(est.hours, "godzinę", "godziny", "godzin")}`;
 				} else if (est.minutes > 0) {
-					estimatedCompletionIn = `${est.minutes} Minute${est.minutes > 1 ? "s" : ""}`;
+					estimatedCompletionIn = `${est.minutes} ${plPlural(est.minutes, "minutę", "minuty", "minut")}`;
 				} else if (est.seconds > 0) {
-					estimatedCompletionIn = `${est.seconds} Second${est.seconds > 1 ? "s" : ""}`;
+					estimatedCompletionIn = `${est.seconds} ${plPlural(est.seconds, "sekundę", "sekundy", "sekund")}`;
 				} else {
 					estimatedCompletionIn = undefined;
 				}
@@ -114,7 +127,7 @@
 		} catch (err) {
 			console.error("ArrRequestButton: getStatus failed!", err);
 			notify({
-				text: `Failed to fetch content status from ${type === "movie" ? "Radarr" : "Sonarr"}`,
+				text: `Nie udało się pobrać stanu tytułu z ${type === "movie" ? "Radarra" : "Sonarra"}`,
 				type: "error",
 			});
 		}
@@ -140,7 +153,7 @@
 		} catch (err) {
 			console.error("ArrRequestButton: lookForExisting failed!", err);
 			notify({
-				text: `Failed when looking for an existing request for this content`,
+				text: `Nie udało się sprawdzić, czy istnieje już prośba o ten tytuł`,
 				type: "error",
 			});
 		}
@@ -180,13 +193,13 @@
 		use:tooltip={{
 			text:
 				status === "requested"
-					? "Waiting for approval or download to start"
+					? "Czeka na zatwierdzenie lub rozpoczęcie pobierania"
 					: status.status === "downloading"
 						? estimatedCompletionIn
-							? `Done in ${estimatedCompletionIn}`
-							: "Estimation Unavailable"
+							? `Gotowe za ${estimatedCompletionIn}`
+							: "Szacowany czas niedostępny"
 						: status.status === "paused"
-							? "Download has been paused"
+							? "Pobieranie zostało wstrzymane"
 							: "",
 			pos: "bot",
 		}}
@@ -194,9 +207,9 @@
 		<div><Icon i="refresh" /></div>
 		<span>
 			{#if status === "requested"}
-				Requested
+				Poproszono
 			{:else}
-				{status.status}
+				{arrStatusLabels[status.status] ?? status.status}
 				{status.status === "downloading"
 					? status?.progress
 						? `(${status?.progress}%)`
@@ -206,23 +219,23 @@
 		</span>
 	</button>
 {:else if status === "available" || status === "FOUND"}
-	<button disabled>Available</button>
+	<button disabled>Dostępne</button>
 {:else if status === "PENDING"}
-	<button disabled>Pending</button>
+	<button disabled>Oczekuje</button>
 {:else if status === "APPROVED"}
-	<button disabled>Approved</button>
+	<button disabled>Zatwierdzone</button>
 {:else if status === "AUTO_APPROVED"}
-	<button disabled>Auto Approved</button>
+	<button disabled>Zatwierdzone automatycznie</button>
 {:else if status === "DENIED"}
-	<button disabled>Denied</button>
+	<button disabled>Odrzucone</button>
 {:else}
-	<button onclick={openRequestModal}>Request</button>
+	<button onclick={openRequestModal}>Poproś o dodanie</button>
 {/if}
 
 <style lang="scss">
 	button {
 		max-width: fit-content;
-		text-transform: capitalize;
+		text-transform: none; /* PoterX: polskie teksty maja wlasna wielkosc liter */
 		position: relative;
 
 		& > div {

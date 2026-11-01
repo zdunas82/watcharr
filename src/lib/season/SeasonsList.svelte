@@ -14,7 +14,7 @@
 	import { notify } from "@/lib/util/notify";
 	import PosterRating from "@/lib/poster/PosterRating.svelte";
 	import Icon from "@/lib/Icon.svelte";
-	import { watchedStatuses } from "@/lib/util/helpers";
+	import { plPlural, watchedStatuses } from "@/lib/util/helpers";
 	import { removeWatchedSeason, updateWatchedSeason } from "./api";
 	import { onMount } from "svelte";
 
@@ -65,7 +65,7 @@
 					);
 					notify({
 						type: "error",
-						text: "Failed when saving last viewed season",
+						text: "Nie udało się zapisać ostatnio oglądanego sezonu",
 					});
 				}
 			}
@@ -92,7 +92,7 @@
 			);
 			if (!ws) {
 				notify({
-					text: "Failed to find watched season id. Please try refreshing.",
+					text: "Nie znaleziono identyfikatora sezonu. Spróbuj odświeżyć stronę.",
 					type: "error",
 				});
 				return;
@@ -146,9 +146,10 @@
 					<h1 class="season-name">{season.name}</h1>
 					<h2 class="season-episodes">
 						{#if season.episodeCount > 0}
-							{season.episodeCount} Episodes
+							{season.episodeCount}
+							{plPlural(season.episodeCount, "odcinek", "odcinki", "odcinków")}
 						{:else}
-							No Episodes Yet
+							Brak odcinków
 						{/if}
 					</h2>
 				</div>
@@ -158,7 +159,7 @@
 							{new Date(Date.parse(season.releaseDate)).getFullYear()}
 						</h2>
 					{:else if season.number > 0}
-						<h2>TBD</h2>
+						<h2>Wkrótce</h2>
 					{/if}
 
 					{#if watchedItem}
@@ -193,7 +194,7 @@
 							<div class="rating">
 								<PosterRating
 									rating={ws?.rating}
-									btnTooltip="Season Rating"
+									btnTooltip="Ocena sezonu"
 									handleStarClick={(r) =>
 										handleStarClick(r, season.season_number)}
 									minimal={true}
@@ -204,7 +205,7 @@
 						<div class="status">
 							<PosterStatus
 								status={ws?.status}
-								btnTooltip="Season Status"
+								btnTooltip="Status sezonu"
 								handleStatusClick={(t) =>
 									handleStatusClick(t, season.season_number)}
 								minimal={true}
@@ -220,14 +221,14 @@
 						{/each}
 					</ul>
 				{:else}
-					<h3 class="norm">No episodes in this season yet!</h3>
+					<h3 class="norm">W tym sezonie nie ma jeszcze odcinków!</h3>
 				{/if}
 			{:catch err}
-				<Error pretty="Failed to load season details!" error={err} />
+				<Error pretty="Nie udało się wczytać szczegółów sezonu!" error={err} />
 			{/await}
 		</div>
 	{:else}
-		<h3 class="norm">Try selecting a season.</h3>
+		<h3 class="norm">Wybierz sezon.</h3>
 	{/if}
 </div>
 

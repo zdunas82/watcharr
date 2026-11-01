@@ -10,7 +10,7 @@
 </script>
 
 <div>
-	<h2>Users</h2>
+	<h2>Użytkownicy</h2>
 	<ul>
 		{#each users as user (user.id)}
 			<li title={user.username}>

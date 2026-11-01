@@ -54,7 +54,7 @@
 </script>
 
 <svelte:head>
-	<title>{activeEntry ? `${activeEntry.title} - ` : ""}Handbook</title>
+	<title>{activeEntry ? `${activeEntry.title} - ` : ""}Poradnik</title>
 </svelte:head>
 
 <div class="content">
@@ -64,7 +64,7 @@
 				<div class="top-bar">
 					<button class="back" onclick={() => setActive(undefined)}>
 						<Icon i="chevron" facing="left" wh={18} />
-						<span>Back</span>
+						<span>Wstecz</span>
 					</button>
 
 					<span class="title">{activeEntry.title}</span>
@@ -74,22 +74,22 @@
 					{@const EntryComponent = module.default}
 					<EntryComponent />
 				{:catch error}
-					<p>Couldn't load component: {error.message}</p>
+					<p>Nie udało się wczytać artykułu: {error.message}</p>
 				{/await}
 			{:else}
 				<h2 class="norm">
 					<!-- NOTE for later self: This page is in beta since its navigation is slightly broken.
 					 after sveltekit v3 migration we should be able to fix the shallow routing with the new goto func. -->
-					Welcome to your handbook. <span style="font-size: 12px">Beta</span>
+					Witaj w poradniku. <span style="font-size: 12px">Beta</span>
 				</h2>
 
 				<p>
-					Inside, you will find useful information in regard to using Watcharr.
+					Znajdziesz tu przydatne informacje o korzystaniu z Watcharra.
 				</p>
 				<p>
-					Part of Watcharr's mission is to be extra user-friendly (aka
-					intuitive), so hopefully you don't need to reference guides much, but
-					they may come in handy, which is why this handbook was made.
+					Watcharr ma być jak najbardziej przyjazny i intuicyjny, więc pewnie
+					rzadko będziesz zaglądać do poradników. Czasem jednak się przydają i
+					właśnie dlatego powstał ten poradnik.
 				</p>
 
 				<div class="entries">

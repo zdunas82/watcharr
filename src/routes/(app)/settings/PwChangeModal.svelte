@@ -28,16 +28,16 @@
 			"Change Password Form - Status: Checking if any form inputs are missing",
 		);
 		if (!changepswd.currentPassword) {
-			errs.push("Current Password");
+			errs.push("obecne hasło");
 		}
 		if (!changepswd.newPassword) {
-			errs.push("New Password");
+			errs.push("nowe hasło");
 		}
 		if (!changepswd.reEnteredNewPassword) {
-			errs.push("Re-Entered New Password");
+			errs.push("powtórzone nowe hasło");
 		}
 		if (errs.length > 0) {
-			error = `Missing required params: ${errs.join(", ")}`;
+			error = `Brak wymaganych pól: ${errs.join(", ")}`;
 			console.log(
 				`Change Password Form - Error: following form inputs are missing:\n${errs.join("\n")}`,
 			);
@@ -52,7 +52,7 @@
 			"Change Password Form - Status: Checking if new password and re-entered new password match",
 		);
 		if (changepswd.newPassword !== changepswd.reEnteredNewPassword) {
-			error = "New password and re-entered new password do not match";
+			error = "Nowe hasło i powtórzone nowe hasło nie są takie same";
 			console.log(
 				"Change Password Form - Error: New password and re-entered new password do not match",
 			);
@@ -93,8 +93,8 @@
 </script>
 
 <Modal
-	title="Change Password"
-	desc="Use the below form to change your password for account {userName}"
+	title="Zmiana hasła"
+	desc="Użyj poniższego formularza, aby zmienić hasło do konta {userName}"
 	{onClose}
 >
 	{#if error}
@@ -105,7 +105,7 @@
 			<div class="form-input">
 				<!--Hiding username info as it is still useful to password managers-->
 				<!--https://www.chromium.org/developers/design-documents/create-amazing-password-forms/#use-hidden-fields-for-implicit-information-->
-				<label for="username" id="username-label">Username</label>
+				<label for="username" id="username-label">Nazwa użytkownika</label>
 				<input
 					type="text"
 					name="username"
@@ -115,36 +115,36 @@
 				/>
 			</div>
 			<div class="form-input">
-				<label for="current-password">Current Password</label>
+				<label for="current-password">Obecne hasło</label>
 				<input
 					type="password"
 					name="current-password"
-					placeholder="Current password"
+					placeholder="Obecne hasło"
 					autocomplete="current-password"
 					bind:value={changepswd.currentPassword}
 				/>
 			</div>
 			<div class="form-input">
-				<label for="new-password">New Password</label>
+				<label for="new-password">Nowe hasło</label>
 				<input
 					type="password"
 					name="new-password"
-					placeholder="New password"
+					placeholder="Nowe hasło"
 					autocomplete="new-password"
 					bind:value={changepswd.newPassword}
 				/>
 			</div>
 			<div class="form-input">
-				<label for="re-entered-new-password">Re-enter New Password</label>
+				<label for="re-entered-new-password">Powtórz nowe hasło</label>
 				<input
 					type="password"
 					name="re-entered-new-password"
-					placeholder="Re-enter new password"
+					placeholder="Powtórz nowe hasło"
 					autocomplete="new-password"
 					bind:value={changepswd.reEnteredNewPassword}
 				/>
 			</div>
-			<button type="submit">Change Password</button>
+			<button type="submit">Zmień hasło</button>
 		</div>
 	</form>
 </Modal>
@@ -163,7 +163,7 @@
 		width: 100%;
 		padding: 10px;
 		background-color: rgb(221, 48, 48);
-		text-transform: capitalize;
+		text-transform: none; /* PoterX: polskie teksty maja wlasna wielkosc liter */
 		color: white;
 		margin-bottom: 15px;
 	}

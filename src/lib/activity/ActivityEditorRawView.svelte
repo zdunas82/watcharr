@@ -9,7 +9,7 @@
 	let { activity }: Props = $props();
 </script>
 
-<Collapsible title="View Raw Activity">
+<Collapsible title="Pokaż surowe dane aktywności">
 	<div>
 		<pre>{JSON.stringify(activity, undefined, 2)}</pre>
 	</div>

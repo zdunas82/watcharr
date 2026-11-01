@@ -31,11 +31,11 @@
 		const pass = fd.get("password");
 
 		if (!user || !pass) {
-			error = "Username and Password fields are required";
+			error = "Nazwa użytkownika i hasło są wymagane";
 			return;
 		}
 
-		const nid = notify({ text: "Setting Up Admin User", type: "loading" });
+		const nid = notify({ text: "Tworzenie konta administratora", type: "loading" });
 		noAuthReq
 			.post<AuthResponse>("/setup/create_admin", {
 				username: user,
@@ -46,25 +46,25 @@
 					console.log("Received token... logging in.");
 					localStorage.setItem("token", resp.token);
 					goto(resolve("/"));
-					notify({ id: nid, text: `Welcome ${user}!`, type: "success" });
+					notify({ id: nid, text: `Witaj, ${user}!`, type: "success" });
 				}
 			})
 			.catch((err) => {
-				error = ReqerError.getMsg(err, "Setting up user failed");
+				error = ReqerError.getMsg(err, "Nie udało się utworzyć użytkownika");
 				unNotify(nid);
 			});
 	}
 </script>
 
 <svelte:head>
-	<title>Setup Watcharr</title>
+	<title>Konfiguracja Watcharr</title>
 </svelte:head>
 
 <div>
 	<div class="inner">
 		<div class="headers">
-			<h2>Setup Admin User</h2>
-			<h5 class="norm">Welcome to Watcharr! Setup your admin acount below.</h5>
+			<h2>Utwórz konto administratora</h2>
+			<h5 class="norm">Witaj w Watcharr! Utwórz poniżej konto administratora.</h5>
 		</div>
 
 		{#if error}
@@ -72,14 +72,14 @@
 		{/if}
 
 		<form onsubmit={handleLogin}>
-			<label for="username">Username</label>
-			<input type="text" name="username" placeholder="Username" />
+			<label for="username">Nazwa użytkownika</label>
+			<input type="text" name="username" placeholder="Nazwa użytkownika" />
 
-			<label for="password">Password</label>
-			<input type="password" name="password" placeholder="Password" />
+			<label for="password">Hasło</label>
+			<input type="password" name="password" placeholder="Hasło" />
 
 			<div class="login-btns">
-				<button type="submit"><span class="watcharr">W</span>Set Up</button>
+				<button type="submit"><span class="watcharr">W</span>Utwórz</button>
 			</div>
 		</form>
 	</div>
@@ -143,7 +143,7 @@
 		width: 100%;
 		padding: 10px;
 		background-color: rgb(221, 48, 48);
-		text-transform: capitalize;
+		text-transform: none; /* PoterX: polskie teksty maja wlasna wielkosc liter */
 		color: white;
 	}
 </style>

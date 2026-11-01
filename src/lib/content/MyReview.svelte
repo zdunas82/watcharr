@@ -3,6 +3,7 @@
 	import Rating from "../rating/Rating.svelte";
 	import Status from "../Status.svelte";
 	import MyThoughts from "./MyThoughts.svelte";
+	import { plPlural } from "@/lib/util/helpers";
 
 	interface Props {
 		watched?: Watched;
@@ -33,7 +34,7 @@
 		{#if typeof watched.plays == "number" && watched.plays > 0}
 			<div>
 				{watched.plays}
-				{watched.plays > 1 ? "Plays" : "Play"}
+				{plPlural(watched.plays, "obejrzenie", "obejrzenia", "obejrzeń")}
 			</div>
 		{/if}
 	{/if}

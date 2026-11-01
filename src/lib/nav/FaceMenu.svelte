@@ -45,7 +45,7 @@
 	}
 
 	function shareWatchedList() {
-		const nid = notify({ type: "loading", text: "Getting link" });
+		const nid = notify({ type: "loading", text: "Pobieranie linku" });
 		const ud = parseTokenPayload();
 		console.log(ud);
 		if (ud?.userId && ud?.username) {
@@ -53,19 +53,19 @@
 			navigator.clipboard
 				.writeText(shareLink)
 				.then(() => {
-					notify({ id: nid, type: "success", text: "Copied share link" });
+					notify({ id: nid, type: "success", text: "Skopiowano link do udostępnienia" });
 				})
 				.catch((r) => {
 					console.error("Failed to copy list share link", r);
 					notify({
 						id: nid,
 						type: "error",
-						text: `Failed to copy share link:<br/><a href="${shareLink}" target="_blank">${shareLink}</a>`,
+						text: `Nie udało się skopiować linku:<br/><a href="${shareLink}" target="_blank">${shareLink}</a>`,
 						time: 20000,
 					});
 				});
 		} else {
-			notify({ id: nid, type: "error", text: "Failed to get link" });
+			notify({ id: nid, type: "error", text: "Nie udało się pobrać linku" });
 		}
 	}
 
@@ -76,24 +76,24 @@
 
 <Menu conf={{ width: "150px", arrowRight: "10px" }}>
 	{#if user?.username}
-		<h5 title={user.username}>Hi {user.username}!</h5>
+		<h5 title={user.username}>Cześć, {user.username}!</h5>
 	{/if}
-	<button class="plain" onclick={() => profile()}>Profile</button>
+	<button class="plain" onclick={() => profile()}>Profil</button>
 	{#if !store.userSettings?.private}
-		<button class="plain" onclick={() => shareWatchedList()}>Share List</button>
+		<button class="plain" onclick={() => shareWatchedList()}>Udostępnij listę</button>
 	{/if}
-	<button class="plain" onclick={() => settings()}>Settings</button>
+	<button class="plain" onclick={() => settings()}>Ustawienia</button>
 	{#if user && userHasPermission(user.permissions, UserPermission.PERM_ADMIN)}
-		<button class="plain" onclick={() => serverSettings()}>Server</button>
-		<button class="plain" onclick={() => userManagement()}>Users</button>
+		<button class="plain" onclick={() => serverSettings()}>Serwer</button>
+		<button class="plain" onclick={() => userManagement()}>Użytkownicy</button>
 		{#if store.serverFeatures?.sonarr || store.serverFeatures?.radarr}
 			<!-- At least one (sonarr/radarr) should be enabled for requests menu item to display. -->
 			<button class="plain" onclick={() => requestManagement()}>
-				Requests
+				Prośby
 			</button>
 		{/if}
 	{/if}
-	<button class="plain logout" onclick={() => logout()}>Logout</button>
+	<button class="plain logout" onclick={() => logout()}>Wyloguj</button>
 	{#if proxyUserLogoutShown}
 		<ProxyUserLogoutModal onClose={() => (proxyUserLogoutShown = false)} />
 	{/if}
@@ -104,7 +104,7 @@
 				aboutModalOpen = !aboutModalOpen;
 			}}
 		>
-			about
+			o aplikacji
 		</button>
 		|
 		<a

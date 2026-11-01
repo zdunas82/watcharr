@@ -13,27 +13,27 @@ export type HandbookEntry = {
 
 export const entries = [
 	{
-		title: "General",
+		title: "Ogólne",
 		entries: [
 			{
 				id: "adding-to-your-watchlist",
-				title: "Adding to your watchlist",
+				title: "Dodawanie do listy",
 				comp: () =>
 					import("./entries/general/AddingToYourWatchlist/AddingToYourWatchlist.svelte"),
 			},
 		],
 	},
 	{
-		title: "Admin",
+		title: "Administracja",
 		entries: [
 			{
 				id: "jellyfin-webhook-setup",
-				title: "Jellyfin Webhook Setup",
+				title: "Konfiguracja webhooka Jellyfina",
 				comp: () => import("./entries/admin/JellyfinWebhookSetup.svelte"),
 			},
 			{
 				id: "your-own-tmdb-api-key",
-				title: "Providing Your Own TMDB API Key",
+				title: "Własny klucz API TMDB",
 				comp: () => import("./entries/admin/YourOwnTMDBAPIKey.svelte"),
 			},
 		],
